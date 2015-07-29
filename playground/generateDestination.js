@@ -15,18 +15,7 @@ function generateDestination(){
 
     // Create the new LatLng object
     var newDestination = new google.maps.LatLng(newLat, newLng);
-
-    // Access the map object
-    var map = new google.maps.Map(document.getElementById("map-canvas"), 
-				  mapOptions);
-
-    // Create the marker
-    var marker = new google.maps.Marker({
-	position: newDestination
-    });
-    
-    //Set the marker on the map
-    marker.setMap(map);
+    return newDestination;
 };
 
 

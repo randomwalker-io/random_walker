@@ -1,6 +1,12 @@
 function initialize() {
     //Set home location as Auckland if failed to to geolocate
     homeLocation = new google.maps.LatLng(-36.857992, 174.7621796);
+    //Set home location to central china to avoid non possible location;
+    // homeLocation = new google.maps.LatLng(25.9227467, 91.9315795); 
+
+    // First generate the new destination
+    newDestination = generateDestination();
+    directionsDisplay = new google.maps.DirectionsRenderer();
     
     var mapOptions = {
 	zoom: 8,
@@ -8,6 +14,7 @@ function initialize() {
     }
     var map = new google.maps.Map(document.getElementById('map-canvas'),  
 				  mapOptions);
+
 
     // Try HTML5 geolocation
     if(navigator.geolocation) {
@@ -22,15 +29,12 @@ function initialize() {
     	    });
 	    
     	    map.setCenter(homeLocation);
-	    generateDestination();
     	}, function() {
     	    handleNoGeolocation(true);
-	    generateDestination();
     	});
     } else {
     	// Browser doesn't support Geolocation
     	handleNoGeolocation(false);
-	generateDestination();
     }
 
     function handleNoGeolocation(errorFlag) {
@@ -47,9 +51,8 @@ function initialize() {
 
     	var infowindow = new google.maps.InfoWindow(options);
     	map.setCenter(options.position);
-	generateDestination();
     };
-   
-
+    calcRoute();
+    directionsDisplay.setMap(map);
 }
 

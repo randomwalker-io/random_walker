@@ -15,12 +15,23 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="initialize.js"></script>
     <script src="generateDestination.js"></script>
+    <script src="generateExplorerDestination.js"></script>
+    <script src="addNewDestination.js"></script>
+    <script src="addNewExplorerDestination.js"></script>
+    <script src="codeLatLng.js"></script>
+    <script src="calcRoute.js"></script>
     <script src="addMarker.js"></script>
-    <!-- <script src="originalLocation.js".></script> -->
-    <!-- <script> src="hack.js"></script> -->
     <script>
+      var geocoder = new google.maps.Geocoder();
+      var directionsDisplay;
+      var directionsService = new google.maps.DirectionsService();
+      
       function test(){
-      addMarker(generateDestination());
+          console.log(newDestination);
+          newDestination = generateExplorerDestination();
+          console.log(newDestination);
+          //window.alert(newDestination);
+          calcRoute();
       };
 
       google.maps.event.addDomListener(window, 'load', initialize);
@@ -32,7 +43,8 @@
     <h1> Random Walker Prototype </h1>
     <!-- <div id="panel"> -->
       <!-- <input ida="Return to Initial Location!" type="button" value="Return to Initial Location!" onClick="initialize();"> -->
-      <input id="New Destination!" type="button" value="New Destination!" onClick="addMarker(generateDestination());">
+      <input id="New Destination!" type="button" value="New Destination!" onClick="addNewDestination();">
+      <input id="explorer" type="button" value="I am an Explorer" onClick="addNewExplorerDestination();">
       <input id="test button!" type="button" value="This is the test button!" onClick="test();">
     <!-- </div> -->
     <div id="map-canvas"></div>

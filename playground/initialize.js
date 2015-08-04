@@ -12,8 +12,28 @@ function initialize() {
 	zoom: 8,
 	center: homeLocation
     }
-    var map = new google.maps.Map(document.getElementById('map-canvas'),  
-				  mapOptions);
+    map = new google.maps.Map(document.getElementById('map-canvas'),  
+			      mapOptions);
+
+
+    // Create the search box and link it to the UI element.
+    var input = /** @type {HTMLInputElement} */(
+	document.getElementById('pac-input'));
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    var searchBox = new google.maps.places.SearchBox(
+	/** @type {HTMLInputElement} */(input));
+
+    geocoder = new google.maps.Geocoder();
+    google.maps.event.addListener(searchBox, 'places_changed', function() {
+	var places = searchBox.getPlaces();
+	console.log(places[0].formatted_address);
+	if (places.length == 0) {
+	    return;
+	} else {
+	    enterHomeAddress(places[0].formatted_address);
+	}
+    });
 
 
     // Try HTML5 geolocation

@@ -12,7 +12,8 @@
       }
 
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script> -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
     <script src="initialize.js"></script>
     <script src="generateDestination.js"></script>
     <script src="generateExplorerDestination.js"></script>
@@ -21,8 +22,9 @@
     <script src="codeLatLng.js"></script>
     <script src="calcRoute.js"></script>
     <script src="addMarker.js"></script>
+    <script src="enterHomeAddress.js"></script>
     <script>
-      var geocoder = new google.maps.Geocoder();
+      var geocoder;
       var directionsDisplay;
       var directionsService = new google.maps.DirectionsService();
       
@@ -41,6 +43,7 @@
   </head>
   <body>
     <h1> Random Walker Prototype </h1>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <!-- <div id="panel"> -->
       <!-- <input ida="Return to Initial Location!" type="button" value="Return to Initial Location!" onClick="initialize();"> -->
       <input id="New Destination!" type="button" value="New Destination!" onClick="addNewDestination();">

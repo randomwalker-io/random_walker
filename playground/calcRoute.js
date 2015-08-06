@@ -16,6 +16,7 @@ function calcRoute() {
 		window.alert(status);
 		// Should we change the setting?
 	    } else {
+		// Need to change this depending on the parameters
 		generateDestination();
 		calcRoute();
 	    }

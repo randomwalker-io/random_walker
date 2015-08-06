@@ -6,7 +6,6 @@ function initialize() {
 
     // First generate the new destination
     newDestination = generateDestination();
-    directionsDisplay = new google.maps.DirectionsRenderer();
     
     var mapOptions = {
 	zoom: 8,
@@ -14,7 +13,6 @@ function initialize() {
     }
     map = new google.maps.Map(document.getElementById('map-canvas'),  
 			      mapOptions);
-
 
     // Create the search box and link it to the UI element.
     var input = /** @type {HTMLInputElement} */(

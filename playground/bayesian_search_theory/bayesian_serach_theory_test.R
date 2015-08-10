@@ -1,4 +1,3 @@
-
 ########################################################################
 ## TItle: Use Bayesian Search Theory to find best destination
 ## Date: 2015-08-05
@@ -15,7 +14,8 @@ ed = 5
 ## Set up original traveller distance distribution
 d = data.frame(x = rep(seq(-gridSize, gridSize), each = 61),
     y = rep(seq(-gridSize, gridSize), times = 61))
-d$PrP = dnorm(d$x, 0, sqrt(td)) * dnorm(d$y, 0, sqrt(td))
+## d$PrP = dnorm(d$x, 0, sqrt(td)) * dnorm(d$y, 0, sqrt(td))
+d$PrP = 1/NROW(d)
 
 ggplot(d, aes(x = x, y = y, z = PrP)) +
     geom_point(aes(alpha = PrP)) +
@@ -65,7 +65,8 @@ ggplot(d, aes(x = x, y = y, z = uPrP2)) +
 
 ## Function to compute multiple search and update probability
 compoundSearchDist = function(data, iter){
-    searched = dnorm(data$x, 0, sqrt(td)) * dnorm(data$y, 0, sqrt(td))
+    ## searched = dnorm(data$x, 0, sqrt(td)) * dnorm(data$y, 0, sqrt(td))
+    searched = rep(1/NROW(data), NROW(data))
     dataCopy = data
     xvec = c()
     yvec = c()
@@ -89,10 +90,26 @@ compoundSearchDist = function(data, iter){
 d$updatedSearch = compoundSearchDist(data = d, iter = 100)
 d2 = data.frame(x = xvec, y = yvec)
 
+
+## Use points to denote probability rather than contour, this is much
+## more efficient and avoids the problem of non-smooth probability
+## polygon.
+##
+## NOTE (Michael): Should determine the size of the bubble, does it
+##                 look better if the bubbles overlap each other?
+##
+## NOTE (Michael): Want to overlap the points, so it becomes more like
+##                 a contour, and at the same time hide the generation
+##                 points.
+ggplot(d, aes(x = x, y = y, z = updatedSearch)) +
+    geom_point(aes(size = updatedSearch, alpha = updatedSearch)) +
+    geom_point(data = d2, aes(x = x, y = y, z = 1, col = "red"))
+
 ggplot(d, aes(x = x, y = y, z = updatedSearch)) +
     geom_point(aes(alpha = updatedSearch)) +
     stat_contour() +
     geom_point(data = d2, aes(x = x, y = y, z = 1, col = "red"))
+
 
 ## NOTE (Michael): Need to check the evolution of the density to
 ##                 determine the right parameters

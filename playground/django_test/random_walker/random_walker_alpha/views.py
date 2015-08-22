@@ -1,7 +1,7 @@
 import os
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render, get_object_or_404, render_to_response, RequestContext
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.template import RequestContext, loader
+from django.template import loader
 from django.core.urlresolvers import reverse
 from django.views import generic
 import django
@@ -10,7 +10,6 @@ import django
 # Create your views here.
 
 def index(request):
-    # template = loader.get_template('random_walker_alpha/base_site.html')
-    # return template.render()
-    return render(request, 'random_walker_alpha/index.html')
+    # return render(request, 'random_walker_alpha/index.html')
+    return render_to_response('random_walker_alpha/index.html', locals(), context_instance=RequestContext(request))
 

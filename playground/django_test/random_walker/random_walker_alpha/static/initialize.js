@@ -73,23 +73,3 @@ function initialize() {
     calcRoute();
     directionsDisplay.setMap(map);
 }
-
-// This is a temporary hack!
-var geocoder;
-//var rendererOptions = {
-//    draggable: true
-//};
-//var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-var directionsDisplay = new google.maps.DirectionsRenderer();
-var directionsService = new google.maps.DirectionsService();
-
-
-function test(){
-    console.log(newDestination);
-    newDestination = generateExplorerDestination();
-    console.log(newDestination);
-    //window.alert(newDestination);
-    calcRoute();
-};
-
-google.maps.event.addDomListener(window, 'load', initialize);

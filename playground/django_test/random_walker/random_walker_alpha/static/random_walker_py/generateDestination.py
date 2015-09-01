@@ -1,19 +1,6 @@
-import os
-from django.shortcuts import render, get_object_or_404, render_to_response, RequestContext
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.template import loader
-from django.core.urlresolvers import reverse
-from django.views import generic
-import django
 import numpy
 import json
-
-
-# Create your views here.
-
-def index(request):
-    # return render(request, 'random_walker_alpha/index.html')
-    return render_to_response('random_walker_alpha/index.html', locals(), context_instance=RequestContext(request))
+import django
 
 def generateDestination(request):
     if request.method == 'POST':
@@ -39,4 +26,13 @@ def generateDestination(request):
     #     json.dumps(new_destination),
     #     content_type='application/json'
     # )
-    return JsonResponse(new_destination)
+    # return JsonResponse(new_destination)
+    return current_location
+
+
+
+
+# tmp = {u'lat': 123, u'lng': 456}
+# new_destination = generateDestination(tmp);
+# print new_destination
+

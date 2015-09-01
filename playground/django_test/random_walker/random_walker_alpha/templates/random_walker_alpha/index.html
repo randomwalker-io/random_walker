@@ -15,6 +15,7 @@
     </style>
     <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script> -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="{% static 'random_walker_js/initialize.js' %}"> </script>
     <script src="{% static 'random_walker_js/generateDestination.js' %}"></script>
     <script src="{% static 'random_walker_js/generateExplorerDestination.js' %}"></script>
@@ -24,7 +25,7 @@
     <script src="{% static 'random_walker_js/calcRoute.js' %}"></script>
     <script src="{% static 'random_walker_js/addMarker.js' %}"></script>
     <script src="{% static 'random_walker_js/enterHomeAddress.js' %}"></script>
-    <script>
+    <script type="text/javascript">
       var geocoder;
       //var rendererOptions = {
       //    draggable: true
@@ -50,40 +51,9 @@
   <body>
     <h1> Random Walker Prototype </h1>
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <!-- <div id="panel"> -->
-      <!-- <input ida="Return to Initial Location!" type="button" value="Return to Initial Location!" onClick="initialize();"> -->
-      <input id="New Destination!" type="button" value="New Destination!" onClick="addNewDestination();">
-      <input id="explorer" type="button" value="I am an Explorer" onClick="addNewExplorerDestination();">
-      <input id="test button!" type="button" value="This is the test button!" onClick="test();">
-    <!-- </div> -->
+    <input id="New Destination!" type="button" value="New Destination!" onClick="addNewDestination();">
+    <input id="explorer" type="button" value="I am an Explorer" onClick="addNewExplorerDestination();">
+    <input id="test button!" type="button" value="This is the test button!" onClick="test();">
     <div id="map-canvas"></div>
   </body>
 </html>
-
-<!-- <!DOCTYPE html> -->
-<!-- <html> -->
-<!--   <head> -->
-<!--     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
-<!--     <script src="http://code.highcharts.com/highcharts.js"></script> -->
-<!--     <script src="http://code.highcharts.com/modules/exporting.js"></script> -->
-<!--   </head> -->
-<!--   <body> -->
-<!--     <div id="container" style="min-width: 300px; height: 300px; margin: 1em"> -->
-<!--     </div> -->
-<!--     <script type="text/javascript"> -->
-<!--       {% autoescape off %} -->
-<!--       $(document).ready(function(){ -->
-<!--           $('#container').highcharts({ -->
-<!--               xAxis: { -->
-<!--                   categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',  -->
-<!--                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] -->
-<!--               }, -->
-<!--               series: [{ -->
-<!--                   data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4] -->
-<!--               }] -->
-<!--           }); -->
-<!--       }); -->
-<!--       {% endautoescape %} -->
-<!--     </script> -->
-<!--   </body> -->
-<!-- </html> -->

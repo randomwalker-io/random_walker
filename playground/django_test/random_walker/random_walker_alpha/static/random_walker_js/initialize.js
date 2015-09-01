@@ -1,11 +1,6 @@
 function initialize() {
     //Set home location as Auckland if failed to to geolocate
     homeLocation = new google.maps.LatLng(-36.857992, 174.7621796);
-    //Set home location to central china to avoid non possible location;
-    // homeLocation = new google.maps.LatLng(25.9227467, 91.9315795); 
-
-    // First generate the new destination
-    newDestination = generateDestination();
     
     var mapOptions = {
 	zoom: 8,
@@ -70,6 +65,11 @@ function initialize() {
     	var infowindow = new google.maps.InfoWindow(options);
     	map.setCenter(options.position);
     };
-    calcRoute();
-    directionsDisplay.setMap(map);
+
+    // First generate the new destination
+    // newDestination = generateDestination();
+    generateDestination()
+
+    // calcRoute();
+    // directionsDisplay.setMap(map);
 }

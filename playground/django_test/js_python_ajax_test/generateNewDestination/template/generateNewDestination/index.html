@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> This is a test page </title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <script type="text/javascript">
+      $(function() {
+          $("button").click(function() {
+              $.ajax({
+                  url: "{% url 'generateNewDestination:newDestination' %}",
+                  type: "get",
+                  success: function(data){
+                      // alert(data)
+                      //document.getElementById('location').value=data
+                      document.getElementById("new_location").innerHTML = data
+                  },
+                  fail: function(data){
+                      alert("failed")
+                  }
+               })
+         })
+      })
+    </script>
+  </head>
+  <body>
+    <button type="button">Give Me A New Location!</button>
+    <p id="new_location"> Unknown </p>    
+  </body>
+</html>

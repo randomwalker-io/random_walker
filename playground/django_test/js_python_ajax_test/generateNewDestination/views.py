@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, render_to_response, RequestContext
 import json
 import numpy as np
@@ -8,12 +8,12 @@ import numpy as np
 def index(request):
     # return render_to_response('generateNewDestination/index.html')
     return render_to_response('generateNewDestination/template/generateNewDestination/index.html')
-    # return HttpResponse("This is a test")
 
 def newDestination(request):
-    # return [np.random.normal(), np.random.normal()]
-    newDestination = [np.random.normal(), np.random.normal()]
-    # return HttpResponse("The new location is at [" + str(np.random.normal()) + ", " + str(np.random.normal()) + "]")
+    if request.method == 'POST':
+        homeLocation = [request.POST.get('lat'), request.POST.get('lng')]
+        dist = request.POST.get('dist')
+    newDestination = [float(homeLocation[0]) + np.random.normal(dist), float(homeLocation[1]) + np.random.normal(dist)]
     # return JsonResponse(newDestination)
     return HttpResponse(json.dumps(newDestination), content_type="application/json")
     

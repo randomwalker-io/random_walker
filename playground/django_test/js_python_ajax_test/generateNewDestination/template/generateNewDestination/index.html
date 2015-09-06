@@ -1,7 +1,8 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
   <head>
-    <title> This is a test page </title>
+    <title> Random Walker Prototype </title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -17,130 +18,11 @@
     </style>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="{% static 'generateNewDestination/js_script/initialise.js' %}"></script>
+    <script src="{% static 'generateNewDestination/js_script/csrf.js' %}"></script>
+
     <script type="text/javascript">
-function initialize() {
-    //Set home location as Auckland if failed to to geolocate
-    homeLocation = new google.maps.LatLng(-36.857992, 174.7621796);
-    
-    var mapOptions = {
-	zoom: 8,
-	center: homeLocation
-    }
-    map = new google.maps.Map(document.getElementById('map'),  
-			      mapOptions);
-
-    // Try HTML5 geolocation
-    if(navigator.geolocation) {
-    	navigator.geolocation.getCurrentPosition(function(position) {
-    	    homeLocation = new google.maps.LatLng(position.coords.latitude,
-    						  position.coords.longitude);
-	    
-    	    var infowindow = new google.maps.InfoWindow({
-    		map: map,
-    		position: homeLocation,
-    		content: 'Location found using HTML5.'
-    	    });
-	    
-    	    map.setCenter(homeLocation);
-    	}, function() {
-    	    handleNoGeolocation(true);
-    	});
-    } else {
-    	// Browser doesn't support Geolocation
-    	handleNoGeolocation(false);
-    }
-
-    function handleNoGeolocation(errorFlag) {
-    	if (errorFlag) {
-    	    var content = 'Error: The Geolocation service failed.';
-    	} else {
-    	    var content = 'Error: Your browser doesn\'t support geolocation.';
-    	}
-    	var options = {
-    	    map: map,
-    	    position: homeLocation,
-    	    content: content
-    	};
-
-    	var infowindow = new google.maps.InfoWindow(options);
-    	map.setCenter(options.position);
-    };
-}
-
-function addMarker(location) {
-    var mapOptions = {
-    	zoom: 7,
-    	center: homeLocation
-    };
-
-    // Access the map object 
-    var map = new google.maps.Map(document.getElementById("map"), 
-				  mapOptions);
-    
-    // Create the marker
-    var marker = new google.maps.Marker({
-	position: location,
-	map: map
-    })
-    
-    // Push the marker to the map
-    marker.push(marker);
-}
-
-      google.maps.event.addDomListener(window, 'load', initialize);
-
-</script>
-    <script type="text/javascript">
-      // This function gets cookie with a given name
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-
-/*
-The functions below will create a header with csrftoken
-*/
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-function sameOrigin(url) {
-    // test that a given url is a same-origin URL
-    // url could be relative or scheme relative or absolute
-    var host = document.location.host; // host + port
-    var protocol = document.location.protocol;
-    var sr_origin = '//' + host;
-    var origin = protocol + sr_origin;
-    // Allow absolute or scheme relative URLs to same origin
-    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-        // or any other URL that isn't scheme relative or absolute i.e relative.
-        !(/^(\/\/|http:|https:).*/.test(url));
-}
-
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-            // Send the token to same-origin, relative URLs only.
-            // Send the token only if the method warrants CSRF protection
-            // Using the CSRFToken value acquired earlier
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
+      google.maps.event.addDomListener(window, 'load', initialize);      
     </script>
 
     <script type="text/javascript">

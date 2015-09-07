@@ -1,13 +1,26 @@
 function initialize() {
+    param = {
+        dist: 100000,
+        time: Infinity,
+	budget: Infinity,
+	Purpose: null,
+	Distibutrion: 'Normal',
+	Confidence: 'Normal'
+    }
     //Set home location as Auckland if failed to to geolocate
     homeLocation = new google.maps.LatLng(-36.857992, 174.7621796);
-    
+
+    myZoom = calculateZoom(homeLocation.lat(), param$dist)
+
+    // Need a function to determine zoom
     var mapOptions = {
-	zoom: 8,
+	zoom: myZoom,
 	center: homeLocation
     }
+
     map = new google.maps.Map(document.getElementById('map'),  
 			      mapOptions);
+    // map.fitBounds(myBounds)
 
     // Try HTML5 geolocation
     if(navigator.geolocation) {

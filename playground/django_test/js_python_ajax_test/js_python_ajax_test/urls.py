@@ -21,5 +21,6 @@ from django.conf import settings
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^generateNewDestination/', include('generateNewDestination.urls', namespace='generateNewDestination')),
+    url(r'^isWater/', include('isWater.urls', namespace='isWater')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

@@ -1,32 +1,46 @@
-function initialize() {
+function initialise() {
+    // Default parameters
     param = {
+	//Set home location as Auckland if failed to to geolocate
+	homeLocation: {'lat': -36.857992, 'lng': 174.7621796},
         dist: 100000,
         time: Infinity,
 	budget: Infinity,
 	Purpose: null,
-	Distibutrion: 'Normal',
+	Distribution: 'Normal',
 	Confidence: 'Normal'
     }
-    //Set home location as Auckland if failed to to geolocate
-    homeLocation = new google.maps.LatLng(-36.857992, 174.7621796);
+    console.log(param["homeLocation"]["lat"] + "," + param["homeLocation"]["lng"])
+    // homeLocation = new google.maps.LatLng(-36.857992, 174.7621796);
+    homeLocation = new google.maps.LatLng(param['homeLocation']['lat'], 
+					  param['homeLocation']['lng'])
 
-    myZoom = calculateZoom(homeLocation.lat(), param$dist)
+    // Calculate the
+    myZoom = calculateZoom(homeLocation.lat(), param['dist'])
 
     // Need a function to determine zoom
-    var mapOptions = {
+    mapOptions = {
 	zoom: myZoom,
 	center: homeLocation
     }
 
-    map = new google.maps.Map(document.getElementById('map'),  
-			      mapOptions);
-    // map.fitBounds(myBounds)
+    var map = new google.maps.Map(document.getElementById('map'),  
+				  mapOptions);
 
     // Try HTML5 geolocation
     if(navigator.geolocation) {
     	navigator.geolocation.getCurrentPosition(function(position) {
+	    //Update the parameter
+	    param['homeLocation']['lat'] = position.coords.latitude
+	    param['homeLocation']['lng'] = position.coords.longitude
+
+	    //Update the homelocation
     	    homeLocation = new google.maps.LatLng(position.coords.latitude,
     						  position.coords.longitude);
+	    mapOptions = {
+		zoom: myZoom,
+		center: homeLocation
+	    }
 	    
     	    var infowindow = new google.maps.InfoWindow({
     		map: map,
@@ -58,24 +72,28 @@ function initialize() {
     	var infowindow = new google.maps.InfoWindow(options);
     	map.setCenter(options.position);
     };
-}
+    // getIsWater();
 
-function addMarker(location) {
-    var mapOptions = {
-    	zoom: 7,
-    	center: homeLocation
-    };
-
-    // Access the map object 
-    var map = new google.maps.Map(document.getElementById("map"), 
-				  mapOptions);
-    
-    // Create the marker
-    var marker = new google.maps.Marker({
-	position: location,
-	map: map
+    map.addListener('bounds_changed', function(){
+	newCenter = map.getCenter()
+	param["homeLocation"]["lat"] = newCenter.lat()
+	param["homeLocation"]["lng"] = newCenter.lng()
+	homeLocation = newCenter
+	// getIsWater()
     })
-    
-    // Push the marker to the map
-    marker.push(marker);
+
+    map.addListener('center_changed', function(){
+	newCenter = map.getCenter()
+	param["homeLocation"]["lat"] = newCenter.lat()
+	param["homeLocation"]["lng"] = newCenter.lng()
+	homeLocation = newCenter
+	// console.log(newCenter)
+    })
+
+
+    map.addListener('zoom_changed', function(){
+	mapOptions['zoom'] = map.getZoom()
+    })
+	
+	
 }

@@ -12,7 +12,7 @@ def getIsWater(homeLocation, zoom):
         imrgb = np.asarray(im.convert("RGB"), dtype="float")
         ## This gives the sum of all the rgb values, only values which are
         ## non-zero are not water
-        isWater = np.array(imrgb.sum(axis = 2) == 0, dtype="uint8")
+        isWater = np.array(imrgb.sum(axis = 2) != 0, dtype="uint8")
         return isWater
 
 

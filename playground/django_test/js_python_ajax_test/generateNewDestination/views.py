@@ -2,6 +2,9 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, render_to_response, RequestContext
 import json
 import numpy as np
+import scipy.stats
+import math
+
 
 ## For getIsWater
 from urllib2 import urlopen
@@ -34,8 +37,23 @@ def getIsWater(homeLocation, zoom):
         imrgb = np.asarray(im.convert("RGB"), dtype="float")
         ## This gives the sum of all the rgb values, only values which are
         ## non-zero are not water
-        isWater = np.array(imrgb.sum(axis = 2) == 0, dtype="int")
+        isWater = np.array(imrgb.sum(axis = 2) != 0, dtype="int")
         return isWater
+
+
+def calcEucDist(x, y, center):
+    return np.sqrt((x - center[0])**2 + (y - center[1])**2)
+
+
+def definePriorLayer(sx, sy):
+    indx = np.tile(np.arange(sx), sx)
+    indy = np.array([val for val in np.arange(sy) for _ in np.arange(sy)])
+    distLayer = calcEucDist(indx, indy, [sx/2, sy/2]).reshape(sx, sy)
+    maxDist = np.sqrt((sx/2)**2 + (sy/2)**2)
+    dist = scipy.stats.norm(sx/4, maxDist/3)
+    unnormalisedLayer = dist.pdf(distLayer)
+    normalisedLayer = unnormalisedLayer/unnormalisedLayer.sum()
+    return normalisedLayer
 
 def isWater(request):
     if request.method == 'POST':
@@ -44,6 +62,13 @@ def isWater(request):
         homeLocation = [request.POST.get('lat'), request.POST.get('lng')]
         zoom = request.POST.get('zoom')
         waterArray = getIsWater(homeLocation, zoom)
+        priorArray = definePriorLayer(waterArray.shape[1], waterArray.shape[1])
+        finalArray = priorArray * waterArray
+
+        ## Try to fina a function which allows floats
+        im = Image.fromarray(np.array(finalArray/finalArray.max() * 255, dtype="uint8"))
+        im.save("generateNewDestination/finalImage.png")
+
         im = Image.fromarray(np.array(waterArray * 255, dtype="uint8"))
         im.save("generateNewDestination/waterImage.png")
         # return HttpResponse(json.dumps(getIsWater(homeLocation, zoom).flatten().tolist()), content_type="application/json")

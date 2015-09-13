@@ -25,7 +25,6 @@ def newDestination(request):
         newDestination = [float(homeLocation[0]) + np.random.normal(dist), float(homeLocation[1]) + np.random.normal(dist)]
         # return JsonResponse(newDestination)
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
-    
 
 
 
@@ -41,19 +40,43 @@ def getIsWater(homeLocation, zoom):
         return isWater
 
 
+
 def calcEucDist(x, y, center):
     return np.sqrt((x - center[0])**2 + (y - center[1])**2)
 
+def calcPixIndex(locx, locy, locnw, locse, resx, resy):
+    pixelx = np.ceil((locx.astype(float) - locnw[0])/locse[0] * resx).tolist()
+    pixely = np.ceil((locy.astype(float) - locnw[1])/locse[1] * resy).tolist()
+    return zip(pixelx, pixely)
 
-def definePriorLayer(sx, sy):
-    indx = np.tile(np.arange(sx), sx)
-    indy = np.array([val for val in np.arange(sy) for _ in np.arange(sy)])
-    distLayer = calcEucDist(indx, indy, [sx/2, sy/2]).reshape(sx, sy)
-    maxDist = np.sqrt((sx/2)**2 + (sy/2)**2)
-    dist = scipy.stats.norm(sx/4, maxDist/3)
-    unnormalisedLayer = dist.pdf(distLayer)
+def createIndexLayer(resx, resy):
+    indx = np.tile(np.arange(resx) + 1, resx)
+    indy = np.array([val for val in np.arange(resy) + 1 for _ in np.arange(resy)])
+    return np.array([indx, indy])
+
+def definePriorLayer(indx, indy):
+    dimx = indx.max()
+    dimy = indy.max()
+    distLayer = calcEucDist(indx, indy, [dimx/2, dimy/2]).reshape(dimx, dimy)
+    maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
+    distr = scipy.stats.norm(maxDist/3, maxDist/3)
+    unnormalisedLayer = distr.pdf(distLayer)
     normalisedLayer = unnormalisedLayer/unnormalisedLayer.sum()
     return normalisedLayer
+
+def createLearningLayer(indx, indy, center):
+    dimx = indx.max()
+    dimy = indy.max()
+    learningLayer = np.ones(dimx * dimy).reshape(dimx, dimy)
+    maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
+    distr = scipy.stats.norm(0, maxDist/10)
+    for i in range(0, len(center)):
+        dist = calcEucDist(indx, indy, center[i]).reshape(dimx, dimy)
+        modLayer = 1 - distr.pdf(dist) * 100
+        # print modLayer.max()
+        # print modLayer.min()
+        learningLayer = learningLayer * modLayer
+    return learningLayer/learningLayer.sum()
 
 def isWater(request):
     if request.method == 'POST':
@@ -61,16 +84,25 @@ def isWater(request):
         # return HttpResponse(json.dumps(np.tile(['#FFFFFF', '#000000'], 128).tolist()), content_type="application/json")
         homeLocation = [request.POST.get('lat'), request.POST.get('lng')]
         zoom = request.POST.get('zoom')
+        
+        ## Create index layer
+        indexLayer = createIndexLayer(1280, 1280)
         waterArray = getIsWater(homeLocation, zoom)
-        priorArray = definePriorLayer(waterArray.shape[1], waterArray.shape[1])
-        finalArray = priorArray * waterArray
+        priorArray = definePriorLayer(indexLayer[0], indexLayer[1])
+
+        ## Hack for generating random layer
+        nLearningPoint = 25
+        ind = calcPixIndex(np.random.random(nLearningPoint),  np.random.random(nLearningPoint), [0, 0], [1, 1], 1280, 1280)
+        learningLayer = createLearningLayer(indexLayer[0], indexLayer[1], ind)
+
+        finalArray = priorArray * waterArray * learningLayer
 
         ## Try to fina a function which allows floats
         im = Image.fromarray(np.array(finalArray/finalArray.max() * 255, dtype="uint8"))
         im.save("generateNewDestination/finalImage.png")
 
-        im = Image.fromarray(np.array(waterArray * 255, dtype="uint8"))
-        im.save("generateNewDestination/waterImage.png")
+        # im = Image.fromarray(np.array(waterArray * 255, dtype="uint8"))
+        # im.save("generateNewDestination/waterImage.png")
         # return HttpResponse(json.dumps(getIsWater(homeLocation, zoom).flatten().tolist()), content_type="application/json")
         return HttpResponse("success")
         

@@ -1,9 +1,18 @@
-def createLayer(resx, resy, boundnw, boundse, homeLocation, zoom, 
+import numpy as np
+import scipy.stats
+import math
+import matplotlib.pyplot as plt
+from urllib2 import urlopen
+from io import BytesIO
+from PIL import Image
+import scipy
+
+def createLayer(resx, resy, boundne, boundsw, homeLocation, zoom, 
                 previousLocations):
     return {'resx': resx, # Resolution of x, of the maximum index (int)
             'resy': resy, # Resolution of y, of the maximum index (int)
-            'boundnw': boundnw, # The coordinate of the north west bound 
-            'boundse': boundse, # The coordinate of the south east bound 
+            'boundne': boundne, # The coordinate of the north east bound 
+            'boundsw': boundsw, # The coordinate of the south west bound 
             'homeLocation' : homeLocation, # The coordinate of the home location
             'zoom': zoom, # The zoom of the map
             'previousLocations': previousLocations # list of previous locations
@@ -48,8 +57,8 @@ createFeasibleLayer(layer)
 
 
 def coordToInd(layer, location):
-    indx = np.ceil((location[0] - layer['boundnw'][0])/(layer['boundse'][0] - layer['boundnw'][0]) * layer['resx'])
-    indy = np.ceil((location[1] - layer['boundnw'][1])/(layer['boundse'][1] - layer['boundnw'][1]) * layer['resy'])
+    indx = np.ceil((location[0] - layer['boundsw'][0])/(layer['boundne'][0] - layer['boundsw'][0]) * layer['resx'])
+    indy = np.ceil((location[1] - layer['boundne'][1])/(layer['boundsw'][1] - layer['boundne'][1]) * layer['resy'])
     return(indx, indy)
 
 def createLearningLayer(layer):
@@ -68,6 +77,13 @@ def createLearningLayer(layer):
 
 createLearningLayer(layer)
 
+
+def indToCoord(layer, ind):
+    coordx = float(ind[0])/layer['resx'] * (layer['boundne'][0] - layer['boundsw'][0]) + layer['boundsw'][0]
+    coordy = float(ind[1])/layer['resy'] * (layer['boundne'][1] - layer['boundsw'][1]) + layer['boundsw'][1]
+    return (coordx, coordy)
+    
+    
 
 
 
@@ -91,6 +107,23 @@ learningLayer = createLearningLayer(layer)
 feasibleLayer = createFeasibleLayer(layer)
 finalLayer = priorLayer * learningLayer * feasibleLayer
 
+normalisedFinalLayer = finalLayer/finalLayer.sum()
+im = Image.fromarray(np.array(normalisedFinalLayer * 255, dtype="uint8"))
+im.save("test.png")
+
+newIndex = np.random.choice(range(layer['resx'] * layer['resy']), 1, p=normalisedFinalLayer.flatten().tolist())
+
+
+## NOTE (Michael): Need to double check this!!!
+def newLocationIndex(layer, finalLayer):
+    ind = int(np.random.choice(range(layer['resx'] * layer['resy']), 1, p = finalLayer.flatten()))
+    indx = ind%layer['resx']
+    indy = ind/layer['resy']
+    return (indx, indy)
+
+newLocInd = newLocationIndex(layer, normalisedFinalLayer)
+
+indToCoord(layer, newLocInd)
 
 plt.imshow(finalLayer)
 plt.show()

@@ -36,7 +36,7 @@
                   type: "post",
                   //dataType: "json",
                   // Therse is a problem passing float!
-                  data: {'lat': parseFloat(homeLocation.lat()), 'lng': parseFloat(homeLocation.lng()), 'dist': 1},
+      data: {'lat': parseFloat(homeLocation.lat()), 'lng': parseFloat(homeLocation.lng()), 'dist': 1, 'zoom': map.getZoom()},
                   success: function(data){
                       document.getElementById("new_location").innerHTML = "New Location is at [" + data[0] + ", " + data[1] + "]"
       		      newDestination = new google.maps.LatLng(parseFloat(data[0]), parseFloat(data[1]))
@@ -69,10 +69,17 @@ $(function() {
     })
 })
     </script>
+    <script type="text/javascript">
+      function test(){
+          console.log(map.getBounds());
+          console.log(map.getBounds().getNorthEast())
+      }
+    </script>
   </head>
   <body>
     <button type="button" id="newLocationButton">Give Me A New Location!</button>
     <button type="button" id="isWaterButton"> Get feasible layer! </button>
+    <button type="button" id="test" onClick="test();;"> Test button </button>
     <p id="new_location"> Unknown </p>
     <div id="map"></div>
     <!-- <canvas class="map"  width="16" height="16" id="water-map"></canvas> -->

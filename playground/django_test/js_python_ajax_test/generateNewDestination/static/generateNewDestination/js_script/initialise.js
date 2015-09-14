@@ -24,8 +24,8 @@ function initialise() {
 	center: homeLocation
     }
 
-    var map = new google.maps.Map(document.getElementById('map'),  
-				  mapOptions);
+    map = new google.maps.Map(document.getElementById('map'),  
+			      mapOptions);
 
     // Try HTML5 geolocation
     if(navigator.geolocation) {
@@ -95,5 +95,5 @@ function initialise() {
 	mapOptions['zoom'] = map.getZoom()
     })
 	
-	
 }
+

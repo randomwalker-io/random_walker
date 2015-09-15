@@ -94,7 +94,7 @@ def createSingleLearningLayer(layer, newLocation):
 
 
 ## NOTE (Michael): Need to double check this!!!
-def newLocationIndex(layer, finalLayer):
+def sampleNewLocation(layer, finalLayer):
     probs = finalLayer.flatten().tolist()
     ind = int(np.random.choice(len(probs), 1, probs))
     indx = ind%layer['resx']
@@ -131,7 +131,7 @@ def newDestination(request):
 
         im = Image.fromarray(np.array(normalisedFinalLayer/normalisedFinalLayer.max() * 255, dtype="uint8"))
         im.save("generateNewDestination/finalImage.png")        
-        newLocationInd = newLocationIndex(layer, normalisedFinalLayer)
+        newLocationInd = sampleNewLocation(layer, normalisedFinalLayer)
         with open("debug.txt", "w") as f:
             f.write(str(newLocationInd))
         newDestination = indToCoord(layer, newLocationInd)

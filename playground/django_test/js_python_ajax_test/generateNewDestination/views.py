@@ -121,7 +121,7 @@ def newDestination(request):
         boundsw = (homeLocation[0] - 1, homeLocation[1] + 1)
         previousLocations = zip(homeLocation[0] + np.random.normal(size = 10), 
                                 homeLocation[1] + np.random.normal(size = 10))
-        layer = createLayer(320, 640, boundne, boundsw, homeLocation, zoom, 
+        layer = createLayer(640, 320, boundne, boundsw, homeLocation, zoom, 
                             previousLocations)
         priorLayer = createPriorLayer(layer)
         learningLayer = createLearningLayer(layer)

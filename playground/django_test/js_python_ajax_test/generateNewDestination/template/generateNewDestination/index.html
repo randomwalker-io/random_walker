@@ -38,10 +38,11 @@
                   //dataType: "json",
                   // Therse is a problem passing float!
       //data: {'lat': parseFloat(homeLocation.lat()), 'lng': parseFloat(homeLocation.lng()), 'dist': 1, 'zoom': map.getZoom()},
-data: {'lat': parseFloat(map.getCenter().lat()), 'lng': parseFloat(map.getCenter().lng()), 'dist': 1, 'zoom': map.getZoom()},
+data: {'lat': parseFloat(map.getCenter().lat()), 'lng': parseFloat(map.getCenter().lng()), 'zoom': map.getZoom()},
                   success: function(data){
                       document.getElementById("new_location").innerHTML = "New Location is at [" + data[0] + ", " + data[1] + "]"
       		      newDestination = new google.maps.LatLng(parseFloat(data[0]), parseFloat(data[1]))
+                      //marker.setMap(newDestination)
                       addMarker(newDestination)
                   },
                   fail: function(data){

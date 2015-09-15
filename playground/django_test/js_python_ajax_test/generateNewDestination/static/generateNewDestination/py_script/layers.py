@@ -33,7 +33,7 @@ def createPriorLayer(layer):
     dimx = layer['resx']
     dimy = layer['resy']
     ind = createLayerIndex(dimx, dimy)
-    distLayer = calcEucDist(ind[0], ind[1], [dimx/2, dimy/2]).reshape(dimx, dimy)
+    distLayer = calcEucDist(ind[0], ind[1], [dimx/2, dimy/2]).reshape(dimy, dimx)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
     distr = scipy.stats.norm(maxDist/3, maxDist/3)
     unnormalisedLayer = distr.pdf(distLayer)
@@ -43,7 +43,7 @@ def createPriorLayer(layer):
 createPriorLayer(layer)
 
 def createFeasibleLayer(layer):
-    url = "http://maps.googleapis.com/maps/api/staticmap?scale=1&center=" + str(layer['homeLocation'][0]) + "," + str(layer['homeLocation'][1]) + "&zoom=" + str(layer['zoom']) + "&size=" + str(layer['resy']) + "x" + str(layer['resx']) + "&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x000000&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off&key=AIzaSyCYfnPWhBaLjyclMa6KfFdMntt0X5ukndc"
+    url = "http://maps.googleapis.com/maps/api/staticmap?scale=1&center=" + str(layer['homeLocation'][0]) + "," + str(layer['homeLocation'][1]) + "&zoom=" + str(layer['zoom']) + "&size=" + str(layer['resx']) + "x" + str(layer['resy']) + "&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x000000&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off&key=AIzaSyCYfnPWhBaLjyclMa6KfFdMntt0X5ukndc"
     print url
     fd = urlopen(url)
     image_file = BytesIO(fd.read())
@@ -65,13 +65,13 @@ def coordToInd(layer, location):
 def createLearningLayer(layer):
     dimx = layer['resx']
     dimy = layer['resy']
-    learningLayer = np.ones(dimx * dimy).reshape(dimx, dimy)
+    learningLayer = np.ones(dimx * dimy).reshape(dimy, dimx)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
     distr = scipy.stats.norm(0, maxDist/10)
     ind = createLayerIndex(dimx, dimy)
     locInd = [coordToInd(layer, i) for i in layer['previousLocations']]
     for loc in locInd:
-        dist = calcEucDist(ind[0], ind[1], loc).reshape(dimx, dimy)
+        dist = calcEucDist(ind[0], ind[1], loc).reshape(dimy, dimx)
         modLayer = (1 - distr.pdf(dist)) * 100
         learningLayer = learningLayer * modLayer
     return learningLayer/learningLayer.sum()
@@ -94,14 +94,14 @@ def createSingleLearningLayer(layer, newLocation):
     ind = createLayerIndex(dimx, dimy)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
     distr = scipy.stats.norm(0, maxDist/10)
-    dist = calcEucDist(ind[0], ind[1], coordToInd(layer, newLocation)).reshape(dimx, dimy)
+    dist = calcEucDist(ind[0], ind[1], coordToInd(layer, newLocation)).reshape(dimy, dimx)
     modLayer = (1 - distr.pdf(dist)) * 100
     return modLayer/modLayer.sum()
 
 createSingleLearningLayer(layer, (0.3, 0.3))
 
 ## Test the whole module
-layer = createLayer(320, 640, (0, 0), (1, 1), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1)])
+layer = createLayer(640, 320, (0, 0), (1, 1), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1)])
 
 priorLayer = createPriorLayer(layer)
 learningLayer = createLearningLayer(layer)

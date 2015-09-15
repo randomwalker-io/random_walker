@@ -75,24 +75,25 @@ function initialise() {
     // getIsWater();
 
     map.addListener('bounds_changed', function(){
-	newCenter = map.getCenter()
+	homeLocation = map.getCenter()
 	param["homeLocation"]["lat"] = newCenter.lat()
 	param["homeLocation"]["lng"] = newCenter.lng()
-	homeLocation = newCenter
-	// getIsWater()
+	map.setCenter(homeLocation)
     })
 
     map.addListener('center_changed', function(){
-	newCenter = map.getCenter()
+	homeLocation = map.getCenter()
 	param["homeLocation"]["lat"] = newCenter.lat()
 	param["homeLocation"]["lng"] = newCenter.lng()
-	homeLocation = newCenter
-	// console.log(newCenter)
+	map.setCenter(homeLocation)
     })
 
 
     map.addListener('zoom_changed', function(){
-	mapOptions['zoom'] = map.getZoom()
+	mapOptions = {
+	    zoom: map.getZoom(),
+	    center: homeLocation
+	}
     })
 	
 }

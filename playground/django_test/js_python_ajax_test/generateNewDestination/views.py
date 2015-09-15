@@ -2,17 +2,17 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, render_to_response, RequestContext
 import json
 import numpy as np
-import scipy.stats
 import math
-
-
-## For getIsWater
 from urllib2 import urlopen
 from io import BytesIO
 from PIL import Image
+import scipy.stats
 import scipy
 
-# Create your views here.
+########################################################################
+## Layer class
+########################################################################
+
 
 def createLayer(resx, resy, boundne, boundsw, homeLocation, zoom, 
                 previousLocations):
@@ -25,9 +25,10 @@ def createLayer(resx, resy, boundne, boundsw, homeLocation, zoom,
             'previousLocations': previousLocations # list of previous locations
     }
 
+
 def createLayerIndex(resx, resy):
-    indx = np.tile(np.arange(resx) + 1, resx)
-    indy = np.array([val for val in np.arange(resy) + 1 for _ in np.arange(resy)])
+    indx = np.tile(np.arange(resx) + 1, resy)
+    indy = np.array([val for val in np.arange(resy) + 1 for _ in np.arange(resx)])
     return np.array([indx, indy])
 
 def calcEucDist(x, y, center):
@@ -45,7 +46,7 @@ def createPriorLayer(layer):
     return normalisedLayer
 
 def createFeasibleLayer(layer):
-    url = "http://maps.googleapis.com/maps/api/staticmap?scale=1&center=" + str(layer['homeLocation'][0]) + "," + str(layer['homeLocation'][1]) + "&zoom=" + str(layer['zoom']) + "&size=" + str(layer['resx']) + "x" + str(layer['resy']) + "&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x000000&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off&key=AIzaSyCYfnPWhBaLjyclMa6KfFdMntt0X5ukndc"
+    url = "http://maps.googleapis.com/maps/api/staticmap?scale=1&center=" + str(layer['homeLocation'][0]) + "," + str(layer['homeLocation'][1]) + "&zoom=" + str(layer['zoom']) + "&size=" + str(layer['resy']) + "x" + str(layer['resx']) + "&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x000000&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off&key=AIzaSyCYfnPWhBaLjyclMa6KfFdMntt0X5ukndc"
     fd = urlopen(url)
     image_file = BytesIO(fd.read())
     im = Image.open(image_file)
@@ -77,7 +78,7 @@ def createLearningLayer(layer):
     locInd = [coordToInd(layer, i) for i in layer['previousLocations']]
     for loc in locInd:
         dist = calcEucDist(ind[0], ind[1], loc).reshape(dimx, dimy)
-        modLayer = 1 - distr.pdf(dist) * 100
+        modLayer = (1 - distr.pdf(dist)) * 100
         learningLayer = learningLayer * modLayer
     return learningLayer/learningLayer.sum()
 
@@ -88,21 +89,23 @@ def createSingleLearningLayer(layer, newLocation):
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
     distr = scipy.stats.norm(0, maxDist/10)
     dist = calcEucDist(ind[0], ind[1], coordToInd(layer, newLocation)).reshape(dimx, dimy)
-    modLayer = 1 - distr.pdf(dist) * 100
+    modLayer = (1 - distr.pdf(dist)) * 100
     return modLayer/modLayer.sum()
 
 
 ## NOTE (Michael): Need to double check this!!!
 def newLocationIndex(layer, finalLayer):
-    ind = int(np.random.choice(range(layer['resx'] * layer['resy']), 1, p = finalLayer.flatten()))
+    probs = finalLayer.flatten().tolist()
+    ind = int(np.random.choice(len(probs), 1, probs))
     indx = ind%layer['resx']
     indy = ind/layer['resy']
     return (indx, indy)
 
+########################################################################
+# Create your views here.
+########################################################################
 
-########################################################################
-## REAL SCRIPT
-########################################################################
+
 
 def index(request):
     # return render_to_response('generateNewDestination/index.html')
@@ -110,33 +113,28 @@ def index(request):
 
 def newDestination(request):
     if request.method == 'POST':
-        homeLocation = (float(request.POST.get('lat')), float(request.POST.get('lng')))
+        homeLocation = (float(request.POST.get('lat')), 
+                        float(request.POST.get('lng')))
         dist = float(request.POST.get('dist'))
         zoom = int(request.POST.get('zoom'))
         boundne = (homeLocation[0] + 1, homeLocation[1] - 1)
         boundsw = (homeLocation[0] - 1, homeLocation[1] + 1)
-        previousLocations = [(homeLocation[0] + 0.5, homeLocation[1] + 0.5)]
-
-        layer = createLayer(640, 640, boundne, boundsw, homeLocation, zoom, 
+        previousLocations = zip(homeLocation[0] + np.random.normal(size = 10), 
+                                homeLocation[1] + np.random.normal(size = 10))
+        layer = createLayer(320, 640, boundne, boundsw, homeLocation, zoom, 
                             previousLocations)
-
         priorLayer = createPriorLayer(layer)
-
         learningLayer = createLearningLayer(layer)
         feasibleLayer = createFeasibleLayer(layer)
         finalLayer = priorLayer * learningLayer * feasibleLayer
         normalisedFinalLayer = finalLayer/finalLayer.sum()
-        # with open("debug.txt", "w") as f:
-        #     f.write(str(np.array(normalisedFinalLayer/normalisedFinalLayer.max() * 255, dtype="uint8")))
-        #     f.write(str(layer))
-        #     f.close()
+
         im = Image.fromarray(np.array(normalisedFinalLayer/normalisedFinalLayer.max() * 255, dtype="uint8"))
-        # im = Image.fromarray(np.array(feasibleLayer/feasibleLayer.max() * 255, dtype="uint8"))
-        im.save("generateNewDestination/finalImage.png")
+        im.save("generateNewDestination/finalImage.png")        
         newLocationInd = newLocationIndex(layer, normalisedFinalLayer)
-        newDestination = tmp = indToCoord(layer, newLocationInd)
-        # newDestination = [homeLocation[0] + np.random.normal(dist), homeLocation[1] + np.random.normal(dist)]
-        # return JsonResponse(newDestination)
+        with open("debug.txt", "w") as f:
+            f.write(str(newLocationInd))
+        newDestination = indToCoord(layer, newLocationInd)
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
 

@@ -1,19 +1,7 @@
 function addMarker(location) {
-    // var mapOptions = {
-    // 	zoom: 7,
-    // 	center: homeLocation
-    // };
-
-    // Access the map object 
-    var map = new google.maps.Map(document.getElementById("map"), 
-				  mapOptions);
-    
     // Create the marker
     var marker = new google.maps.Marker({
 	position: location,
-	map: map
+	map: map // The map is assumed created already.
     })
-
-    // Push the marker to the map
-    // marker.push(marker);
 }

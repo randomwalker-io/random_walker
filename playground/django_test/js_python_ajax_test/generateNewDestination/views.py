@@ -47,7 +47,6 @@ def createPriorLayer(layer):
 
 def createFeasibleLayer(layer):
     url = "http://maps.googleapis.com/maps/api/staticmap?scale=1&center=" + str(layer['homeLocation'][0]) + "," + str(layer['homeLocation'][1]) + "&zoom=" + str(layer['zoom']) + "&size=" + str(layer['resx']) + "x" + str(layer['resy']) + "&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x000000&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off&key=AIzaSyCYfnPWhBaLjyclMa6KfFdMntt0X5ukndc"
-    print url
     fd = urlopen(url)
     image_file = BytesIO(fd.read())
     im = Image.open(image_file)
@@ -58,16 +57,15 @@ def createFeasibleLayer(layer):
     return isWater
 
 def coordToInd(layer, location):
-    indx = np.ceil((location[0] - layer['boundsw'][0])/(layer['boundne'][0] - layer['boundsw'][0]) * layer['resx'])
-    indy = np.ceil((location[1] - layer['boundne'][1])/(layer['boundsw'][1] - layer['boundne'][1]) * layer['resy'])
+    indx = np.ceil((location[1] - layer['boundsw'][1])/(layer['boundne'][1] - layer['boundsw'][1]) * layer['resx'])
+    indy = np.ceil((location[0] - layer['boundne'][0])/(layer['boundsw'][0] - layer['boundne'][0]) * layer['resy'])
     return (indx, indy)
 
 
 def indToCoord(layer, ind):
-    coordx = float(ind[0])/layer['resx'] * (layer['boundne'][0] - layer['boundsw'][0]) + layer['boundsw'][0]
-    coordy = float(ind[1])/layer['resy'] * (layer['boundne'][1] - layer['boundsw'][1]) + layer['boundsw'][1]
-    return (coordx, coordy)
-
+    coordx = float(ind[0])/layer['resx'] * (layer['boundne'][1] - layer['boundsw'][1]) + layer['boundsw'][1]
+    coordy = float(ind[1])/layer['resy'] * (layer['boundsw'][0] - layer['boundne'][0]) + layer['boundne'][0]
+    return (coordy, coordx)
 
 def createLearningLayer(layer):
     dimx = layer['resx']
@@ -97,9 +95,9 @@ def createSingleLearningLayer(layer, newLocation):
 ## NOTE (Michael): Need to double check this!!!
 def sampleNewLocation(layer, finalLayer):
     probs = finalLayer.flatten().tolist()
-    ind = int(np.random.choice(len(probs), 1, probs))
-    indx = ind%layer['resx']
-    indy = ind/layer['resy']
+    ind = int(np.random.choice(len(probs), 1, p=probs))
+    indx = ind%layer['resx'] + 1
+    indy = ind/layer['resx']
     return (indx, indy)
 
 ########################################################################
@@ -132,9 +130,15 @@ def newDestination(request):
         im = Image.fromarray(np.array(normalisedFinalLayer/normalisedFinalLayer.max() * 255, dtype="uint8"))
         im.save("generateNewDestination/finalImage.png")        
         newLocationInd = sampleNewLocation(layer, normalisedFinalLayer)
-        with open("debug.txt", "w") as f:
-            f.write(str(newLocationInd))
         newDestination = indToCoord(layer, newLocationInd)
+        with open("debug.txt", "w") as f:
+            f.write("This is the length of prob: " + str(len(normalisedFinalLayer.flatten())) + "\n")
+            f.write("This is the ne bound: " + str(boundne) + "\n")
+            f.write("This is the sw bound: " + str(boundsw) + "\n")
+            f.write("This is the new location index: " + str(newLocationInd) + "\n")
+            f.write("This is the probability: " + str(normalisedFinalLayer[(newLocationInd[1], newLocationInd[1])]) + "\n")
+            f.write("This is the new destionation coord: " + str(newDestination) + "\n")
+            f.close()
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
 

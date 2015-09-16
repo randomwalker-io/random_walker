@@ -18,8 +18,6 @@ def createLayer(resx, resy, boundne, boundsw, homeLocation, zoom,
             'previousLocations': previousLocations # list of previous locations
     }
 
-layer = createLayer(1280, 640, (0, 0), (1, 1), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1)])
-
 
 def createLayerIndex(resx, resy):
     indx = np.tile(np.arange(resx) + 1, resy)
@@ -40,11 +38,8 @@ def createPriorLayer(layer):
     normalisedLayer = unnormalisedLayer/unnormalisedLayer.sum()
     return normalisedLayer
 
-createPriorLayer(layer)
-
 def createFeasibleLayer(layer):
     url = "http://maps.googleapis.com/maps/api/staticmap?scale=1&center=" + str(layer['homeLocation'][0]) + "," + str(layer['homeLocation'][1]) + "&zoom=" + str(layer['zoom']) + "&size=" + str(layer['resx']) + "x" + str(layer['resy']) + "&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x000000&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off&key=AIzaSyCYfnPWhBaLjyclMa6KfFdMntt0X5ukndc"
-    print url
     fd = urlopen(url)
     image_file = BytesIO(fd.read())
     im = Image.open(image_file)
@@ -54,13 +49,16 @@ def createFeasibleLayer(layer):
     isWater = np.array(imrgb.sum(axis = 2) != 0, dtype="int")
     return isWater
 
-createFeasibleLayer(layer)
-
-
 def coordToInd(layer, location):
-    indx = np.ceil((location[0] - layer['boundsw'][0])/(layer['boundne'][0] - layer['boundsw'][0]) * layer['resx'])
-    indy = np.ceil((location[1] - layer['boundne'][1])/(layer['boundsw'][1] - layer['boundne'][1]) * layer['resy'])
-    return(indx, indy)
+    indx = np.ceil((location[1] - layer['boundsw'][1])/(layer['boundne'][1] - layer['boundsw'][1]) * layer['resx'])
+    indy = np.ceil((location[0] - layer['boundne'][0])/(layer['boundsw'][0] - layer['boundne'][0]) * layer['resy'])
+    return (indx, indy)
+
+
+def indToCoord(layer, ind):
+    coordx = float(ind[0])/layer['resx'] * (layer['boundne'][1] - layer['boundsw'][1]) + layer['boundsw'][1]
+    coordy = float(ind[1])/layer['resy'] * (layer['boundsw'][0] - layer['boundne'][0]) + layer['boundne'][0]
+    return (coordy, coordx)
 
 def createLearningLayer(layer):
     dimx = layer['resx']
@@ -76,18 +74,6 @@ def createLearningLayer(layer):
         learningLayer = learningLayer * modLayer
     return learningLayer/learningLayer.sum()
 
-createLearningLayer(layer)
-
-
-def indToCoord(layer, ind):
-    coordx = float(ind[0])/layer['resx'] * (layer['boundne'][0] - layer['boundsw'][0]) + layer['boundsw'][0]
-    coordy = float(ind[1])/layer['resy'] * (layer['boundne'][1] - layer['boundsw'][1]) + layer['boundsw'][1]
-    return (coordx, coordy)
-    
-    
-
-
-
 def createSingleLearningLayer(layer, newLocation):
     dimx = layer['resx']
     dimy = layer['resy']
@@ -98,15 +84,44 @@ def createSingleLearningLayer(layer, newLocation):
     modLayer = (1 - distr.pdf(dist)) * 100
     return modLayer/modLayer.sum()
 
-createSingleLearningLayer(layer, (0.3, 0.3))
+
+## NOTE (Michael): Need to double check this!!!
+def sampleNewLocation(layer, finalLayer):
+    probs = finalLayer.flatten().tolist()
+    ind = int(np.random.choice(len(probs), 1, p=probs))
+    indx = ind%layer['resx'] + 1
+    indy = ind/layer['resx']
+    return (indx, indy)
 
 ## Test the whole module
-layer = createLayer(640, 320, (0, 0), (1, 1), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1)])
+layer = createLayer(640, 320, (0, 1), (1, 0), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1)])
 
 priorLayer = createPriorLayer(layer)
 learningLayer = createLearningLayer(layer)
 feasibleLayer = createFeasibleLayer(layer)
 finalLayer = priorLayer * learningLayer * feasibleLayer
+
+normalisedFinalLayer = finalLayer/finalLayer.sum()
+newLocInd = []
+for newLoc in range(1000):
+    newLocInd.append(sampleNewLocation(layer, normalisedFinalLayer))
+
+# newLocInd = newLocationIndex(layer, normalisedFinalLayer)
+
+# normalisedFinalLayer[newLocInd] = normalisedFinalLayer[newLocInd] * 100
+
+tmp = zip(*newLocInd)
+plt.imshow(normalisedFinalLayer)
+plt.plot(tmp[0], tmp[1], "o")
+# plt.plot(newLocInd[0], newLocInd[1], "o")
+plt.show()
+
+np.random.choice(np.arange(4), 50, replace=True, p=[0.2, 0.4, 0.4, 0.0])
+
+
+
+
+
 
 normalisedFinalLayer = finalLayer/finalLayer.sum()
 im = Image.fromarray(np.array(normalisedFinalLayer * 255, dtype="uint8"))
@@ -118,15 +133,6 @@ newIndex = np.random.choice(204800 + 1, 1, p=normalisedFinalLayer.flatten())
 
 probs = normalisedFinalLayer.flatten().tolist()
 np.random.choice(len(probs), 1, probs)
-
-
-## NOTE (Michael): Need to double check this!!!
-def newLocationIndex(layer, finalLayer):
-    probs = finalLayer.flatten().tolist()
-    ind = int(np.random.choice(len(probs), 1, probs))
-    indx = ind%layer['resx']
-    indy = ind/layer['resy']
-    return (indx, indy)
 
 newLocInd = newLocationIndex(layer, normalisedFinalLayer)
 

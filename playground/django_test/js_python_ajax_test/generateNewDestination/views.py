@@ -114,11 +114,11 @@ def index(request):
 
 def newDestination(request):
     if request.method == 'POST':
-        homeLocation = (float(request.POST.get('lat')), 
-                        float(request.POST.get('lng')))
-        zoom = int(request.POST.get('zoom'))
-        boundne = (homeLocation[0] + 1, homeLocation[1] - 1)
-        boundsw = (homeLocation[0] - 1, homeLocation[1] + 1)
+        json_data = json.loads(request.body)
+        homeLocation = (json_data['lat'], json_data['lng'])
+        zoom = json_data['zoom']
+        boundne = (json_data['boundne']['H'], json_data['boundne']['L'])
+        boundsw = (json_data['boundsw']['H'], json_data['boundsw']['L'])
         previousLocations = zip(homeLocation[0] + np.random.normal(size = 10), 
                                 homeLocation[1] + np.random.normal(size = 10))
         layer = createLayer(640, 320, boundne, boundsw, homeLocation, zoom, 

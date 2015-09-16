@@ -13,7 +13,8 @@
         padding: 0;
       }
       #map {
-        height: 100%;
+        height: 320px;
+        width: 640px;
       }
     </style>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
@@ -37,8 +38,9 @@
                   type: "post",
                   //dataType: "json",
                   // Therse is a problem passing float!
-      //data: {'lat': parseFloat(homeLocation.lat()), 'lng': parseFloat(homeLocation.lng()), 'dist': 1, 'zoom': map.getZoom()},
-data: {'lat': parseFloat(map.getCenter().lat()), 'lng': parseFloat(map.getCenter().lng()), 'zoom': map.getZoom()},
+                  data: {'lat': parseFloat(map.getCenter().lat()),
+                         'lng': parseFloat(map.getCenter().lng()),
+                         'zoom': map.getZoom()},
                   success: function(data){
                       document.getElementById("new_location").innerHTML = "New Location is at [" + data[0] + ", " + data[1] + "]"
       		      newDestination = new google.maps.LatLng(parseFloat(data[0]), parseFloat(data[1]))

@@ -76,25 +76,24 @@ function initialise() {
 
     map.addListener('bounds_changed', function(){
 	homeLocation = map.getCenter()
-	param["homeLocation"]["lat"] = newCenter.lat()
-	param["homeLocation"]["lng"] = newCenter.lng()
-	map.setCenter(homeLocation)
+	param["homeLocation"]["lat"] = homeLocation.lat()
+	param["homeLocation"]["lng"] = homeLocation.lng()
     })
 
     map.addListener('center_changed', function(){
 	homeLocation = map.getCenter()
-	param["homeLocation"]["lat"] = newCenter.lat()
-	param["homeLocation"]["lng"] = newCenter.lng()
-	map.setCenter(homeLocation)
+	param["homeLocation"]["lat"] = homeLocation.lat()
+	param["homeLocation"]["lng"] = homeLocation.lng()
     })
 
 
-    map.addListener('zoom_changed', function(){
-	mapOptions = {
-	    zoom: map.getZoom(),
-	    center: homeLocation
-	}
-    })
+    // map.addListener('zoom_changed', function(){
+    // 	console.log(map.getZoom())
+    // 	mapOptions = {
+    // 	    zoom: map.getZoom(),
+    // 	    center: homeLocation
+    // 	}
+    // })
 	
 }
 

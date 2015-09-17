@@ -26,7 +26,6 @@ function initialise() {
 
     map = new google.maps.Map(document.getElementById('map'),  
 			      mapOptions);
-
     // Try HTML5 geolocation
     if(navigator.geolocation) {
     	navigator.geolocation.getCurrentPosition(function(position) {
@@ -85,15 +84,11 @@ function initialise() {
 	param["homeLocation"]["lat"] = homeLocation.lat()
 	param["homeLocation"]["lng"] = homeLocation.lng()
     })
-
-
-    // map.addListener('zoom_changed', function(){
-    // 	console.log(map.getZoom())
-    // 	mapOptions = {
-    // 	    zoom: map.getZoom(),
-    // 	    center: homeLocation
-    // 	}
-    // })
+    
+    // Restrict the zoom to greater than 3.
+    map.addListener('zoom_changed', function() {
+	if (map.getZoom() < 3) map.setZoom(3);
+    });
 	
 }
 

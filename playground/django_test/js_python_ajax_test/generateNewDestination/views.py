@@ -8,6 +8,7 @@ from io import BytesIO
 from PIL import Image
 import scipy.stats
 import scipy
+import matplotlib.pyplot as plt
 
 ########################################################################
 ## Layer class
@@ -126,9 +127,9 @@ def newDestination(request):
         feasibleLayer = createFeasibleLayer(layer)
         finalLayer = priorLayer * learningLayer * feasibleLayer
         normalisedFinalLayer = finalLayer/finalLayer.sum()
+        plt.imshow(normalisedFinalLayer)
+        plt.savefig("generateNewDestination/finalImage.png", format="png")
 
-        im = Image.fromarray(np.array(normalisedFinalLayer/normalisedFinalLayer.max() * 255, dtype="uint8"))
-        im.save("generateNewDestination/finalImage.png")        
         newLocationInd = sampleNewLocation(layer, normalisedFinalLayer)
         newDestination = indToCoord(layer, newLocationInd)
         with open("debug.txt", "w") as f:

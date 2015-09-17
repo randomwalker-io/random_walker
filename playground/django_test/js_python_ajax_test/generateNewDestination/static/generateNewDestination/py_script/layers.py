@@ -116,10 +116,10 @@ plt.plot(tmp[0], tmp[1], "o")
 # plt.plot(newLocInd[0], newLocInd[1], "o")
 plt.show()
 
+plt.imshow(normalisedFinalLayer)
+plt.savefig("test.png", format="png")
+
 np.random.choice(np.arange(4), 50, replace=True, p=[0.2, 0.4, 0.4, 0.0])
-
-
-
 
 
 

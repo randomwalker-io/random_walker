@@ -136,7 +136,7 @@ def newDestination(request):
             f.write("This is the ne bound: " + str(boundne) + "\n")
             f.write("This is the sw bound: " + str(boundsw) + "\n")
             f.write("This is the new location index: " + str(newLocationInd) + "\n")
-            f.write("This is the probability: " + str(normalisedFinalLayer[(newLocationInd[1], newLocationInd[1])]) + "\n")
+            f.write("This is the probability: " + str(normalisedFinalLayer[(newLocationInd[1], newLocationInd[0])]) + "\n")
             f.write("This is the new destionation coord: " + str(newDestination) + "\n")
             f.close()
         return HttpResponse(json.dumps(newDestination), content_type="application/json")

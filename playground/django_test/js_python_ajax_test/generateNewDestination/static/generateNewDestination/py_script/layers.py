@@ -94,7 +94,7 @@ def sampleNewLocation(layer, finalLayer):
     return (indx, indy)
 
 ## Test the whole module
-layer = createLayer(640, 320, (0, 1), (1, 0), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1)])
+layer = createLayer(640, 320, (0, 1), (1, 0), (0.5, 0.5), 3, [(0.3, 0.2), (0.7, 0.1), (100, 50)])
 
 priorLayer = createPriorLayer(layer)
 learningLayer = createLearningLayer(layer)

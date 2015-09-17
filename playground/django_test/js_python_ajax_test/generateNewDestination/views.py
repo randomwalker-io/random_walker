@@ -9,6 +9,9 @@ from PIL import Image
 import scipy.stats
 import scipy
 import matplotlib.pyplot as plt
+from django.db import models
+from generateNewDestination.models import Person, PreviousLocation
+
 
 ########################################################################
 ## Layer class
@@ -78,8 +81,12 @@ def createLearningLayer(layer):
     locInd = [coordToInd(layer, i) for i in layer['previousLocations']]
     for loc in locInd:
         dist = calcEucDist(ind[0], ind[1], loc).reshape(dimy, dimx)
-        modLayer = (1 - distr.pdf(dist)) * 100
-        learningLayer = learningLayer * modLayer
+        modLayer = distr.pdf(dist)
+        if(modLayer.max() > 0):
+            modLayer2 = 1 - modLayer/modLayer.max()
+        else:
+            modLayer2 = 1 - modLayer
+        learningLayer = learningLayer * modLayer2
     return learningLayer/learningLayer.sum()
 
 def createSingleLearningLayer(layer, newLocation):
@@ -101,6 +108,19 @@ def sampleNewLocation(layer, finalLayer):
     indy = ind/layer['resx']
     return (indx, indy)
 
+def getPreviousLocation(id):
+    p = Person.objects.get(id=1)
+    lat = p.previouslocation_set.values_list("lat", flat=True)
+    lng = p.previouslocation_set.values_list("lng", flat=True)
+    return zip([float(x) for x in lat], [float(x) for x in lng])
+
+def savePreviousLocation(id, previousLocation):
+    p = Person.objects.get(id=1)
+    p.previouslocation_set.create(
+        lat = previousLocation[0],
+        lng = previousLocation[1]
+    )
+        
 ########################################################################
 # Create your views here.
 ########################################################################
@@ -111,6 +131,7 @@ def index(request):
     # return render_to_response('generateNewDestination/index.html')
     return render_to_response('generateNewDestination/template/generateNewDestination/index.html')
 
+
 def newDestination(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
@@ -118,8 +139,10 @@ def newDestination(request):
         zoom = json_data['zoom']
         boundne = (json_data['boundne']['H'], json_data['boundne']['L'])
         boundsw = (json_data['boundsw']['H'], json_data['boundsw']['L'])
-        previousLocations = zip(homeLocation[0] + np.random.normal(size = 10), 
-                                homeLocation[1] + np.random.normal(size = 10))
+        # previousLocations = zip(homeLocation[0] + np.random.normal(size = 10), 
+        #                         homeLocation[1] + np.random.normal(size = 10))
+        previousLocations = getPreviousLocation(1)
+
         layer = createLayer(640, 320, boundne, boundsw, homeLocation, zoom, 
                             previousLocations)
         priorLayer = createPriorLayer(layer)
@@ -129,17 +152,20 @@ def newDestination(request):
         normalisedFinalLayer = finalLayer/finalLayer.sum()
         plt.imshow(normalisedFinalLayer)
         plt.savefig("generateNewDestination/finalImage.png", format="png")
-
         newLocationInd = sampleNewLocation(layer, normalisedFinalLayer)
         newDestination = indToCoord(layer, newLocationInd)
-        with open("debug.txt", "w") as f:
-            f.write("This is the length of prob: " + str(len(normalisedFinalLayer.flatten())) + "\n")
-            f.write("This is the ne bound: " + str(boundne) + "\n")
-            f.write("This is the sw bound: " + str(boundsw) + "\n")
-            f.write("This is the new location index: " + str(newLocationInd) + "\n")
-            f.write("This is the probability: " + str(normalisedFinalLayer[(newLocationInd[1], newLocationInd[0])]) + "\n")
-            f.write("This is the new destionation coord: " + str(newDestination) + "\n")
-            f.close()
+        savePreviousLocation(1, newDestination)
+        # with open("debug.txt", "w") as f:
+        #     f.write(str((priorLayer.max(), priorLayer.min())) + "\n")
+        #     f.write(str((learningLayer.max(), learningLayer.min())) + "\n")
+        #     f.write("This is the length of prob: " + str(len(normalisedFinalLayer.flatten())) + "\n")
+        #     f.write("This is the ne bound: " + str(boundne) + "\n")
+        #     f.write("This is the sw bound: " + str(boundsw) + "\n")
+        #     f.write("Previous Locations: " + str(previousLocations) + "\n")
+        #     f.write("This is the new location index: " + str(newLocationInd) + "\n")
+        #     f.write("This is the probability: " + str(normalisedFinalLayer[(newLocationInd[1], newLocationInd[0])]) + "\n")
+        #     f.write("This is the new destionation coord: " + str(newDestination) + "\n")
+        #     f.close()
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
 

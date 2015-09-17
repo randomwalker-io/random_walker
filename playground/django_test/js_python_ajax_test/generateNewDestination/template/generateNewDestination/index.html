@@ -77,14 +77,25 @@ $(function() {
 })
     </script>
     <script type="text/javascript">
-      function test(){
-          console.log(map.getBounds());
-          console.log(map.getBounds().getNorthEast())
-      }
+$(function() {
+    $("#resetLocations").click(function(){
+	$.ajax({
+	    url: "{%url 'generateNewDestination:resetPreviousLocations' %}",
+	    type: "get",
+	    success: function(data){
+                console.log(data)
+	    },
+	    fail: function(data){
+		console.log(data)
+	    }
+	})
+    })
+})
     </script>
   </head>
   <body>
     <button type="button" id="newLocationButton">Give Me A New Location!</button>
+    <button type="button" id="resetLocations"> Reset Previous Locations</button>
     <button type="button" id="isWaterButton"> Get feasible layer! </button>
     <button type="button" id="test" onClick="test();;"> Test button </button>
     <p id="new_location"> Unknown </p>

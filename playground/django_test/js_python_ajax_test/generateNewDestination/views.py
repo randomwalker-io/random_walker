@@ -96,8 +96,12 @@ def createSingleLearningLayer(layer, newLocation):
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
     distr = scipy.stats.norm(0, maxDist/10)
     dist = calcEucDist(ind[0], ind[1], coordToInd(layer, newLocation)).reshape(dimy, dimx)
-    modLayer = (1 - distr.pdf(dist)) * 100
-    return modLayer/modLayer.sum()
+    modLayer = distr.pdf(dist)
+    if(modLayer.max() > 0):
+        modLayer2 = 1 - modLayer/modLayer.max()
+    else:
+        modLayer2 = 1 - modLayer
+    return modLayer2/modLayer2.sum()
 
 
 ## NOTE (Michael): Need to double check this!!!
@@ -139,22 +143,35 @@ def newDestination(request):
         zoom = json_data['zoom']
         boundne = (json_data['boundne']['H'], json_data['boundne']['L'])
         boundsw = (json_data['boundsw']['H'], json_data['boundsw']['L'])
-        # previousLocations = zip(homeLocation[0] + np.random.normal(size = 10), 
-        #                         homeLocation[1] + np.random.normal(size = 10))
-        previousLocations = getPreviousLocation(1)
 
+        ## Get previous locations
+        previousLocations = getPreviousLocation(1)
+    
+        ## Create the layer meta adta
         layer = createLayer(640, 320, boundne, boundsw, homeLocation, zoom, 
                             previousLocations)
+        
+        ## Create the sampling layer
         priorLayer = createPriorLayer(layer)
         learningLayer = createLearningLayer(layer)
         feasibleLayer = createFeasibleLayer(layer)
         finalLayer = priorLayer * learningLayer * feasibleLayer
         normalisedFinalLayer = finalLayer/finalLayer.sum()
-        plt.imshow(normalisedFinalLayer)
-        plt.savefig("generateNewDestination/finalImage.png", format="png")
+        
+        ## Sample the new location
         newLocationInd = sampleNewLocation(layer, normalisedFinalLayer)
         newDestination = indToCoord(layer, newLocationInd)
+
+        ## Save the location back to the database
         savePreviousLocation(1, newDestination)
+
+        ## Create the next sampling layer for plot and check
+        newSingleLayer = createSingleLearningLayer(layer, newDestination)
+        newSamplingLayer = finalLayer * newSingleLayer
+        plt.imshow(newSamplingLayer)
+        plt.savefig("generateNewDestination/finalImage.png", format="png")
+
+        ## Debug
         # with open("debug.txt", "w") as f:
         #     f.write(str((priorLayer.max(), priorLayer.min())) + "\n")
         #     f.write(str((learningLayer.max(), learningLayer.min())) + "\n")
@@ -168,7 +185,10 @@ def newDestination(request):
         #     f.close()
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
-
+def resetPreviousLocations(request):
+    if request.method == 'GET':
+        PreviousLocation.objects.filter(person__id=1).delete()
+    return HttpResponse("Previous Location Deleted")
 
 
 

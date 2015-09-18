@@ -1,4 +1,5 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,6 +14,14 @@
         padding: 0;
       }
       #map {
+        float:left;
+        height: 320px;
+        width: 640px;
+        display: inline;
+      }
+      #mapProb {
+        float: right;
+        display:inline;
         height: 320px;
         width: 640px;
       }
@@ -44,10 +53,14 @@
                          'boundne': map.getBounds().getNorthEast(),
                          'boundsw': map.getBounds().getSouthWest()}),
                   success: function(data){
-                      document.getElementById("new_location").innerHTML = "New Location is at [" + data[0] + ", " + data[1] + "]"
-      		      newDestination = new google.maps.LatLng(parseFloat(data[0]), parseFloat(data[1]))
+                      document.getElementById("new_location").innerHTML = 
+                          "New Location is at [" + data[0] + ", " + data[1] + "]"
+      		      newDestination = new google.maps.LatLng(parseFloat(data[0]), 
+                                                              parseFloat(data[1]))
                       //marker.setMap(newDestination)
                       addMarker(newDestination)
+                      mapProb = document.getElementById("mapProb")
+                      $("#mapProb").attr("src", mapProb.src + "?_=" + new Date().getTime());
                   },
                   fail: function(data){
                       alert("failed")
@@ -57,52 +70,32 @@
       })
     </script>
     <script type="text/javascript">
-$(function() {
-    $("#isWaterButton").click(function(){
-        console.log(mapOptions)
-        console.log(param['homeLocation'])
-        console.log(homeLocation)
-	$.ajax({
-	    url: "{%url 'generateNewDestination:isWater' %}",
-	    type: "post",
-	    data: {'lat': parseFloat(homeLocation.lat()), 'lng':  parseFloat(homeLocation.lng()), 'zoom': mapOptions['zoom']},
-	    success: function(data){
-                console.log("success")
-	    },
-	    fail: function(data){
-		console.log("action failed")
-	    }
-	})
+    $(function() {
+        $("#resetLocations").click(function(){
+	    $.ajax({
+	        url: "{%url 'generateNewDestination:resetPreviousLocations' %}",
+	        type: "get",
+	        success: function(data){
+                    console.log(data)
+	        },
+	        fail: function(data){
+		    console.log(data)
+	        }
+	    })
+        })
     })
-})
-    </script>
-    <script type="text/javascript">
-$(function() {
-    $("#resetLocations").click(function(){
-	$.ajax({
-	    url: "{%url 'generateNewDestination:resetPreviousLocations' %}",
-	    type: "get",
-	    success: function(data){
-                console.log(data)
-	    },
-	    fail: function(data){
-		console.log(data)
-	    }
-	})
-    })
-})
     </script>
   </head>
   <body>
     <button type="button" id="newLocationButton">Give Me A New Location!</button>
     <button type="button" id="resetLocations"> Reset Previous Locations</button>
-    <button type="button" id="isWaterButton"> Get feasible layer! </button>
-    <button type="button" id="test" onClick="test();;"> Test button </button>
+    <!-- <button type="button" id="isWaterButton"> Get feasible layer! </button> -->
+    <!-- <button type="button" id="test" onClick="test();;"> Test button </button> -->
     <p id="new_location"> Unknown </p>
-    <div id="map"></div>
-    <!-- <canvas class="map"  width="16" height="16" id="water-map"></canvas> -->
-    <!-- <img src="waterImage.png"> -->
+    <div id="map"></div> 
+    <img id="mapProb" src="{% static 'generateNewDestination/media/samplingProb.png' %}">
     </div>
 
   </body>
 </html>
+

@@ -8,6 +8,8 @@ from io import BytesIO
 from PIL import Image
 import scipy.stats
 import scipy
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from django.db import models
 from generateNewDestination.models import Person, PreviousLocation
@@ -124,6 +126,16 @@ def savePreviousLocation(id, previousLocation):
         lat = previousLocation[0],
         lng = previousLocation[1]
     )
+
+def saveFigure(layer):
+    fig = plt.figure(frameon=False)
+    fig.set_size_inches(6.4,3.2)
+    ax = plt.Axes(fig, [0., 0., 1., 1.])
+    ax.set_axis_off()
+    fig.add_axes(ax)
+    ax.imshow(layer)
+    fig.savefig("generateNewDestination/static/generateNewDestination/media/samplingProb.png", format="png")
+
         
 ########################################################################
 # Create your views here.
@@ -168,8 +180,8 @@ def newDestination(request):
         ## Create the next sampling layer for plot and check
         newSingleLayer = createSingleLearningLayer(layer, newDestination)
         newSamplingLayer = finalLayer * newSingleLayer
-        plt.imshow(newSamplingLayer/newSamplingLayer.sum())
-        plt.savefig("generateNewDestination/finalImage.png", format="png")
+        normalisedSamplingLayer = newSamplingLayer/newSamplingLayer.sum()
+        saveFigure(normalisedSamplingLayer)
 
         ## Debug
         # with open("debug.txt", "w") as f:

@@ -116,8 +116,26 @@ plt.plot(tmp[0], tmp[1], "o")
 # plt.plot(newLocInd[0], newLocInd[1], "o")
 plt.show()
 
+fig = plt.figure(frameon = False)
+fig.imshow(normalisedFinalLayer)
+
+plt.figure(frameon = False)
 plt.imshow(normalisedFinalLayer)
+plt.axis('off')
+ax = plt.Axes(fig, [0., 0., 1., 1.])
+ax.set_axis_off()
+fig.add_axes(ax)
 plt.savefig("test.png", format="png")
+
+fig = plt.figure(frameon=False)
+fig.set_size_inches(6.4,3.2)
+ax = plt.Axes(fig, [0., 0., 1., 1.])
+ax.set_axis_off()
+fig.add_axes(ax)
+ax.imshow(normalisedFinalLayer)
+fig.savefig("test.png", format="png")
+
+
 
 np.random.choice(np.arange(4), 50, replace=True, p=[0.2, 0.4, 0.4, 0.0])
 

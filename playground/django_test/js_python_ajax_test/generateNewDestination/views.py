@@ -76,7 +76,7 @@ def createLearningLayer(layer):
     dimy = layer['resy']
     learningLayer = np.ones(dimx * dimy).reshape(dimy, dimx)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
-    distr = scipy.stats.norm(0, maxDist/10)
+    distr = scipy.stats.norm(0, maxDist/3)
     ind = createLayerIndex(dimx, dimy)
     locInd = [coordToInd(layer, i) for i in layer['previousLocations']]
     for loc in locInd:
@@ -94,7 +94,7 @@ def createSingleLearningLayer(layer, newLocation):
     dimy = layer['resy']
     ind = createLayerIndex(dimx, dimy)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
-    distr = scipy.stats.norm(0, maxDist/10)
+    distr = scipy.stats.norm(0, maxDist/3)
     dist = calcEucDist(ind[0], ind[1], coordToInd(layer, newLocation)).reshape(dimy, dimx)
     modLayer = distr.pdf(dist)
     if(modLayer.max() > 0):
@@ -168,7 +168,7 @@ def newDestination(request):
         ## Create the next sampling layer for plot and check
         newSingleLayer = createSingleLearningLayer(layer, newDestination)
         newSamplingLayer = finalLayer * newSingleLayer
-        plt.imshow(newSamplingLayer)
+        plt.imshow(newSamplingLayer/newSamplingLayer.sum())
         plt.savefig("generateNewDestination/finalImage.png", format="png")
 
         ## Debug

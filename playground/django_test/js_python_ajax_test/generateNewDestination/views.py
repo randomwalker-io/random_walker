@@ -78,7 +78,7 @@ def createLearningLayer(layer):
     dimy = layer['resy']
     learningLayer = np.ones(dimx * dimy).reshape(dimy, dimx)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
-    distr = scipy.stats.norm(0, maxDist/3)
+    distr = scipy.stats.norm(0, maxDist/15)
     ind = createLayerIndex(dimx, dimy)
     locInd = [coordToInd(layer, i) for i in layer['previousLocations']]
     for loc in locInd:
@@ -96,7 +96,7 @@ def createSingleLearningLayer(layer, newLocation):
     dimy = layer['resy']
     ind = createLayerIndex(dimx, dimy)
     maxDist = np.sqrt((dimx/2)**2 + (dimy/2)**2)
-    distr = scipy.stats.norm(0, maxDist/3)
+    distr = scipy.stats.norm(0, maxDist/15)
     dist = calcEucDist(ind[0], ind[1], coordToInd(layer, newLocation)).reshape(dimy, dimx)
     modLayer = distr.pdf(dist)
     if(modLayer.max() > 0):

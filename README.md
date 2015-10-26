@@ -6,7 +6,7 @@ involve lengthy planning, remote location and hefty budget; it can be
 spontaneous, in a neighboring quarter and minimum cost.
 
 From discovery a new local cafe to the most off beaten track where no
-traveller explored, for novice or normad, **Random Walker** is built to
-provide surprises to travellers of any given experience and
-confidence.
+traveller explored, for novice or normad, **Random Walker** is
+designed to provide surprises to travellers of any given experience
+and confidence.
 

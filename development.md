@@ -1,6 +1,15 @@
-# This is the development note
+# Elements of the Web Application:
 
-## Characteristic of Travelers
+```
+|-- Home
+    |-- The Random Walker Engine
+    |-- Inspiration - A blog like sharing functionality to inspire adventure
+
+
+
+
+## The Random Walker Engine
+### Characteristic of Travelers
 
 1. Distance
 2. Time
@@ -9,7 +18,7 @@
 5. Distribution
 6. Confidence
 
-## Classification of Trip
+### Classification of Trip
 
 1. Adventurist
    Random location are generated at any possible location for maximum exploration.

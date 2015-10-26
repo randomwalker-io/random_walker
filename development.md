@@ -1,9 +1,11 @@
 # Elements of the Web Application:
 
 ```
-|-- Home
-    |-- The Random Walker Engine
-    |-- Inspiration - A blog like sharing functionality to inspire adventure
+Home
+|--- The Random Walker Engine
+|--- Inspiration - A blog like sharing functionality to inspire adventure
+|--- Social Platform
+|--- Trip Planner
 ```
 
 

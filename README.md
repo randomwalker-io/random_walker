@@ -1,30 +1,12 @@
-## This is the repository for the development of the webapp Random Walker
+Random walker is a web application built with an aim to inspire and
+make exploration easy!
 
-### Statement
+We believe everyone can be an explorer. An adventure does not need to
+involve lengthy planning, remote location and hefty budget; it can be
+spontaneous, in a neighboring quarter and minimum cost.
 
-The application generates a random location based on the current
-location and provide direction to the destination for exploration
-
-The purpose of the application to transform everyone into an
-explorer. It doesn't take a big trip to explore something entirely
-new, mankind have explored every land constitution of the planet, but
-each individual has only been exposed to a very tiny fraction. We want
-everyone to have the sensation of exploring regardless of your budget,
-time and confidence.
-
-Whether it be a local suburb you have never been before or the wildest
-dream amongst the amazon, exploring should be associated with
-sensation you have not experienced before. Further, we hope this would
-help people lacking confidence and experience to start travelling more
-and more.
-
-### Explorer
-
-Here we define an exploration as reaching a destination that does not
-have associated data in the OpenStreetMap (need to refine this
-definition).
-
-This gives us the opportunity to assist in the data collection by
-enabling explorers to contribute to the data collection of
-OpenStreetMap.
+From discovery a new local cafe to the most off beaten track where no
+traveller explored, for novice or normad, Random Walker is built to
+provide surprises to travellers of any given experience and
+confidence.
 

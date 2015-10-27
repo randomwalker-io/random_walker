@@ -56,7 +56,9 @@ the preference, profile and type of travel for generating the location.
 * Location Bias Layer - A layer promoting the collection of data for OSM.
 * Safety Layer - A layer which reflects the safety rating of the locations.
 
-
+The computation of the probability layer maybe faster using GPU
+computation. That is, we plot the graph, then determin the probability
+based on the color value of the pixel.
 
 ## Inspiration
 A blog functionality to share location and moments of adventure.

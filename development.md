@@ -65,7 +65,7 @@ Should also share the relative location for other Walkers to explore
 and attempt to find the same location as a game with rewards.
 
 Inspiration should be classified, we want to avoid spams and promote
-only real exploration experience.
+only genuine exploration experience.
 
 Inspiration from other Walker should be savable, but only relative
 location should be provided to promote exploration.

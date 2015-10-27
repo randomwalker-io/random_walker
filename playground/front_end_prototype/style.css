@@ -22,8 +22,8 @@ nav li {
 }
 
 #map {
-    height:500px;
-    width: 90%;
+    height:512px;
+    width: 1024px;
 }
 
 .engine {

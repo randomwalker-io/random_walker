@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js" charset="utf-8"></script>
+    <script src="mapsense.js" charset="utf-8"></script>
+    <link  type="text/css"  src="mapsense.css" rel="stylesheet"/>
+    <style>
+    /* Sets the map to be full screen with no margin */
+      body, html, #myMap{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="myMap"></div>
+    <script>
+      var map = mapsense
+        .map("#myMap") // Select an element to add the map to
+        .add(mapsense.basemap().apiKey("key-2d5eacd8b924489c8ed5e8418bd883bc")) //add a basemap layer and append your API key
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html> -->
+
+<!-- <html> -->
+<!--   <head> -->
+<!--     <title> Mapsense test </title> -->
+<!--     <meta charset="utf-8"/> -->
+<!--   </head> -->
+<!--   <link  type="text/css"  src="mapsense.css" rel="stylesheet"/> -->
+<!--   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> -->
+<!--   <script src="http://d3js.org/topojson.v1.min.js" charset="utf-8"></script> -->
+<!--   <script src="mapsense.js" charset="utf-8"></script> -->
+
+<!--   <body> -->
+<!--     <div id="myMap"></div> -->
+<!--   </body> -->
+
+<!--   <script type="text/javascript"> -->
+<!--     var map = mapsense.map("#myMap") -->
+<!--         .center({lon: -122.410886, lat: 37.787041}) -->
+<!--         .zoom(14); -->
+<!--   </script> -->
+  
+<!-- </html> -->

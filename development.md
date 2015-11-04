@@ -6,6 +6,9 @@ Home
 |--- Inspiration - A blog like sharing functionality to inspire adventure
 |--- Social Platform
 |--- Trip Planner
+|--- OSM Contribution
+|--- How You Change the World
+|--- Lottery
 ```
 
 The application should be as light and fast as possible as travellers
@@ -53,7 +56,7 @@ the preference, profile and type of travel for generating the location.
 * Prior Layer - A default layer
 * Learning Layer - A layer which learns from past experience of the Walker.
 * Feasible Layer - Layer reflecting the feasible location
-* Location Bias Layer - A layer promoting the collection of data for OSM.
+* Location Bias Layer - A layer promoting the collection of data for OSM, also for locations where people have not been to.
 * Safety Layer - A layer which reflects the safety rating of the locations.
 
 The computation of the probability layer maybe faster using GPU
@@ -85,3 +88,23 @@ Friends can only be added with trip information. How did you met, the
 location and possibly a story.
 
 ## Trip Planner
+
+A friendly platform enabling trips planning between friends.
+
+## OSM Contribution Section
+
+A section enable people to contribute to the Open Street Map project.
+
+## How You Change the World
+
+A section show case how the data is used for humanitarian
+purposes. 
+
+For example, the road data is used to create the road density index to
+illustrate the reach of roads, in turn, helps policy oriented towards
+building more road for better food distrbibution and reduce losses.
+
+## Lottery
+
+As the name implies, for a small amount, one can be into the draw for
+a trip of a life time.

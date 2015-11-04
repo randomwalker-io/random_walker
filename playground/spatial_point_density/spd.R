@@ -284,3 +284,14 @@ library(ggplot2)
 ggplot(data = den.df, aes(x = Var1, y = Var2, fill = val)) +
     geom_tile() +
     geom_point(aes(x = lat, y = lng, fill = NULL), data = cafeLoc.df)
+
+
+library(osmar)
+## Change the api to overpass
+src = osmsource_api(url = "http://overpass-api.de/api/")
+bb = corner_bbox(174.6754, -36.9229, 174.8498, -36.8369)
+ua = get_osm(bb, source = src)
+
+src = osmsource_api(url = "http://overpass-api.de/api/")
+bb = corner_bbox(174.0591, -37.1384,  175.4653, -36.5758)
+ua = get_osm(bb, source = src)

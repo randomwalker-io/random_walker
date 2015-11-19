@@ -63,6 +63,16 @@ The computation of the probability layer maybe faster using GPU
 computation. That is, we plot the graph, then determin the probability
 based on the color value of the pixel.
 
+### Awareness
+
+Another aspect of this section is to enabling notification about close
+by events serving specific purposes. At this stage, we plan to only
+notify sustainable and climate related events such as those by
+Shesheapard etc.
+
+The purpose is to be aware, protect and preserve the environment
+for future visitors.
+
 ## Inspiration
 A blog functionality to share location and moments of adventure.
 
@@ -103,6 +113,7 @@ purposes.
 For example, the road data is used to create the road density index to
 illustrate the reach of roads, in turn, helps policy oriented towards
 building more road for better food distrbibution and reduce losses.
+
 
 ## Lottery
 

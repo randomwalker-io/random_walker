@@ -20,17 +20,17 @@ learningPoints = {'lat': np.random.uniform(bounds['northEast']['lat'],
 newGrid = pl.Grid(center, bounds, size)
 
 ## Create prior layer
-priorLayer = newGrid.createPriorLayer(20)
-plt.imshow(priorLayer)
+priorLayer = pl.createPriorLayer(newGrid, 20)
+plt.imshow(priorLayer.probLayer)
 plt.show()
 
 ## Create Learning layer
-learningLayer = newGrid.createLearningLayer('normal', 0.3, learningPoints)
+learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
 ymax, ymin, xmax, xmin = bounds['northEast']['lat'], bounds['southWest']['lat'], bounds['northEast']['lng'], bounds['southWest']['lng']
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.imshow(learningLayer, #cmap=plt.cm.gist_earth_r,
+ax.imshow(learningLayer.probLayer, #cmap=plt.cm.gist_earth_r,
           extent=[xmin, xmax, ymin, ymax])
 ax.plot(learningPoints['lng'], learningPoints['lat'], 'k.', markersize=10)
 ax.set_xlim([xmin, xmax])
@@ -39,14 +39,13 @@ plt.show()
 
 
 ## Create Feasible Layer
-feasibleLayer = newGrid.createFeasibleLayer(zoom)
-plt.imshow(feasibleLayer)
+feasibleLayer = pl.createFeasibleLayer(newGrid, zoom)
+plt.imshow(feasibleLayer.probLayer)
 plt.show()
 
 
 ## Create final Layer
-unFinalLayer = priorLayer * learningLayer * feasibleLayer
-normFinalLayer = unFinalLayer/unFinalLayer.sum()
-plt.imshow(normFinalLayer)
+finalLayer = priorLayer * learningLayer * feasibleLayer
+plt.imshow(finalLayer.probLayer)
 plt.show()
 

@@ -295,3 +295,15 @@ ua = get_osm(bb, source = src)
 src = osmsource_api(url = "http://overpass-api.de/api/")
 bb = corner_bbox(174.0591, -37.1384,  175.4653, -36.5758)
 ua = get_osm(bb, source = src)
+
+
+
+library(osmar)
+test = get_osm(complete_file(), source = osmsource_file("akl_cbd.osm"))
+test = get_osm(complete_file(), source = osmsource_file("city.osm"))
+
+## There seems to be some problem in the plotting functionality
+test = get_osm(complete_file(), source = osmsource_file("quito_cbd.osm"))
+plot(test)
+plot_nodes(test)
+plot_ways(test)

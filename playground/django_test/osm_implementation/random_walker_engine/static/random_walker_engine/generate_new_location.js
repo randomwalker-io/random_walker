@@ -9,11 +9,11 @@ $(function() {
 				  'lng': parseFloat(map.getCenter()['lng']),
 				  'zoom': map.getZoom(),
 				  'boundne': map.getBounds().getNorthEast(),
-				  'boundsw': map.getBounds().getSouthWest()}),
+				  'boundsw': map.getBounds().getSouthWest(),
+				  'size': map.getSize()}),
             success: function(data){
 		console.log("successful")
-		newDestination = map.getCenter()
-		var circle = L.circle(newDestination, 500, {
+		var circle = L.circle(data, 500, {
 		    color: 'red',
 		    fillColor: '#f03',
 		    fillOpacity: 0.5
@@ -21,12 +21,6 @@ $(function() {
             },
             fail: function(data){
 		console.log("failed")
-		newDestination = map.getCenter()
-		var circle = L.circle(newDestination, 500, {
-		    color: 'red',
-		    fillColor: '#f03',
-		    fillOpacity: 0.5
-		}).addTo(map);
             }
         })
     })

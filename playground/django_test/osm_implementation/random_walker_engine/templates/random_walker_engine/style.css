@@ -1,0 +1,31 @@
+header {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.statement {
+    text-align: center;
+    font-size: 15px;
+    width: 800px;
+    margin: 10px auto 10px auto;
+}
+
+nav {
+    text-align: right;
+    padding-right: 20px;
+}
+
+nav li {
+    display: inline;  
+    margin: 5px 5px 5px 5px;
+}
+
+#map {
+    height:512px;
+    width: 1024px;
+}
+
+.engine {
+    margin: 50px auto auto auto;
+}

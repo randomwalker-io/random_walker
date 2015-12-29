@@ -16,12 +16,15 @@
     <link rel="stylesheet" href="{% static 'random_walker_engine/style.css' %}">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
   </head>
   <body>
+    <button type="button" id="newLocationButton">Give Me A New Location!</button>
     <section>
       <div id="map" class="engine"></div>
     </section>
   </body>
   <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
+  <script src="{% static 'random_walker_engine/generate_new_destination.js' %}"></script>
 </html>

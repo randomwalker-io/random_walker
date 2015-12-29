@@ -16,7 +16,8 @@ class Grid(object):
         self.lng = np.tile(np.linspace(bounds['southWest']['lng'], 
                                        bounds['northEast']['lng'], 
                                        size['lng']), size['lat'])
-    ## NOTE (Michael): Need to define an equal method
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
         
 class ProbLayer(object):
     def __init__(self, grid, probLayer):
@@ -36,7 +37,7 @@ class ProbLayer(object):
             normLayer = unnormLayer/unnormLayer.sum()
             return ProbLayer(self.grid, normLayer)
         else:
-            raise ValueError("Input grids are not identical")
+            raise ValueError("Inputs does not have identical grid")
 
     def __rmul__(self, other):
         if(self.grid == other.grid):
@@ -44,10 +45,10 @@ class ProbLayer(object):
             normLayer = unnormLayer/unnormLayer.sum()
             return ProbLayer(self.grid, normLayer)
         else:
-            raise ValueError("Input grids are not identical")
+            raise ValueError("Inputs does not have identical grid")
         
 
-def createPriorLayer(grid, bandwidth):
+def createPriorLayer(grid):
     '''Method for creating the prior layer
         
     NOTE (Michael): The probability will depends on the kernel type.

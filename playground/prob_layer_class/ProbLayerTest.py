@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 nRand = 50
-zoom = 10
+zoom = 13
 ## Center in Auckland
-center = {'lat': -36.85764758564406, 'lng': 174.76226806640625}
+# center = {'lat': -36.85764758564406, 'lng': 174.76226806640625}
 ## Center in Taipei 
-# center = {'lat': 25.0483397, 'lng': 121.5375121}
+center = {'lat': 25.0483397, 'lng': 121.5375121}
 bounds = {'southWest': {'lat': -37.13842453422676, 'lng': 174.05914306640625}, 
           'northEast': {'lat': -36.57583533849175, 'lng': 175.46539306640625}}
 size = {'lat': 512, 'lng': 1024}
@@ -16,8 +16,9 @@ learningPoints = {'lat': np.random.uniform(bounds['northEast']['lat'],
                   'lng': np.random.uniform(bounds['northEast']['lng'], 
                                            bounds['southWest']['lng'], nRand)}
 
+
 ## Create new grid
-newGrid = pl.Grid(center, bounds, size)
+newGrid = pl.Grid(center, bounds, size, zoom)
 
 ## Create prior layer
 priorLayer = pl.createPriorLayer(newGrid, 20)
@@ -39,7 +40,7 @@ plt.show()
 
 
 ## Create Feasible Layer
-feasibleLayer = pl.createFeasibleLayer(newGrid, zoom)
+feasibleLayer = pl.createFeasibleLayer(newGrid)
 plt.imshow(feasibleLayer.probLayer)
 plt.show()
 

@@ -6,7 +6,7 @@ import urllib
 
 ## Define a grid class
 class Grid(object):
-    def __init__(self, center, bounds, size):
+    def __init__(self, center, bounds, size, zoom):
         self.center = center
         self.bounds = bounds
         self.size = size
@@ -16,6 +16,7 @@ class Grid(object):
         self.lng = np.tile(np.linspace(bounds['southWest']['lng'], 
                                        bounds['northEast']['lng'], 
                                        size['lng']), size['lat'])
+        self.zoom = zoom
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
         
@@ -48,7 +49,7 @@ class ProbLayer(object):
             raise ValueError("Inputs does not have identical grid")
         
 
-def createPriorLayer(grid):
+def createPriorLayer(grid, bandwidth):
     '''Method for creating the prior layer
         
     NOTE (Michael): The probability will depends on the kernel type.
@@ -72,11 +73,16 @@ def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
     normalisedLayer = normalisedVec.reshape(grid.size.values())
     return ProbLayer(grid, normalisedLayer)
 
-## NOTE (Michael): input can be either an image of the same dimension
-##                 or a polygon.
-def createFeasibleLayer(grid, zoom):
-    ''' Method for creating the feasible layer'''
-    url = 'https://api.mapbox.com/v4/mkao006.cierjexrn01naw0kmftpx3z1h/' +  str(grid.center['lng']) + ',' + str(grid.center['lat']) + ',' + str(zoom) + '/' + str(grid.size['lng']) + 'x' + str(grid.size['lat']) + '.jpg?access_token=pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg'
+
+def createFeasibleLayer(grid):
+    '''Method for creating the feasible layer
+    
+    NOTE (Michael): Should allow inputs to be either an image of the
+    same dimension or a polygon.
+
+    '''
+
+    url = 'https://api.mapbox.com/v4/mkao006.cierjexrn01naw0kmftpx3z1h/' +  str(grid.center['lng']) + ',' + str(grid.center['lat']) + ',' + str(grid.zoom) + '/' + str(grid.size['lng']) + 'x' + str(grid.size['lat']) + '.jpg?access_token=pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg'
     print url
     file = cStringIO.StringIO(urllib.urlopen(url).read())
     img = Image.open(file)
@@ -87,8 +93,6 @@ def createFeasibleLayer(grid, zoom):
     normalisedFeasibleLayer = unnormalisedFeasibleLayer/unnormalisedFeasibleLayer.sum()
     return ProbLayer(grid, normalisedFeasibleLayer)
 
-## Define a method for creating bias layer
-##
 def createBiasLayer(grid, kernelType, bandwidth, biasPoints):
     ''' Method for creating the bias layer
     

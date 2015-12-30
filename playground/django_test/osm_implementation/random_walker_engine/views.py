@@ -22,8 +22,8 @@ def newDestination(request):
                                 'lng': json_data['boundsw']['lng']},
                   'northEast': {'lat': json_data['boundne']['lat'],
                                 'lng': json_data['boundne']['lng']}}
-        # size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
-        size = {'lat': 512, 'lng': 1024}
+        size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
+        # size = {'lat': 512, 'lng': 1024}
         learningPoints = {'lat': np.random.uniform(bounds['northEast']['lat'],
                                                    bounds['southWest']['lat'], nRand),
                           'lng': np.random.uniform(bounds['northEast']['lng'],

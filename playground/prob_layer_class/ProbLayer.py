@@ -86,9 +86,9 @@ def createFeasibleLayer(grid):
     print url
     file = cStringIO.StringIO(urllib.urlopen(url).read())
     img = Image.open(file)
-    r = np.array(img.getdata(band=0)).reshape(512, 1024)
-    g = np.array(img.getdata(band=1)).reshape(512, 1024)
-    b = np.array(img.getdata(band=2)).reshape(512, 1024)
+    r = np.array(img.getdata(band=0)).reshape(grid.size['lat'], grid.size['lng'])
+    g = np.array(img.getdata(band=1)).reshape(grid.size['lat'], grid.size['lng'])
+    b = np.array(img.getdata(band=2)).reshape(grid.size['lat'], grid.size['lng'])
     unnormalisedFeasibleLayer = (((abs(r - 115) < 30) * (abs(g - 181) < 30) * (abs(b - 229) < 50)) == False) * 1.0
     normalisedFeasibleLayer = unnormalisedFeasibleLayer/unnormalisedFeasibleLayer.sum()
     return ProbLayer(grid, normalisedFeasibleLayer)

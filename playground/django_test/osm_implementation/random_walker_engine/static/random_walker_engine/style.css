@@ -23,7 +23,9 @@ nav li {
 
 #map {
     height:512px;
-    width: 1024px;
+    /* width: 1024px; */
+    /* This is restricted by the maximum size of the image from mapbox */
+    width: 1280px;
 }
 
 .engine {

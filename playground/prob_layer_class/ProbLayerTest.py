@@ -11,17 +11,22 @@ center = {'lat': -36.85764758564406, 'lng': 174.76226806640625}
 bounds = {'southWest': {'lat': -37.13842453422676, 'lng': 174.05914306640625}, 
           'northEast': {'lat': -36.57583533849175, 'lng': 175.46539306640625}}
 size = {'lat': 512, 'lng': 1024}
-learningPoints = {'lat': np.random.uniform(bounds['northEast']['lat'], 
-                                           bounds['southWest']['lat'], nRand),
-                  'lng': np.random.uniform(bounds['northEast']['lng'], 
-                                           bounds['southWest']['lng'], nRand)}
+# learningPoints = {'lat': np.random.uniform(bounds['northEast']['lat'],
+#                                            bounds['southWest']['lat'], nRand),
+#                   'lng': np.random.uniform(bounds['northEast']['lng'],
+#                                            bounds['southWest']['lng'], nRand)}
+# learningPoints = {'lat': [],
+#                   'lng': []}
+learningPoints = {'lat': [-37.13842453422676],
+                  'lng': [174.05914306640625]}
+
 
 
 ## Create new grid
 newGrid = pl.Grid(center, bounds, size, zoom)
 
 ## Create prior layer
-priorLayer = pl.createPriorLayer(newGrid, 20)
+priorLayer = pl.createPriorLayer(newGrid, 0.3)
 plt.imshow(priorLayer.probLayer)
 plt.show()
 
@@ -49,4 +54,3 @@ plt.show()
 finalLayer = priorLayer * learningLayer * feasibleLayer
 plt.imshow(finalLayer.probLayer)
 plt.show()
-

@@ -1,6 +1,7 @@
 import ProbLayer as pl
 import matplotlib.pyplot as plt
 import numpy as np
+# from decimal import Decimal
 
 nRand = 50
 zoom = 13
@@ -17,11 +18,14 @@ size = {'lat': 512, 'lng': 1024}
 #                                            bounds['southWest']['lng'], nRand)}
 # learningPoints = {'lat': [],
 #                   'lng': []}
-learningPoints = {'lat': [-37.13842453422676],
-                  'lng': [174.05914306640625]}
+# learningPoints = {'lat': [Decimal('-37.13842453422676'), Decimal('-36.57583533849175')],
+#                   'lng': [Decimal('174.05914306640625'), Decimal('175.46539306640625')]}
 
+# learningPoints = {'lat': [-37.1384, -36.5758],
+#                   'lng': [174.0591, 175.4653]}
 
-
+learningPoints = {'lat': [],
+                  'lng': []}
 ## Create new grid
 newGrid = pl.Grid(center, bounds, size, zoom)
 

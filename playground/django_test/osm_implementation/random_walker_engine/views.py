@@ -23,23 +23,19 @@ def newDestination(request):
         json_data = json.loads(request.body)
         zoom = json_data['zoom']
         center = {'lat': json_data['lat'], 'lng': json_data['lng']}
-
         bounds = {'southWest': {'lat': json_data['boundsw']['lat'],
                                 'lng': json_data['boundsw']['lng']},
                   'northEast': {'lat': json_data['boundne']['lat'],
                                 'lng': json_data['boundne']['lng']}}
         size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
-        # size = {'lat': 512, 'lng': 1024}
-        # learningPoints = {'lat': np.random.uniform(bounds['northEast']['lat'],
-        #                                            bounds['southWest']['lat'], nRand),
-        #                   'lng': np.random.uniform(bounds['northEast']['lng'],
-        #                                            bounds['southWest']['lng'], nRand)}
         learningPoints = getPriorDestination(user_id)
+        # learningPoints = {'lat': [], 'lng': []}
+        # with open('debug.txt', 'w') as f:
+        #     f.write("learning points loaded\n")
+        #     f.write(str(learningPoints))
+        #     f.close()
         newGrid = pl.Grid(center, bounds, size, zoom)
-        with open('debug.txt', 'w') as f:
-            f.write("PASS")
-            f.write(str(learningPoints))
-            f.close()
+
         # Create the layers
         priorLayer = pl.createPriorLayer(newGrid, 20)
         learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
@@ -62,17 +58,18 @@ def createUser(id):
         password = "password",
         user_date_registration = timezone.now()
     )
-    u.location_set.create(
-        origin_lat = [],
-        origin_lng = [],
-        destination_lat = [],
-        destination_lng = [],
-        date_generation = []
-    )
     u.save()
+    u.location_set.create(
+        origin_lat = 0.00,
+        origin_lng = 0.00,
+        destination_lat = 0.00,
+        destination_lng = 0.00,
+        date_generation = timezone.now()
+    )
+
 
 def getPriorDestination(id):
-    if not User.objects.filter(id=id).exist():
+    if not User.objects.filter(id=id).exists():
         createUser(id)
     user = User.objects.get(id=id)
     lat = user.location_set.values_list('destination_lat', flat=True)
@@ -82,8 +79,9 @@ def getPriorDestination(id):
 def saveNewDestination(id, origin, new_destination):
     user = User.objects.get(id=id)
     user.location_set.create(
-        origin_lat = origin[0],
-        origin_lng = origin[1],
+        origin_lat = origin['lat'],
+        origin_lng = origin['lng'],
         destination_lat = new_destination[0],
-        destination_lng = new_destination[1]
+        destination_lng = new_destination[1],
+        date_generation = timezone.now()
     )

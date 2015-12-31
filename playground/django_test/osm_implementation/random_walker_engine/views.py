@@ -4,6 +4,8 @@ import json
 import ProbLayer as pl
 import numpy as np
 import models
+from django.utils import timezone
+from models import User, Location
 # Create your views here.
 
 
@@ -34,7 +36,10 @@ def newDestination(request):
         #                                            bounds['southWest']['lng'], nRand)}
         learningPoints = getPriorDestination(user_id)
         newGrid = pl.Grid(center, bounds, size, zoom)
-        
+        with open('debug.txt', 'w') as f:
+            f.write("PASS")
+            f.write(str(learningPoints))
+            f.close()
         # Create the layers
         priorLayer = pl.createPriorLayer(newGrid, 20)
         learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
@@ -45,7 +50,30 @@ def newDestination(request):
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
 
+def createUser(id):
+    u = User(
+        user_id = id,
+        user_first_name = "Michael",
+        user_last_name = "Kao",
+        user_email = "mkao006@gmail.com",
+        user_address = "home",
+        user_gender = "M",
+        password_salt = "abc",
+        password = "password",
+        user_date_registration = timezone.now()
+    )
+    u.location_set.create(
+        origin_lat = [],
+        origin_lng = [],
+        destination_lat = [],
+        destination_lng = [],
+        date_generation = []
+    )
+    u.save()
+
 def getPriorDestination(id):
+    if not User.objects.filter(id=id).exist():
+        createUser(id)
     user = User.objects.get(id=id)
     lat = user.location_set.values_list('destination_lat', flat=True)
     lng = user.location_set.values_list('destination_lng', flat=True)

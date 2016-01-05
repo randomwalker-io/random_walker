@@ -1,4 +1,46 @@
-var map = L.map('map').setView([-36.857992, 174.7621796], 10);
+// The get current location code is from: http://themarklee.com/2013/10/27/super-simple-geolocation/
+
+// call getCurrentPosition()
+navigator.geolocation.getCurrentPosition(success, error, options); 
+
+// var map = L.map('map').setView([-36.85764758564406, 174.76226806640625], 10);
+var map = L.map('map')
+/**
+getCurrentPosition() accepts 3 arguments:
+a success callback (required), an error callback (optional), and a set of options (optional)
+**/
+ 
+var options = {
+// enableHighAccuracy = should the device take extra time or power to return a really accurate result, or should it give you the quick (but less accurate) answer?  
+   enableHighAccuracy: true, 
+// timeout = how long does the device have, in milliseconds to return a result?
+   timeout: 5000,  
+// maximumAge = maximum age for a possible previously-cached position. 0 = must return the current position, not a prior cached position
+   maximumAge: 0 
+};
+ 
+ 
+// upon success, do this
+function success(pos){
+// get longitude and latitude from the position object passed in
+    var lng = pos.coords.longitude;
+    var lat = pos.coords.latitude;
+    // and presto, we have the device's location! Let's just alert it for now... 
+    console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
+    map.setView([pos.coords.latitude, pos.coords.longitude], 10)
+    var circle = L.circle([pos.coords.latitude, pos.coords.longitude], 500, {
+	color: 'red',
+	fillColor: '#f03',
+	fillOpacity: 0.5
+    }).addTo(map);
+}
+ 
+// upon error, do this
+function error(err){
+   alert('Error: ' + err + ' :('); // alert the error message
+}
+
+
 
 // Mapbox tile layer
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {

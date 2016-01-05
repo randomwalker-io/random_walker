@@ -28,11 +28,12 @@ function success(pos){
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
     map.setView([pos.coords.latitude, pos.coords.longitude], 10)
-    var circle = L.circle([pos.coords.latitude, pos.coords.longitude], 500, {
-	color: 'red',
-	fillColor: '#f03',
-	fillOpacity: 0.5
-    }).addTo(map);
+    var marker = L.marker([pos.coords.latitude, pos.coords.longitude], {
+	draggable: true,
+	opacity: 0.8
+    }).addTo(map)
+	.bindPopup('Drag the marker to your current location!')
+	.openPopup();
 }
  
 // upon error, do this

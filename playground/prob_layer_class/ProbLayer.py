@@ -68,19 +68,21 @@ def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
     n = grid.size['lat'] * grid.size['lng']
     print n
     if p == 0:
-        unnormalisedLayer = np.repeat(1.0/n, n).reshape(grid.size.values())
+        reversedLayer = np.repeat(1.0/n, n).reshape(grid.size.values())
     elif p == 1:
         den = scipy.stats.multivariate_normal([learningPoints['lng'][0], learningPoints['lat'][0]], np.diag([1.0/np.power(bandwidth, 2), 1.0/np.power(bandwidth, 2)]))
         pos = [list(x) for x in zip(grid.lng, grid.lat)]
         unnormalisedVec = den.pdf(pos)
-        unnormalisedLayer = normalisedVec.reshape(grid.size.values())
+        unnormalisedLayer = unnormalisedVec.reshape(grid.size.values())
+        reversedLayer = unnormalisedLayer.max() - unnormalisedLayer
     elif p > 1:
         positions = np.vstack([grid.lng, grid.lat])
         values = np.vstack([learningPoints['lng'], learningPoints['lat']])
         kernel = scipy.stats.gaussian_kde(values, bw_method = bandwidth)
         unnormalisedVec = np.reshape(kernel(positions), grid.size.values())
-        unnormalisedLayer = normalisedVec.reshape(grid.size.values())
-    return ProbLayer(grid, unnormalisedLayer)
+        unnormalisedLayer = unnormalisedVec.reshape(grid.size.values())
+        reversedLayer = unnormalisedLayer.max() - unnormalisedLayer
+    return ProbLayer(grid, reversedLayer)
 
 
 def createFeasibleLayer(grid):

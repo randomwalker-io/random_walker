@@ -21,6 +21,9 @@ def newDestination(request):
 
         # Load data and create the Grid class
         json_data = json.loads(request.body)
+        with open('debug.txt', 'w') as f:
+            f.write(str(json_data))
+            f.close()
         zoom = json_data['zoom']
         center = {'lat': json_data['lat'], 'lng': json_data['lng']}
         bounds = {'southWest': {'lat': json_data['boundsw']['lat'],
@@ -28,7 +31,7 @@ def newDestination(request):
                   'northEast': {'lat': json_data['boundne']['lat'],
                                 'lng': json_data['boundne']['lng']}}
         size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
-        learningPoints = getPriorDestination(user_id)
+        learningPoints = filterLocation(getPriorDestination(user_id), bounds)
         # learningPoints = {'lat': [], 'lng': []}
         # with open('debug.txt', 'w') as f:
         #     f.write("learning points loaded\n")
@@ -38,10 +41,21 @@ def newDestination(request):
 
         # Create the layers
         priorLayer = pl.createPriorLayer(newGrid, 20)
+
         learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
         feasibleLayer = pl.createFeasibleLayer(newGrid)
+        with open('debug.txt', 'w') as f:
+            # f.write("pass")
+            f.write("prior")
+            f.write(str(priorLayer.probLayer))
+            f.write("\n learning")
+            f.write(str(learningLayer.probLayer))
+            f.write("\n feasible")
+            f.write(str(feasibleLayer.probLayer))
+            f.close()
         finalLayer = priorLayer * learningLayer * feasibleLayer
         newDestination = finalLayer.sample()
+
         saveNewDestination(user_id, origin=center, new_destination=newDestination)
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
@@ -85,3 +99,10 @@ def saveNewDestination(id, origin, new_destination):
         destination_lng = new_destination[1],
         date_generation = timezone.now()
     )
+
+def filterLocation(location, bounds):
+    locations = zip(location['lat'], location['lng'])
+    bounded_location = [(x, y) for x,y in locations if (x > bounds['southWest']['lat'] and x < bounds['northEast']['lat'] and y > bounds['southWest']['lng'] and y > bounds['southWest']['lng'])]
+    bounded_location_lat = [x[0] for x in bounded_location]
+    bounded_location_lng = [x[1] for x in bounded_location]
+    return {'lat': bounded_location_lat, 'lng': bounded_location_lng}

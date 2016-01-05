@@ -22,6 +22,8 @@ class Grid(object):
         
 class ProbLayer(object):
     def __init__(self, grid, probLayer):
+        if probLayer.sum() != 1:
+            probLayer = probLayer/probLayer.sum()
         self.grid = grid
         self.probLayer = probLayer
         
@@ -30,10 +32,8 @@ class ProbLayer(object):
         ind = int(np.random.choice(len(probs), 1, p=probs))
         return (self.grid.lat[ind], self.grid.lng[ind])
 
-    ## NOTE (Michael): Need to test when the grids are different
     def __mul__(self, other):
         if(self.grid == other.grid):
-
             unnormLayer = self.probLayer * other.probLayer
             normLayer = unnormLayer/unnormLayer.sum()
             return ProbLayer(self.grid, normLayer)
@@ -58,9 +58,8 @@ def createPriorLayer(grid, bandwidth):
     dist = np.sqrt((grid.lat - grid.center['lat'])**2 + 
                    (grid.lng - grid.center['lng'])**2)
     unnormalisedVec = distr.pdf(dist)
-    normalisedVec = unnormalisedVec/unnormalisedVec.sum()
-    normalisedLayer = normalisedVec.reshape(grid.size.values())
-    return ProbLayer(grid, normalisedLayer)
+    unnormalisedLayer = unnormalisedVec.reshape(grid.size.values())
+    return ProbLayer(grid, unnormalisedLayer)
 
 def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
     '''Method for creating the learning layer
@@ -69,21 +68,19 @@ def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
     n = grid.size['lat'] * grid.size['lng']
     print n
     if p == 0:
-        normalisedLayer = np.repeat(1.0/n, n).reshape(grid.size.values())
+        unnormalisedLayer = np.repeat(1.0/n, n).reshape(grid.size.values())
     elif p == 1:
         den = scipy.stats.multivariate_normal([learningPoints['lng'][0], learningPoints['lat'][0]], np.diag([1.0/np.power(bandwidth, 2), 1.0/np.power(bandwidth, 2)]))
         pos = [list(x) for x in zip(grid.lng, grid.lat)]
         unnormalisedVec = den.pdf(pos)
-        normalisedVec = unnormalisedVec/unnormalisedVec.sum()
-        normalisedLayer = normalisedVec.reshape(grid.size.values())
+        unnormalisedLayer = normalisedVec.reshape(grid.size.values())
     elif p > 1:
         positions = np.vstack([grid.lng, grid.lat])
         values = np.vstack([learningPoints['lng'], learningPoints['lat']])
         kernel = scipy.stats.gaussian_kde(values, bw_method = bandwidth)
         unnormalisedVec = np.reshape(kernel(positions), grid.size.values())
-        normalisedVec = unnormalisedVec/unnormalisedVec.sum()
-        normalisedLayer = normalisedVec.reshape(grid.size.values())
-    return ProbLayer(grid, normalisedLayer)
+        unnormalisedLayer = normalisedVec.reshape(grid.size.values())
+    return ProbLayer(grid, unnormalisedLayer)
 
 
 def createFeasibleLayer(grid):
@@ -101,21 +98,12 @@ def createFeasibleLayer(grid):
     r = np.array(img.getdata(band=0)).reshape(grid.size['lat'], grid.size['lng'])
     g = np.array(img.getdata(band=1)).reshape(grid.size['lat'], grid.size['lng'])
     b = np.array(img.getdata(band=2)).reshape(grid.size['lat'], grid.size['lng'])
-    unnormalisedFeasibleLayer = (((abs(r - 115) < 30) * (abs(g - 181) < 30) * (abs(b - 229) < 50)) == False) * 1.0
-    normalisedFeasibleLayer = unnormalisedFeasibleLayer/unnormalisedFeasibleLayer.sum()
-    return ProbLayer(grid, normalisedFeasibleLayer)
+    unnormalisedLayer = (((abs(r - 115) < 30) * (abs(g - 181) < 30) * (abs(b - 229) < 50)) == False) * 1.0
+    return ProbLayer(grid, unnormalisedLayer)
 
 def createBiasLayer(grid, kernelType, bandwidth, biasPoints):
     ''' Method for creating the bias layer
     
     Essentially the method is identical to the learning layer
     '''
-    positions = np.vstack([grid.lng, grid.lat])
-    values = np.vstack([biasPoints['lng'], biasPoints['lat']])
-    kernel = scipy.stats.gaussian_kde(values, bw_method = bandwidth)
-    unnormalisedVec = np.reshape(kernel(positions), grid.size.values())
-    normalisedVec = unnormalisedVec/unnormalisedVec.sum()
-    normalisedLayer = normalisedVec.reshape(grid.size.values())
-    return ProbLayer(grid, normalisedLayer)
-
-
+    return createLearningLayer(grid, kernelType, bandwidth, biasPoints)

@@ -3,12 +3,6 @@
 // call getCurrentPosition()
 navigator.geolocation.getCurrentPosition(success, error, options); 
 
-// var map = L.map('map').setView([-36.85764758564406, 174.76226806640625], 10);
-var map = L.map('map');
-var marker = L.marker()
-
-var currentLocation;
-
 /**
 getCurrentPosition() accepts 3 arguments:
 a success callback (required), an error callback (optional), and a set of options (optional)
@@ -31,7 +25,18 @@ function success(pos){
     var lat = pos.coords.latitude;
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
-    map.setView([pos.coords.latitude, pos.coords.longitude], 10)
+    map = L.map('map', {
+    	center: [pos.coords.latitude, pos.coords.longitude],
+    	zoom: 13,
+	minZoom: 2
+    });
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	id: 'mkao006.cierjexrn01naw0kmftpx3z1h',
+	accessToken: 'pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg',
+	tileSize: 256
+    }).addTo(map);
+
     marker = L.marker([pos.coords.latitude, pos.coords.longitude], {
 	draggable: true,
 	opacity: 0.8
@@ -39,10 +44,8 @@ function success(pos){
 	.bindPopup('Drag the marker to your current location!')
 	.openPopup()
 	.on('dragend', function(e) {console.log('location changed');
-				    currentLocation = marker.getLatLng();
-				    map.setView(currentLocation);
+				    map.setView(marker.getLatLng());
 				   });
-    currentLocation = [pos.coords.latitude, pos.coords.longitude]
 }
  
 // upon error, do this
@@ -53,12 +56,5 @@ function error(err){
 
 
 // Mapbox tile layer
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    // maxZoom: 5,
-    id: 'mkao006.cierjexrn01naw0kmftpx3z1h',
-    accessToken: 'pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg',
-    tileSize: 256
-}).addTo(map);
 
 

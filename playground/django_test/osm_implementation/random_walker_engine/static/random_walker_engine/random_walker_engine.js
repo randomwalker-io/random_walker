@@ -4,7 +4,11 @@
 navigator.geolocation.getCurrentPosition(success, error, options); 
 
 // var map = L.map('map').setView([-36.85764758564406, 174.76226806640625], 10);
-var map = L.map('map')
+var map = L.map('map');
+var marker = L.marker()
+
+var currentLocation;
+
 /**
 getCurrentPosition() accepts 3 arguments:
 a success callback (required), an error callback (optional), and a set of options (optional)
@@ -28,12 +32,17 @@ function success(pos){
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
     map.setView([pos.coords.latitude, pos.coords.longitude], 10)
-    var marker = L.marker([pos.coords.latitude, pos.coords.longitude], {
+    marker = L.marker([pos.coords.latitude, pos.coords.longitude], {
 	draggable: true,
 	opacity: 0.8
     }).addTo(map)
 	.bindPopup('Drag the marker to your current location!')
-	.openPopup();
+	.openPopup()
+	.on('dragend', function(e) {console.log('location changed');
+				    currentLocation = marker.getLatLng();
+				    map.setView(currentLocation);
+				   });
+    currentLocation = [pos.coords.latitude, pos.coords.longitude]
 }
  
 // upon error, do this
@@ -51,3 +60,5 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     accessToken: 'pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg',
     tileSize: 256
 }).addTo(map);
+
+

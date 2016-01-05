@@ -2,11 +2,6 @@
 
 // call getCurrentPosition()
 navigator.geolocation.getCurrentPosition(success, error, options); 
-
-/**
-getCurrentPosition() accepts 3 arguments:
-a success callback (required), an error callback (optional), and a set of options (optional)
-**/
  
 var options = {
 // enableHighAccuracy = should the device take extra time or power to return a really accurate result, or should it give you the quick (but less accurate) answer?  
@@ -25,11 +20,15 @@ function success(pos){
     var lat = pos.coords.latitude;
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
+
+    // Initialise the map at the user location
     map = L.map('map', {
     	center: [pos.coords.latitude, pos.coords.longitude],
     	zoom: 13,
 	minZoom: 2
     });
+
+    // Add the tiles to the map
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 	id: 'mkao006.cierjexrn01naw0kmftpx3z1h',
@@ -37,6 +36,7 @@ function success(pos){
 	tileSize: 256
     }).addTo(map);
 
+    // Add the marker of the user location
     marker = L.marker([pos.coords.latitude, pos.coords.longitude], {
 	draggable: true,
 	opacity: 0.8
@@ -52,9 +52,5 @@ function success(pos){
 function error(err){
    alert('Error: ' + err + ' :('); // alert the error message
 }
-
-
-
-// Mapbox tile layer
 
 

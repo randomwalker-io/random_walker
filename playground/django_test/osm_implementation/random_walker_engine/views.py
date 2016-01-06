@@ -1,12 +1,11 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
-import json
-import ProbLayer as pl
-import numpy as np
-import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from models import UserProfile, Location
+import json
+import ProbLayer as pl
+
 # Create your views here.
 
 
@@ -17,7 +16,6 @@ def newDestination(request):
     # NOTE (Michael): Change back to POST when the database is setup
     if request.method == 'POST':
         # initialisation
-        nRand = 50
         username = 'mkao006'
 
         # Load data and create the Grid class

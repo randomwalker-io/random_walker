@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'osm_implementation',
     'home',
     'random_walker_engine',
     'user_profile',

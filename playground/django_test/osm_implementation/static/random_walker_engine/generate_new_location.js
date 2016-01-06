@@ -13,7 +13,9 @@ $(function() {
 				  'size': map.getSize()}),
             success: function(data){
 		console.log("successful")
-		var circle = L.circle(data, 500, {
+		if(typeof circle !== 'undefined')
+		    map.removeLayer(circle)
+		circle = L.circle(data, 500, {
 		    color: 'red',
 		    fillColor: '#f03',
 		    fillOpacity: 0.5

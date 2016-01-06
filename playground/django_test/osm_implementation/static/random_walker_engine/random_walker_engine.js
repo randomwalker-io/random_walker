@@ -1,14 +1,13 @@
 // The get current location code is from: http://themarklee.com/2013/10/27/super-simple-geolocation/
 
 // call getCurrentPosition()
-navigator.geolocation.getCurrentPosition(success, error, options); 
-
-// var map = L.map('map').setView([-36.85764758564406, 174.76226806640625], 10);
-var map = L.map('map')
-/**
-getCurrentPosition() accepts 3 arguments:
-a success callback (required), an error callback (optional), and a set of options (optional)
-**/
+if('geolocation' in navigator){
+    navigator.geolocation.getCurrentPosition(success, error, options); 
+} else {
+    // Initialise location at Auckland
+    pos = [-36.85764758564406, 174.76226806640625]
+    initialise(pos);
+}
  
 var options = {
 // enableHighAccuracy = should the device take extra time or power to return a really accurate result, or should it give you the quick (but less accurate) answer?  
@@ -18,8 +17,8 @@ var options = {
 // maximumAge = maximum age for a possible previously-cached position. 0 = must return the current position, not a prior cached position
    maximumAge: 0 
 };
- 
- 
+
+
 // upon success, do this
 function success(pos){
 // get longitude and latitude from the position object passed in
@@ -27,26 +26,42 @@ function success(pos){
     var lat = pos.coords.latitude;
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
-    map.setView([pos.coords.latitude, pos.coords.longitude], 10)
-    var circle = L.circle([pos.coords.latitude, pos.coords.longitude], 500, {
-	color: 'red',
-	fillColor: '#f03',
-	fillOpacity: 0.5
-    }).addTo(map);
+    // Initialise the map at the user location
+    initialise([lat, lng]);
 }
- 
+
 // upon error, do this
 function error(err){
-   alert('Error: ' + err + ' :('); // alert the error message
+    // Initialise location at Auckland
+    pos = [-36.85764758564406, 174.76226806640625]
+    initialise(pos);
 }
 
 
 
-// Mapbox tile layer
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    // maxZoom: 5,
-    id: 'mkao006.cierjexrn01naw0kmftpx3z1h',
-    accessToken: 'pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg',
-    tileSize: 256
-}).addTo(map);
+function initialise(pos){
+    map = L.map('map', {
+	center: pos,
+    	zoom: 13,
+	minZoom: 2
+    });
+
+    // Add the tiles to the map
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	id: 'mkao006.cierjexrn01naw0kmftpx3z1h',
+	accessToken: 'pk.eyJ1IjoibWthbzAwNiIsImEiOiJjaWVyamV5MnkwMXFtOXRrdHRwdGw4cTd0In0.H28itS1jvRgLZI3JhirtZg',
+	tileSize: 256
+    }).addTo(map);
+
+    // Add the marker of the user location
+    marker = L.marker(pos, {
+	draggable: true,
+	opacity: 0.8
+    }).addTo(map)
+	.bindPopup('Drag the marker to your current location!')
+	.openPopup()
+	.on('dragend', function(e) {console.log('location changed');
+				    map.setView(marker.getLatLng());
+				   });
+}

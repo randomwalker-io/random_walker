@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+  <title> Random Walker </title>
+  <header>
+  {% block header %} Base {% endblock %}
+  </header>
+  
+  <nav>
+    {% block nav %}
+    <li> <a href="{% url 'home:index' %}">Home</a> </li>
+    <!-- <li> <a href="inspiration">Inspiration</a> </li> -->
+    <li> <a href="{% url 'random_walker_engine:index' %}">Random Walker</a> </li>
+    <!-- <li> <a href="social">Social</a> </li> -->
+    <!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
+    <li> <a href="{% url 'user_profile:sign_up' %}"> Sign up </li>
+    {% endblock %}
+  </nav>
+  <link rel="stylesheet" href="{% static 'osm_implementation/style.css' %}">
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="{% static 'osm_implementation/csrf.js' %}"></script>
+
+  {% block additional_scripts %}
+  {% endblock %}
+
+  <body>
+    {% block body%}
+    {% endblock %}
+  </body>
+</html>

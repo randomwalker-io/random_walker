@@ -1,23 +1,16 @@
+{% extends 'osm_implementation/base.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html>
-
-
   <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title> RW Home </title>
     <header>
-      Welcome to Random Walker
+      {% block header %} Welcome to Random Walker {% endblock %}
     </header>
-    <nav>
-      <li> <a href="{% url 'home:index' %}">Home</a> </li>
-      <!-- <li> <a href="inspiration">Inspiration</a> </li> -->
-      <li> <a href="{% url 'random_walker_engine:index' %}">Random Worker</a> </li>
-      <!-- <li> <a href="social">Social</a> </li> -->
-      <!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
-    </nav>
-    <link rel="stylesheet" href="{% static 'osm_implementation/style.css' %}">
-    <!-- <script src="{% static 'osm_implementation/csrf.js' %}"></script> -->
+
+  </head>
+
+  <body>
+    {% block body %}
     <h1 class="statement">
       <p>
 	Random Walker is a web application built with an aim to
@@ -30,10 +23,7 @@
 	minimum cost.
       </p>
     </h1>
-  </head>
-
-  <body>
-    
+    {% endblock %}
   </body>
 
 </html>

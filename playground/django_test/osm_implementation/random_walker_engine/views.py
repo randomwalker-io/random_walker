@@ -5,7 +5,8 @@ import ProbLayer as pl
 import numpy as np
 import models
 from django.utils import timezone
-from models import User, Location
+from django.contrib.auth.models import User
+from models import UserProfile, Location
 # Create your views here.
 
 
@@ -17,13 +18,11 @@ def newDestination(request):
     if request.method == 'POST':
         # initialisation
         nRand = 50
-        user_id = 1
+        username = 'mkao006'
 
         # Load data and create the Grid class
         json_data = json.loads(request.body)
-        with open('debug.txt', 'w') as f:
-            f.write(str(json_data))
-            f.close()
+        print "Data loaded\n"
         zoom = json_data['zoom']
         center = {'lat': json_data['lat'], 'lng': json_data['lng']}
         bounds = {'southWest': {'lat': json_data['boundsw']['lat'],
@@ -31,60 +30,74 @@ def newDestination(request):
                   'northEast': {'lat': json_data['boundne']['lat'],
                                 'lng': json_data['boundne']['lng']}}
         size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
-        learningPoints = filterLocation(getPriorDestination(user_id), bounds)
-        # learningPoints = {'lat': [], 'lng': []}
-        # with open('debug.txt', 'w') as f:
-        #     f.write("learning points loaded\n")
-        #     f.write(str(learningPoints))
-        #     f.close()
+        learningPoints = filterLocation(getPriorDestination(username), bounds)
         newGrid = pl.Grid(center, bounds, size, zoom)
-
+        print "Grid created\n"
+        
         # Create the layers
         priorLayer = pl.createPriorLayer(newGrid, 20)
-
+        print "Prior layer created\n"
         learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
+        print "Learning layer created\n"
         feasibleLayer = pl.createFeasibleLayer(newGrid)
-        with open('debug.txt', 'w') as f:
-            # f.write("pass")
-            f.write("prior")
-            f.write(str(priorLayer.probLayer))
-            f.write("\n learning")
-            f.write(str(learningLayer.probLayer))
-            f.write("\n feasible")
-            f.write(str(feasibleLayer.probLayer))
-            f.close()
+        print "Feasible layer created\n"
         finalLayer = priorLayer * learningLayer * feasibleLayer
+        print "Final layer created\n"
         newDestination = finalLayer.sample()
+        print "New destination sampled"
 
-        saveNewDestination(user_id, origin=center, new_destination=newDestination)
+        saveNewDestination(username, origin=center, new_destination=newDestination)
+        print "New destination saved"
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
 
-def createUser(id):
-    u = User(
-        user_id = id,
-        user_first_name = "Michael",
-        user_last_name = "Kao",
-        user_email = "mkao006@gmail.com",
-        user_address = "home",
-        user_gender = "M",
-        password_salt = "abc",
-        password = "password",
-        user_date_registration = timezone.now()
+# def createUser(id):
+#     u = User(
+#         user_id = id,
+#         user_first_name = "Michael",
+#         user_last_name = "Kao",
+#         user_email = "mkao006@gmail.com",
+#         user_address = "home",
+#         user_gender = "M",
+#         password_salt = "abc",
+#         password = "password",
+#         user_date_registration = timezone.now()
+#     )
+#     u.save()
+
+
+def createUser(username, password):
+    u = User.objects.create_user(
+        username = username,
+        password = password,
+        email = "mkao006@gmail.com",
+        first_name = "Michael",
+        last_name = "Kao"
     )
     u.save()
-
-
-def getPriorDestination(id):
-    if not User.objects.filter(id=id).exists():
-        createUser(id)
-    user = User.objects.get(id=id)
+    # NOTE (Michael): We will create the extended profile later
+    #
+    # u.userprofile(
+    #     address = "my home",
+    #     gender = "M",
+    #     date_registration = timezone.now()
+    # )
+    
+def getPriorDestination(username):
+    if not User.objects.filter(username=username).exists():
+        # NOTE (Michael): Here we assume the user is already
+        #                 created. Otherwise, we should redirect them
+        #                 to the sign-up page
+        #
+        # createUser(username)
+        print "User does not exist"
+    user = User.objects.get(username=username)
     lat = user.location_set.values_list('destination_lat', flat=True)
     lng = user.location_set.values_list('destination_lng', flat=True)
     return {'lat': lat, 'lng': lng}
 
-def saveNewDestination(id, origin, new_destination):
-    user = User.objects.get(id=id)
+def saveNewDestination(username, origin, new_destination):
+    user = User.objects.get(username=username)
     user.location_set.create(
         origin_lat = origin['lat'],
         origin_lng = origin['lng'],

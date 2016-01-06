@@ -1,19 +1,20 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-class User(models.Model):
+class UserProfile(models.Model):
     # Probably better to change the user id according to the following link
     #
     # http://stackoverflow.com/questions/2672975/django-biginteger-auto-increment-field-as-primary-key
-    user_id = models.BigIntegerField()
-    user_first_name = models.CharField(max_length=200)
-    user_last_name = models.CharField(max_length=200)
-    user_email = models.CharField(max_length=200)
-    user_address = models.CharField(max_length=200)
-    user_gender = models.CharField(max_length=20)
-    password_salt = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
-    user_date_registration = models.DateTimeField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user_first_name = models.CharField(max_length=200)
+    # user_last_name = models.CharField(max_length=200)
+    # user_email = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+    gender = models.CharField(max_length=20)
+    # password_salt = models.CharField(max_length=200)
+    # password = models.CharField(max_length=200)
+    date_registration = models.DateTimeField()
     
 
 class Location(models.Model):

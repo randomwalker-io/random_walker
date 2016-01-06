@@ -1,7 +1,12 @@
 // The get current location code is from: http://themarklee.com/2013/10/27/super-simple-geolocation/
 
 // call getCurrentPosition()
-navigator.geolocation.getCurrentPosition(success, error, options); 
+if('geolocation' in navigator){
+    navigator.geolocation.getCurrentPosition(success, error, options); 
+} else {
+    pos = [-36.85764758564406, 174.76226806640625]
+    initialise(pos);
+}
  
 var options = {
 // enableHighAccuracy = should the device take extra time or power to return a really accurate result, or should it give you the quick (but less accurate) answer?  
@@ -11,8 +16,8 @@ var options = {
 // maximumAge = maximum age for a possible previously-cached position. 0 = must return the current position, not a prior cached position
    maximumAge: 0 
 };
- 
- 
+
+
 // upon success, do this
 function success(pos){
 // get longitude and latitude from the position object passed in
@@ -20,10 +25,20 @@ function success(pos){
     var lat = pos.coords.latitude;
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
-
     // Initialise the map at the user location
+    initialise([lat, lng]);
+}
+
+// upon error, do this
+function error(err){
+   alert('Error: ' + err + ' :('); // alert the error message
+}
+
+
+
+function initialise(pos){
     map = L.map('map', {
-    	center: [pos.coords.latitude, pos.coords.longitude],
+	center: pos,
     	zoom: 13,
 	minZoom: 2
     });
@@ -37,7 +52,7 @@ function success(pos){
     }).addTo(map);
 
     // Add the marker of the user location
-    marker = L.marker([pos.coords.latitude, pos.coords.longitude], {
+    marker = L.marker(pos, {
 	draggable: true,
 	opacity: 0.8
     }).addTo(map)
@@ -47,10 +62,3 @@ function success(pos){
 				    map.setView(marker.getLatLng());
 				   });
 }
- 
-// upon error, do this
-function error(err){
-   alert('Error: ' + err + ' :('); // alert the error message
-}
-
-

@@ -73,13 +73,6 @@ def createUser(id):
         user_date_registration = timezone.now()
     )
     u.save()
-    u.location_set.create(
-        origin_lat = 0.00,
-        origin_lng = 0.00,
-        destination_lat = 0.00,
-        destination_lng = 0.00,
-        date_generation = timezone.now()
-    )
 
 
 def getPriorDestination(id):

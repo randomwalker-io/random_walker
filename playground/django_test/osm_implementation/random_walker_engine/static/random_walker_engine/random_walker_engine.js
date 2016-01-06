@@ -4,6 +4,7 @@
 if('geolocation' in navigator){
     navigator.geolocation.getCurrentPosition(success, error, options); 
 } else {
+    // Initialise location at Auckland
     pos = [-36.85764758564406, 174.76226806640625]
     initialise(pos);
 }
@@ -31,7 +32,9 @@ function success(pos){
 
 // upon error, do this
 function error(err){
-   alert('Error: ' + err + ' :('); // alert the error message
+    // Initialise location at Auckland
+    pos = [-36.85764758564406, 174.76226806640625]
+    initialise(pos);
 }
 
 

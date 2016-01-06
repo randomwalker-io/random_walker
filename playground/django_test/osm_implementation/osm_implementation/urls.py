@@ -20,6 +20,7 @@ from django.contrib import admin
 urlpatterns = [
     url('index/', include('home.urls', namespace='home')),
     url(r'random_walker_engine/', include('random_walker_engine.urls', namespace='random_walker_engine')),
+    url(r'user_profile/', include('user_profile.urls', namespace='user_profile')),
     url(r'^admin/', admin.site.urls),
 ]
 

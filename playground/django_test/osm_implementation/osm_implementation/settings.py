@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'home',
     'random_walker_engine',
+    'user_profile',
 )
 
 MIDDLEWARE_CLASSES = (

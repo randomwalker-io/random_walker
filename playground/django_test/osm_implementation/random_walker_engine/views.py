@@ -9,11 +9,11 @@ import ProbLayer as pl
 
 # Create your views here.
 
-
+@login_required
 def index(request):
     return render_to_response('random_walker_engine/random_walker_engine.html')
 
-@login_required(login_url='/user_profile/login_view/')
+
 def newDestination(request):
     # NOTE (Michael): Change back to POST when the database is setup
     if request.method == 'POST':

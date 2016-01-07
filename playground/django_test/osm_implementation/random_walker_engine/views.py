@@ -13,12 +13,12 @@ import ProbLayer as pl
 def index(request):
     return render_to_response('random_walker_engine/random_walker_engine.html')
 
-@login_required
+@login_required(login_url='/user_profile/login_view/')
 def newDestination(request):
     # NOTE (Michael): Change back to POST when the database is setup
     if request.method == 'POST':
         # initialisation
-        username = 'mkao006'
+        username = request.user
 
         # Load data and create the Grid class
         json_data = json.loads(request.body)

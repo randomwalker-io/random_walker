@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from models import UserProfile, Location
 import json
 import ProbLayer as pl
@@ -12,6 +13,7 @@ import ProbLayer as pl
 def index(request):
     return render_to_response('random_walker_engine/random_walker_engine.html')
 
+@login_required
 def newDestination(request):
     # NOTE (Michael): Change back to POST when the database is setup
     if request.method == 'POST':

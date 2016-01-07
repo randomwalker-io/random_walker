@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django.template import RequestContext
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
@@ -59,3 +59,9 @@ def auth_view(request):
             return HttpResponseRedirect('/user_profile/sign_up/')
     else:
         print "User does not exist, prompt to sign in!"
+
+
+def logout_view(request):
+    if request.user.is_authenticated():
+        logout(request)
+        return HttpResponseRedirect('/index/')

@@ -13,22 +13,35 @@
     <!--     <p>Your username and password didn't match. Please try again.</p> -->
     <!-- {% endif %} -->
 
-    <form action="{% url 'user_profile:create_user' %}" method="post">
-      {% csrf_token %}
-      <table>
-        <tr>
-          <td>{{ form.username.label_tag }}</td>
-          <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.password.label_tag }}</td>
-          <td>{{ form.password }}</td>
-        </tr>
-      </table>
-
-      <input type="submit" value="signup" />
-      <input type="hidden" name="next" value="{{ next }}" />
+    <form action="{% url 'user_profile:create_user' %}" method="POST"> {% csrf_token %}
+      <div >
+        <label for='username'> Username </label>
+        <input type='text' name='Username' id='username'>
+        <label for='password'>Password </label>
+        <input type='password' name='Password' id='password'>
+        <input type='submit' value="Sign Up">
+      </div>
     </form>
+
+    <!-- <form action="{% url 'user_profile:create_user' %}" method="post"> -->
+    <!--   {% csrf_token %} -->
+    <!--   <div> -->
+    <!--   User name:<br> -->
+    <!--   <input type="text" name="username" value=""> -->
+    <!--   <br> -->
+    <!--   User password:<br> -->
+    <!--   <input type="password" name="psw" value=""> -->
+    <!--   <br> -->
+    <!--   First name:<br> -->
+    <!--   <input type="text" name="firstname" value=""> -->
+    <!--   <br> -->
+    <!--   Last name:<br> -->
+    <!--   <input type="text" name="lastname" value=""> -->
+    <!--   <br><br> -->
+    <!--   <input type="submit" value="signup" /> -->
+    <!--   <input type="hidden" name="next" value="{{ next }}" /> -->
+    <!--   </div> -->
+    <!-- </form> -->
     {% endblock %}
   </body>
 </html>

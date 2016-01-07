@@ -107,3 +107,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+LOGIN_URL = os.path.join(BASE_DIR, 'user_profile/login_view/')

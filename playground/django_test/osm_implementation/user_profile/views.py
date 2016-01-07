@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csr
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
 # Create your views here.
@@ -46,9 +46,16 @@ def auth_view(request):
     username = request.POST.get('Username', '')
     password = request.POST.get('Password', '')
     user = authenticate(username = username, password = password)
+    print user
     if user is not None:
-        login(request, user)
-        # return HttpResponseRedirect(reverse('home:index.html'))
-        return HttpResponseRedirect('home/index.html')
+        if user.is_active:
+            login(request, user)
+            print "User is logged in"
+            # return HttpResponse("User is logged in!")
+            return HttpResponseRedirect('/random_walker_engine/')
+        else:
+            print "User is inactive"
+            # return HttpResponseRedirect(reverse('home:index.html'))
+            return HttpResponseRedirect('/user_profile/sign_up/')
     else:
-        return HttpResponseRedirect('user_profile/sign_up.html')
+        print "User does not exist, prompt to sign in!"

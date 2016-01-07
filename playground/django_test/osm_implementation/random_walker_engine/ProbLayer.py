@@ -78,10 +78,15 @@ def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
     elif p > 1:
         positions = np.vstack([grid.lng, grid.lat])
         values = np.vstack([learningPoints['lng'], learningPoints['lat']])
-        kernel = scipy.stats.gaussian_kde(values, bw_method = bandwidth)
-        unnormalisedVec = np.reshape(kernel(positions), grid.size.values())
-        unnormalisedLayer = unnormalisedVec.reshape(grid.size.values())
-        reversedLayer = unnormalisedLayer.max() - unnormalisedLayer
+        try:
+            kernel = scipy.stats.gaussian_kde(values, bw_method = bandwidth)
+            unnormalisedVec = np.reshape(kernel(positions), grid.size.values())
+            unnormalisedLayer = unnormalisedVec.reshape(grid.size.values())
+            reversedLayer = unnormalisedLayer.max() - unnormalisedLayer
+        except Exception as e:
+            # The constant problem is singular matrix
+            reversedLayer = np.repeat(1.0/n, n).reshape(grid.size.values())
+            print str(e)
     return ProbLayer(grid, reversedLayer)
 
 

@@ -1,0 +1,29 @@
+{% extends 'osm_implementation/base.html' %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <header>
+      {% block header %} Login {% endblock %}
+    </header>
+  </head>
+  <body>
+    {% block body %}
+    This is the sign up page
+    <!-- {% if form.errors %} -->
+    <!--     <p>Your username and password didn't match. Please try again.</p> -->
+    <!-- {% endif %} -->
+
+    <form action="{% url 'user_profile:auth_view' %}" method="POST"> {% csrf_token %}
+      <div >
+        <label for='username'> Username </label>
+        <input type='text' name='Username' id='username'>
+        <label for='password'>Password </label>
+        <input type='password' name='Password' id='password'>
+        <input type='submit' value="Login">
+      </div>
+    </form>
+
+    {% endblock %}
+  </body>
+</html>
+

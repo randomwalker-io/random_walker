@@ -48,38 +48,6 @@ def newDestination(request):
         print "New destination saved"
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 
-
-# def createUser(id):
-#     u = User(
-#         user_id = id,
-#         user_first_name = "Michael",
-#         user_last_name = "Kao",
-#         user_email = "mkao006@gmail.com",
-#         user_address = "home",
-#         user_gender = "M",
-#         password_salt = "abc",
-#         password = "password",
-#         user_date_registration = timezone.now()
-#     )
-#     u.save()
-
-
-def createUser(username, password):
-    u = User.objects.create_user(
-        username = username,
-        password = password,
-        email = "mkao006@gmail.com",
-        first_name = "Michael",
-        last_name = "Kao"
-    )
-    u.save()
-    # NOTE (Michael): We will create the extended profile later
-    #
-    # u.userprofile(
-    #     address = "my home",
-    #     gender = "M",
-    #     date_registration = timezone.now()
-    # )
     
 def getPriorDestination(username):
     if not User.objects.filter(username=username).exists():

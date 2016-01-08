@@ -10,6 +10,10 @@ header {
     width: 800px;
     margin: 10px auto 10px auto;
 }
+.dropdown-menu li {
+      width: auto !important;
+      text-align: center;
+}
 
 div#account {
     width: 5%;

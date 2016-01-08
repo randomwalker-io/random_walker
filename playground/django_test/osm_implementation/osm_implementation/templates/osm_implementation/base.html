@@ -14,7 +14,8 @@
 	  <span class="caret"></span></button>
 	<ul class="dropdown-menu">
 	  <!-- <li class="dropdown-header">Dropdown header 1</li> -->
-	  <li><a href="#">You are logged in as mkao006</a></li>
+	  <li>{% if user.is_authenticated %} You are logged in as {{user}} {% else %} 
+	    <a href="{% url 'user_profile:login_view' %}">Please sign in</a> {% endif %}</a></li>
 	  <li><a href="#">Settings</a></li>
 	  <li><a href="{% url 'user_profile:logout_view' %}">Sign Out</a></li>
 	  <li class="divider"></li>

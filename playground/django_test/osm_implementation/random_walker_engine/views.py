@@ -31,23 +31,28 @@ def newDestination(request):
                   'northEast': {'lat': json_data['boundne']['lat'],
                                 'lng': json_data['boundne']['lng']}}
         size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
-        learningPoints = filterLocation(getPriorDestination(username), bounds)
+        if not request.user.is_anonymous():
+            learningPoints = filterLocation(getPriorDestination(username), bounds)
         newGrid = pl.Grid(center, bounds, size, zoom)
         print "Grid created\n"
         
         # Create the layers
         priorLayer = pl.createPriorLayer(newGrid, 20)
         print "Prior layer created\n"
-        learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
+        if not request.user.is_anonymous():
+            learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
         print "Learning layer created\n"
         feasibleLayer = pl.createFeasibleLayer(newGrid)
         print "Feasible layer created\n"
-        finalLayer = priorLayer * learningLayer * feasibleLayer
+        if not request.user.is_anonymous():
+            finalLayer = priorLayer * learningLayer * feasibleLayer
+        else: 
+            finalLayer = priorLayer * feasibleLayer
         print "Final layer created\n"
         newDestination = finalLayer.sample()
         print "New destination sampled"
-
-        saveNewDestination(username, origin=center, new_destination=newDestination)
+        if not request.user.is_anonymous():
+            saveNewDestination(username, origin=center, new_destination=newDestination)
         print "New destination saved"
         return HttpResponse(json.dumps(newDestination), content_type="application/json")
 

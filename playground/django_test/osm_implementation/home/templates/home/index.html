@@ -3,74 +3,86 @@
 <head>
   <title> Random Walker </title>
   <header>
-    {% block header %} Welcome To Random Walker {% endblock %}
   </header>
   <!-- <section class="navigation_bar"> -->
   <nav id="nav_bar" class="navbar navbar-default">
     {% block nav %}
     <div class="container-fluid">
-
-      <div class="container-fluid">
-	<ul class="nav navbar-nav navbar-left">
-	  <li> <a href="{% url 'home:index' %}">Home</a> </li>
-	  <!-- <li> <a href="inspiration">Inspiration</a> </li> -->
-	  <li> <a href="{% url 'random_walker_engine:index' %}">Random Walker</a> </li>
-	  <!-- <li> <a href="social">Social</a> </li> -->
-	  <!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
-	  <li> <a href="{% url 'user_profile:sign_up' %}"> Sign up</a> </li>
-	  <!-- <li> <a href="{% url 'user_profile:login_view' %}"> Login</a> </li> -->
-	  <!-- <li> <a href="{% url 'user_profile:logout_view' %}"> Logout</a> </li> -->
-	</ul>
-
-	<ul class="nav navbar-nav navbar-right">
-	  <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></button>
-	    <ul class="dropdown-menu">
-	      <!-- <li class="dropdown-header">Dropdown header 1</li> -->
-	      <li>{% if user.is_authenticated %} You are logged in as {{user}} {% else %}<a href="{% url 'user_profile:login_view' %}">Please sign in</a> {% endif %}</a></li>
-              <li><a href="#">Settings</a></li>
-              <li><a href="{% url 'user_profile:logout_view' %}">Sign Out</a></li>
-              <li class="divider"></li>
-	      <!-- <li class="dropdown-header">Dropdown header 2</li> -->
-              <li><a href="#">About Us</a></li>
-            </ul>
-	</ul>
+      <div class="navbar-header">
+	<a class="navbar-brand" href="{% url 'home:index' %}">Random Walker</a>
       </div>
+
+      <ul class="nav navbar-nav navbar-left">
+	<li> <a href="{% url 'home:index' %}">Home</a> </li>
+	<!-- <li> <a href="inspiration">Inspiration</a> </li> -->
+	<li> <a href="{% url 'random_walker_engine:index' %}">Engine</a> </li>
+	<!-- <li> <a href="social">Social</a> </li> -->
+	<!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
+	<li> <a href="{% url 'user_profile:sign_up' %}"> Sign up</a> </li>
+	<!-- <li> <a href="{% url 'user_profile:login_view' %}"> Login</a> </li> -->
+	<!-- <li> <a href="{% url 'user_profile:logout_view' %}"> Logout</a> </li> -->
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+	<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+	    Account
+	    <span class="caret"></span>
+	    <ul class="dropdown-menu">
+	      <li class="dropdown-header"></li>	      
+	      {% if user.is_authenticated %} 
+	      <li>
+		<a href="#">You are logged in as {{user}}</a>
+	      </li>
+	      {% else %}
+	      <li>
+		<a href="{% url 'user_profile:login_view' %}">Please sign in</a> 
+	      </li>
+	      {% endif %}
+	      <li><a href="#">Settings</a></li>
+	      {% if user.is_authenticated %} 
+	      <li>
+		<a href="{% url 'user_profile:logout_view' %}">Sign Out</a>
+	      </li>
+	      {% endif %}
+	      <li class="divider"></li>
+	      <li class="dropdown-header"></li>
+	      <li><a href="#">About Us</a></li>
+	    </ul>
+      </ul>
     </div>
-    {% endblock %}
-  </nav>
+</div>
+{% endblock %}
+</nav>
 
+<link rel="stylesheet" href="{% static 'osm_implementation/style.css' %}">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="{% static 'osm_implementation/csrf.js' %}"></script>
 
+{% block additional_scripts %}
+{% endblock %}
 
-
-  <!-- </section> -->
-
-  <link rel="stylesheet" href="{% static 'osm_implementation/style.css' %}">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="{% static 'osm_implementation/csrf.js' %}"></script>
-
-  {% block additional_scripts %}
+<body>
+  {% block body%}
+  <h1 class="statement">
+    <p>
+      Random Walker is a web application built with an aim to
+      inspire and make exploration easy.  
+    </p>
+    <p>
+      We believe everyone can be an explorer. An adventure does not
+      need to involve lengthy planning, remote location and hefty
+      budget; it can be spontaneous, in a neighboring quarter and
+      minimum cost.
+    </p>
+  </h1>
   {% endblock %}
-
-  <body>
-    {% block body%}
-    <h1 class="statement">
-      <p>
-	Random Walker is a web application built with an aim to
-	inspire and make exploration easy.  
-      </p>
-      <p>
-	We believe everyone can be an explorer. An adventure does not
-	need to involve lengthy planning, remote location and hefty
-	budget; it can be spontaneous, in a neighboring quarter and
-	minimum cost.
-      </p>
-    </h1>
-    {% endblock %}
-  </body>
+</body>
 </html>
+
+
+
 
 
 

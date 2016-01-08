@@ -2,17 +2,12 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <header>
-      {% block header %} Random Walker Engine {% endblock %}
-    </header>
-    {% block additional_scripts %}
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-    <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
-    <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
-    {% endblock %}
-  </head>
+  {% block additional_scripts %}
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
+  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+  <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
+  <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
+  {% endblock %}
   <body>
     {% block body %}
     <div class="engine_control">

@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 # Create your views here.
 
 def sign_up(request):
-    return render_to_response('user_profile/sign_up.html', context_instance=RequestContext(request))
+    return render_to_response('user_profile/sign_up.html', RequestContext(request))
 
 @requires_csrf_token
 def create_user(request):

@@ -9,7 +9,7 @@ import ProbLayer as pl
 
 # Create your views here.
 
-@login_required
+# @login_required
 def index(request):
     return render_to_response('random_walker_engine/random_walker_engine.html')
 

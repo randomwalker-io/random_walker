@@ -2,13 +2,16 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  {% block additional_scripts %}
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
-  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-  <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
-  <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
+  {% block header %}
   {% endblock %}
   <body>
+    {% block additional_scripts %}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
+    <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
+    {% endblock %}
+
     {% block content%}
     <div class="engine_control">
       <button type="button" class="btn btn-success" id="newLocationButton">Give Me A New Location!</button>

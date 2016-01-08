@@ -38,7 +38,7 @@ def create_user(request):
     # )
 
 def login_view(request):
-    return render_to_response('user_profile/login.html', context_instance=RequestContext(request))
+    return render_to_response('user_profile/login.html', RequestContext(request))
 
     
 
@@ -59,6 +59,7 @@ def auth_view(request):
             return HttpResponseRedirect('/user_profile/sign_up/')
     else:
         print "User does not exist, prompt to sign in!"
+        return HttpResponseRedirect('/user_profile/sign_up/')
 
 
 def logout_view(request):

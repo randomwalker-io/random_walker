@@ -8,46 +8,49 @@
   </head>
   <body>
     {% block body %}
-    This is the sign up page
     <!-- {% if form.errors %} -->
     <!--     <p>Your username and password didn't match. Please try again.</p> -->
     <!-- {% endif %} -->
 
-    <form action="{% url 'user_profile:create_user' %}" method="POST"> {% csrf_token %}
+    <form id="sign_up_form" class="form-horizontal" role="form" action="{% url 'user_profile:create_user' %}" method="POST"> {% csrf_token %}
       <div >
-        <label for='username'> Username </label>
-        <input type='text' name='Username' id='username'>
-        <label for='password'>Password </label>
-        <input type='password' name='Password' id='password'>
-        <label for='first_name'>First_Name </label>
-        <input type='first_name' name='First_Name' id='first_name'>
-        <label for='last_name'>Last_Name </label>
-        <input type='last_name' name='Last_Name' id='last_name'>
-        <label for='email'>Email </label>
-        <input type='email' name='Email' id='email'>
-        <input type='submit' value="Sign Up">
+	<div class="form-group">
+	  <label class="control-label col-sm-2" for="username">Username:</label>
+	  <div class="col-sm-7">
+            <input type="text" class="form-control" name="Username" id="username" placeholder="Enter Username">
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label class="control-label col-sm-2" for="password">Password:</label>
+	  <div class="col-sm-7">
+            <input type="password" class="form-control" name="Password" id="password" placeholder="Enter Password">
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label class="control-label col-sm-2" for="email">Email:</label>
+	  <div class="col-sm-7">
+            <input type="email" class="form-control" name="Email" id="email" placeholder="Enter Email">
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label class="control-label col-sm-2" for="first_name">First Name:</label>
+	  <div class="col-sm-7">
+            <input type="text" class="form-control" name="First_Name" id="first_name" placeholder="Enter First Name">
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+	  <div class="col-sm-7">
+            <input type="text" class="form-control" name="Last_Name" id="last_name" placeholder="Enter Last Name">
+	  </div>
+	</div>
+        <input type='submit' class="btn btn-success" value="Sign Up">
       </div>
     </form>
-
-    <!-- <form action="{% url 'user_profile:create_user' %}" method="post"> -->
-    <!--   {% csrf_token %} -->
-    <!--   <div> -->
-    <!--   User name:<br> -->
-    <!--   <input type="text" name="username" value=""> -->
-    <!--   <br> -->
-    <!--   User password:<br> -->
-    <!--   <input type="password" name="psw" value=""> -->
-    <!--   <br> -->
-    <!--   First name:<br> -->
-    <!--   <input type="text" name="firstname" value=""> -->
-    <!--   <br> -->
-    <!--   Last name:<br> -->
-    <!--   <input type="text" name="lastname" value=""> -->
-    <!--   <br><br> -->
-    <!--   <input type="submit" value="signup" /> -->
-    <!--   <input type="hidden" name="next" value="{{ next }}" /> -->
-    <!--   </div> -->
-    <!-- </form> -->
     {% endblock %}
   </body>
 </html>

@@ -15,7 +15,10 @@
   </head>
   <body>
     {% block body %}
-    <button type="button" id="newLocationButton">Give Me A New Location!</button>
+    <div class="engine_control">
+      <button type="button" class="btn btn-success" id="newLocationButton">Give Me A New Location!</button>
+      <button type="button" class="btn btn-default" id="saveLocationButton">Save This  Location!</button>
+    </div>
     <section>
       <div id="map" class="engine"></div>
     </section>

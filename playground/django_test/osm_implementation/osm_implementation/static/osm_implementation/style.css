@@ -10,35 +10,6 @@ header {
     width: 800px;
     margin: 10px auto 10px auto;
 }
-.dropdown-menu li {
-      width: auto !important;
-      text-align: center;
-}
-
-div#account {
-    width: 5%;
-    height: 50px;
-    /* background: red; */
-    float: left;
-    padding-left: 50px;
-}
-
-nav#nav_bar {
-    margin-left: 15%;
-    height: 50px;
-    /* background: black; */
-    padding-right: 50px;
-}
-
-nav {
-    text-align: right;
-    /* padding-right: 20px; */
-}
-
-nav li {
-    display: inline;  
-    margin: auto auto auto auto;
-}
 
 #map {
     height:512px;
@@ -49,4 +20,22 @@ nav li {
 
 .engine {
     margin: 50px auto auto auto;
+}
+
+.engine_control {
+    margin: auto;
+    text-align: center;
+    position: relative;
+}
+
+form#sign_up_form {
+    margin: auto;
+    text-align: center;
+    position: relative;
+}
+
+form#log_in_form {
+    margin: auto;
+    text-align: center;
+    position: relative;
 }

@@ -1,84 +1,128 @@
 {% load static %}
 <!DOCTYPE html>
-<head>
-  <title> Random Walker </title>
-  <header>
-  </header>
-  <!-- <section class="navigation_bar"> -->
-  <nav id="nav_bar" class="navbar navbar-default">
-    {% block nav %}
-    <div class="container-fluid">
-      <div class="navbar-header">
-	<a class="navbar-brand" href="{% url 'home:index' %}">Random Walker</a>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="{% static 'osm_implementation/css/style.css' %}">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="{% static 'osm_implementation/js/csrf.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'osm_implementation/css/landing-page.css' %}">
+    <link rel="stylesheet" href="{% static 'osm_implementation/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
+
+    <title> Random Walker </title>
+  </head>
+  <body>
+
+    <!-- <section class="navigation_bar"> -->
+    <nav id="nav_bar" class="navbar navbar-default">
+      {% block nav %}
+      <div class="container-fluid">
+	<div class="navbar-header">
+	  <a class="navbar-brand" href="{% url 'home:index' %}">Random Walker</a>
+	</div>
+
+	<ul class="nav navbar-nav navbar-left">
+	  <li> <a href="{% url 'home:index' %}">Home</a> </li>
+	  <!-- <li> <a href="inspiration">Inspiration</a> </li> -->
+	  <li> <a href="{% url 'random_walker_engine:index' %}">Engine</a> </li>
+	  <!-- <li> <a href="social">Social</a> </li> -->
+	  <!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
+	  <li> <a href="{% url 'registration:sign_up' %}"> Sign up</a> </li>
+	  <!-- <li> <a href="{% url 'registration:login_view' %}"> Login</a> </li> -->
+	  <!-- <li> <a href="{% url 'registration:logout_view' %}"> Logout</a> </li> -->
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+	  <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+	      Account
+	      <span class="caret"></span>
+	      <ul class="dropdown-menu">
+		<li class="dropdown-header"></li>	      
+		{% if user.is_authenticated %} 
+		<li>
+		  <a href="#">You are logged in as {{user}}</a>
+		</li>
+		{% else %}
+		<li>
+		  <a href="{% url 'registration:login_view' %}">Please sign in</a> 
+		</li>
+		{% endif %}
+		<li><a href="#">Settings</a></li>
+		{% if user.is_authenticated %} 
+		<li>
+		  <a href="{% url 'registration:logout_view' %}">Sign Out</a>
+		</li>
+		{% endif %}
+		<li class="divider"></li>
+		<li class="dropdown-header"></li>
+		<li><a href="#">About Us</a></li>
+	      </ul>
+	  </li>
+	</ul>
       </div>
+      {% endblock %}
+    </nav>
 
-      <ul class="nav navbar-nav navbar-left">
-	<li> <a href="{% url 'home:index' %}">Home</a> </li>
-	<!-- <li> <a href="inspiration">Inspiration</a> </li> -->
-	<li> <a href="{% url 'random_walker_engine:index' %}">Engine</a> </li>
-	<!-- <li> <a href="social">Social</a> </li> -->
-	<!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
-	<li> <a href="{% url 'registration:sign_up' %}"> Sign up</a> </li>
-	<!-- <li> <a href="{% url 'registration:login_view' %}"> Login</a> </li> -->
-	<!-- <li> <a href="{% url 'registration:logout_view' %}"> Logout</a> </li> -->
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-	<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-	    Account
-	    <span class="caret"></span>
-	    <ul class="dropdown-menu">
-	      <li class="dropdown-header"></li>	      
-	      {% if user.is_authenticated %} 
-	      <li>
-		<a href="#">You are logged in as {{user}}</a>
-	      </li>
-	      {% else %}
-	      <li>
-		<a href="{% url 'registration:login_view' %}">Please sign in</a> 
-	      </li>
-	      {% endif %}
-	      <li><a href="#">Settings</a></li>
-	      {% if user.is_authenticated %} 
-	      <li>
-		<a href="{% url 'registration:logout_view' %}">Sign Out</a>
-	      </li>
-	      {% endif %}
-	      <li class="divider"></li>
-	      <li class="dropdown-header"></li>
-	      <li><a href="#">About Us</a></li>
-	    </ul>
-      </ul>
-    </div>
-</div>
-{% endblock %}
-</nav>
+    {% block header %}
 
-<link rel="stylesheet" href="{% static 'osm_implementation/style.css' %}">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="{% static 'osm_implementation/csrf.js' %}"></script>
+    <!-- Header -->
+    <a name="about"></a>
+    <div class="intro-header">
+      <div class="container">
 
-{% block additional_scripts %}
-{% endblock %}
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="intro-message">
+              <h1>Landing Page</h1>
+              <h3>A Template by Start Bootstrap</h3>
+              <hr class="intro-divider">
+              <ul class="list-inline intro-social-buttons">
+                <li>
+                  <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                </li>
+                <li>
+                  <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                </li>
+                <li>
+                  <a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-<body>
-  {% block body%}
-  <h1 class="statement">
-    <p>
-      Random Walker is a web application built with an aim to
-      inspire and make exploration easy.  
-    </p>
-    <p>
-      We believe everyone can be an explorer. An adventure does not
-      need to involve lengthy planning, remote location and hefty
-      budget; it can be spontaneous, in a neighboring quarter and
-      minimum cost.
-    </p>
-  </h1>
-  {% endblock %}
-</body>
+      </div>
+      <!-- /.container -->
+      {% endblock %}
+
+      {% block content %}
+      <h1 class="statement">
+	<p>
+	  Random Walker is a web application built with an aim to
+	  inspire and make exploration easy.  
+	</p>
+	<p>
+	  We believe everyone can be an explorer. An adventure does not
+	  need to involve lengthy planning, remote location and hefty
+	  budget; it can be spontaneous, in a neighboring quarter and
+	  minimum cost.
+	</p>
+      </h1>
+      {% endblock %}
+
+      {% block additional_scripts %}
+      {% endblock %}
+  </body>
 </html>
 
 

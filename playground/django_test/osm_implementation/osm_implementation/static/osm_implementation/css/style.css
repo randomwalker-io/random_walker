@@ -19,11 +19,11 @@ header {
 }
 
 .engine {
-    margin: 50px auto auto auto;
+    margin: auto auto auto auto;
 }
 
 .engine_control {
-    margin: auto;
+    margin: 20px;
     text-align: center;
     position: relative;
 }

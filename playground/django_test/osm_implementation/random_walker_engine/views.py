@@ -76,7 +76,11 @@ def saveNewDestination(username, origin, new_destination):
 
 def filterLocation(location, bounds):
     locations = zip(location['lat'], location['lng'])
-    bounded_location = [(x, y) for x,y in locations if (x > bounds['southWest']['lat'] and x < bounds['northEast']['lat'] and y > bounds['southWest']['lng'] and y > bounds['southWest']['lng'])]
+    bounded_location = [(x, y) for x,y in locations \
+                        if (x > bounds['southWest']['lat'] and \
+                            x < bounds['northEast']['lat'] and \
+                            y > bounds['southWest']['lng'] and \
+                            y > bounds['southWest']['lng'])]
     bounded_location_lat = [x[0] for x in bounded_location]
     bounded_location_lng = [x[1] for x in bounded_location]
     return {'lat': bounded_location_lat, 'lng': bounded_location_lng}

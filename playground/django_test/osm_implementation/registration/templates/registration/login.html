@@ -7,7 +7,7 @@
     <!--     <p>Your username and password didn't match. Please try again.</p> -->
     <!-- {% endif %} -->
 
-    <form id="log_in_form" class="form-horizontal" role="form" action="{% url 'user_profile:auth_view' %}" method="POST"> {% csrf_token %}
+    <form id="log_in_form" class="form-horizontal" role="form" action="{% url 'registration:auth_view' %}" method="POST"> {% csrf_token %}
       <div >
 	<div class="form-group">
 	  <label class="control-label col-sm-2" for="username">Username:</label>

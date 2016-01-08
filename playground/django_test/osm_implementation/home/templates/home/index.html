@@ -18,9 +18,9 @@
 	<li> <a href="{% url 'random_walker_engine:index' %}">Engine</a> </li>
 	<!-- <li> <a href="social">Social</a> </li> -->
 	<!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
-	<li> <a href="{% url 'user_profile:sign_up' %}"> Sign up</a> </li>
-	<!-- <li> <a href="{% url 'user_profile:login_view' %}"> Login</a> </li> -->
-	<!-- <li> <a href="{% url 'user_profile:logout_view' %}"> Logout</a> </li> -->
+	<li> <a href="{% url 'registration:sign_up' %}"> Sign up</a> </li>
+	<!-- <li> <a href="{% url 'registration:login_view' %}"> Login</a> </li> -->
+	<!-- <li> <a href="{% url 'registration:logout_view' %}"> Logout</a> </li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
 	<li class="dropdown">
@@ -35,13 +35,13 @@
 	      </li>
 	      {% else %}
 	      <li>
-		<a href="{% url 'user_profile:login_view' %}">Please sign in</a> 
+		<a href="{% url 'registration:login_view' %}">Please sign in</a> 
 	      </li>
 	      {% endif %}
 	      <li><a href="#">Settings</a></li>
 	      {% if user.is_authenticated %} 
 	      <li>
-		<a href="{% url 'user_profile:logout_view' %}">Sign Out</a>
+		<a href="{% url 'registration:logout_view' %}">Sign Out</a>
 	      </li>
 	      {% endif %}
 	      <li class="divider"></li>

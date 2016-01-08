@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 # Create your views here.
 
 def sign_up(request):
-    return render_to_response('user_profile/sign_up.html', RequestContext(request))
+    return render_to_response('registration/sign_up.html', RequestContext(request))
 
 @requires_csrf_token
 def create_user(request):
@@ -38,7 +38,7 @@ def create_user(request):
     # )
 
 def login_view(request):
-    return render_to_response('user_profile/login.html', RequestContext(request))
+    return render_to_response('registration/login.html', RequestContext(request))
 
     
 
@@ -56,10 +56,10 @@ def auth_view(request):
         else:
             print "User is inactive"
             # return HttpResponseRedirect(reverse('home:index.html'))
-            return HttpResponseRedirect('/user_profile/sign_up/')
+            return HttpResponseRedirect('/registration/sign_up/')
     else:
         print "User does not exist, prompt to sign in!"
-        return HttpResponseRedirect('/user_profile/sign_up/')
+        return HttpResponseRedirect('/registration/sign_up/')
 
 
 def logout_view(request):

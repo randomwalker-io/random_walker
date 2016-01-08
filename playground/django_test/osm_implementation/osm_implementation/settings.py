@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'osm_implementation',
     'home',
     'random_walker_engine',
-    'user_profile',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,4 +108,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-LOGIN_URL = os.path.join(BASE_DIR, 'user_profile/login_view/')
+LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')

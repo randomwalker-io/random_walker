@@ -7,13 +7,8 @@ class UserProfile(models.Model):
     #
     # http://stackoverflow.com/questions/2672975/django-biginteger-auto-increment-field-as-primary-key
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # user_first_name = models.CharField(max_length=200)
-    # user_last_name = models.CharField(max_length=200)
-    # user_email = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     gender = models.CharField(max_length=20)
-    # password_salt = models.CharField(max_length=200)
-    # password = models.CharField(max_length=200)
     date_registration = models.DateTimeField()
     
 

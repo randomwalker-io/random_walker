@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from models import UserProfile, Location
+from models import Location
 import json
 import ProbLayer as pl
 
@@ -20,7 +20,7 @@ def newDestination(request):
     if request.method == 'POST':
         # initialisation
         username = request.user
-
+        
         # Load data and create the Grid class
         json_data = json.loads(request.body)
         print "Data loaded\n"

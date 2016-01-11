@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django.template import RequestContext
 from django.contrib.auth.models import User
+from models import UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+
 
 # Create your views here.
 

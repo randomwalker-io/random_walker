@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -12,7 +12,7 @@ import ProbLayer as pl
 
 # @login_required
 def index(request):
-    return render_to_response('random_walker_engine/random_walker_engine.html', RequestContext(request))
+    return render(request, 'random_walker_engine/random_walker_engine.html')
 
 
 def newDestination(request):

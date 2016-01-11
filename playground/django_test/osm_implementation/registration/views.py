@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django.template import RequestContext
 from django.contrib.auth.models import User
@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 # Create your views here.
 
 def sign_up(request):
-    return render_to_response('registration/sign_up.html', RequestContext(request))
+    return render(request, 'registration/sign_up.html')
 
 @requires_csrf_token
 def create_user(request):
@@ -28,7 +28,7 @@ def create_user(request):
         last_name = last_name
     )
     u.save()
-    return render_to_response("home/index.html")
+    return render('home/index.html')
     # NOTE (Michael): We will create the extended profile later
     #
     # u.userprofile(
@@ -38,7 +38,7 @@ def create_user(request):
     # )
 
 def login_view(request):
-    return render_to_response('registration/login.html', RequestContext(request))
+    return render(request, 'registration/login.html')
 
     
 

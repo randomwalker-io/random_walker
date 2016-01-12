@@ -31,7 +31,7 @@ if socket.gethostname() == 'mk-IdeaPad-U330p':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['emperorkao.com']
 
 
 # Application definition
@@ -131,3 +131,12 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
         ('Michael Kao', 'mkao006@emperorkao.com')
     )
 
+    # Security settings for production
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = False
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    X_FRAME_OPTIONS = 'DENY'

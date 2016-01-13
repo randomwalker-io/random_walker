@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('osm_implementation/settings.txt', 'r') as f:
+with open(os.path.join(BASE_DIR, 'osm_implementation/settings.txt'), 'r') as f:
     SECRET_KEY = f.read().strip()
 
 

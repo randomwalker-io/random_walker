@@ -5,3 +5,4 @@ numpy==1.10.4
 Pillow==3.1.0
 scipy==0.16.1
 wheel==0.24.0
+whitenoise==2.0.6

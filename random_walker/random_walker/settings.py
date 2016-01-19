@@ -140,3 +140,5 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
     X_FRAME_OPTIONS = 'DENY'
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

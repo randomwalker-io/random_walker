@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import socket
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,13 +21,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('osm_implementation/settings.txt', 'r') as f:
+with open(os.path.join(BASE_DIR, 'osm_implementation/settings.txt'), 'r') as f:
     SECRET_KEY = f.read().strip()
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: don't run with debug turned on in production!
+if socket.gethostname() == 'mk-IdeaPad-U330p':
+    DEBUG = True
+else:
+    DEBUG = False
+
+ALLOWED_HOSTS = ['emperorkao.com']
 
 
 # Application definition
@@ -110,3 +115,28 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
+
+# Additional settings for production
+if socket.gethostname() != 'mk-IdeaPad-U330p':
+    # Exceptions are sent to the following
+    ADMINS = (
+        ('Michael Kao', 'mkao006@emperorkao.com')
+    )
+
+    # Sned email if 404 is hit
+    SEND_BROKEN_LINK_EMAILS = True
+
+    # Broken link error is sent to the manager
+    MANAGERS = (
+        ('Michael Kao', 'mkao006@emperorkao.com')
+    )
+
+    # Security settings for production
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = False
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    X_FRAME_OPTIONS = 'DENY'

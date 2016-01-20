@@ -114,6 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
 
@@ -141,14 +142,11 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
     X_FRAME_OPTIONS = 'DENY'
+    # Parse database configuration from $DATABASE_URL
+    DATABASES['default'] =  dj_database_url.config()
+    # Enable Persistent Connections
+    DATABASES['default']['CONN_MAX_AGE'] = 500
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Parse database configuration from $DATABASE_URL
-DATABASES['default'] =  dj_database_url.config()
-
-# Enable Persistent Connections
-DATABASES['default']['CONN_MAX_AGE'] = 500

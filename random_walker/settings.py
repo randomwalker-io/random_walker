@@ -16,7 +16,6 @@ import socket
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -31,7 +30,8 @@ if socket.gethostname() == 'mk-IdeaPad-U330p':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['emperorkao.com']
+# ALLOWED_HOSTS = ['emperorkao.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

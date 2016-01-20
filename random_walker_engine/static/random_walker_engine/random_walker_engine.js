@@ -47,8 +47,8 @@ function initialise(pos){
     });
 
     // Add the tiles to the map
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer('//{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="//osm.org/copyright">OpenStreetMap</a> contributors',
 	tileSize: 256
     }).addTo(map);
 

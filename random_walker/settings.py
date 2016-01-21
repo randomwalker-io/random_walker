@@ -121,17 +121,17 @@ LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
 # Additional settings for production
 if socket.gethostname() != 'mk-IdeaPad-U330p':
     # Exceptions are sent to the following
-    ADMINS = (
-        ('Michael Kao', 'mkao006@emperorkao.com')
-    )
+    # ADMINS = (
+    #     ('Michael Kao', 'mkao006@emperorkao.com')
+    # )
 
     # Sned email if 404 is hit
-    SEND_BROKEN_LINK_EMAILS = True
+    # SEND_BROKEN_LINK_EMAILS = True
 
     # Broken link error is sent to the manager
-    MANAGERS = (
-        ('Michael Kao', 'mkao006@emperorkao.com')
-    )
+    # MANAGERS = (
+    #     ('Michael Kao', 'mkao006@emperorkao.com')
+    # )
 
     # Security settings for production
     SECURE_SSL_REDIRECT = True

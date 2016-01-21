@@ -119,3 +119,7 @@ building more road for better food distrbibution and reduce losses.
 
 As the name implies, for a small amount, one can be into the draw for
 a trip of a life time.
+
+# Additional Features
+
+* Maybe add in tag and classify search random generation?

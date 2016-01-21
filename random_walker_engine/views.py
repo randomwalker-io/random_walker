@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csr
 def index(request):
     return render(request, 'random_walker_engine/random_walker_engine.html')
 
-@requires_csrf_token
+@csrf_exempt
 def newDestination(request):
     # NOTE (Michael): Change back to POST when the database is setup
     if request.method == 'POST':

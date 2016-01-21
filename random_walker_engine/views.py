@@ -7,6 +7,7 @@ from django.template import RequestContext
 from models import Location
 import json
 import ProbLayer as pl
+from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 
 # Create your views here.
 

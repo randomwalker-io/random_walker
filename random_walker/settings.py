@@ -144,6 +144,7 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     X_FRAME_OPTIONS = 'DENY'
     # Parse database configuration from $DATABASE_URL
     DATABASES['default'] =  dj_database_url.config()
+    DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
     # Enable Persistent Connections
     DATABASES['default']['CONN_MAX_AGE'] = 500
 

@@ -14,7 +14,7 @@ import ProbLayer as pl
 def index(request):
     return render(request, 'random_walker_engine/random_walker_engine.html')
 
-
+@requires_csrf_token
 def newDestination(request):
     # NOTE (Michael): Change back to POST when the database is setup
     if request.method == 'POST':

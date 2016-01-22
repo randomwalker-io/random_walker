@@ -134,12 +134,13 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     # )
 
     # Security settings for production
+    SESSION_COOKIE_HTTPONLY = False    
+    CSRF_COOKIE_HTTPONLY = False
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = False
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = False
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = 'DENY'
     # Parse database configuration from $DATABASE_URL

@@ -140,7 +140,6 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     SECURE_BROWSER_XSS_FILTER = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    CSRF_COOKIE_HTTPONLY = True
     X_FRAME_OPTIONS = 'DENY'
     # Parse database configuration from $DATABASE_URL
     DATABASES['default'] =  dj_database_url.config()

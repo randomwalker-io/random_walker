@@ -29,7 +29,7 @@ with open(os.path.join(BASE_DIR, 'random_walker/settings.txt'), 'r') as f:
 if socket.gethostname() == 'mk-IdeaPad-U330p':
     DEBUG = True
 else:
-    DEBUG = False
+    DEBUG = True
 
 # ALLOWED_HOSTS = ['emperorkao.com']
 ALLOWED_HOSTS = ['*']

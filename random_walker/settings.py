@@ -134,13 +134,14 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     # )
 
     # Security settings for production
-    # SECURE_SSL_REDIRECT = True
-    # SECURE_HSTS_SECONDS = False
-    # SECURE_CONTENT_TYPE_NOSNIFF = True
-    # SECURE_BROWSER_XSS_FILTER = True
-    # SESSION_COOKIE_SECURE = True
-    # CSRF_COOKIE_SECURE = True
-    # X_FRAME_OPTIONS = 'DENY'
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = False
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = False
+    CSRF_COOKIE_SECURE = True
+    X_FRAME_OPTIONS = 'DENY'
     # Parse database configuration from $DATABASE_URL
     DATABASES['default'] =  dj_database_url.config()
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'

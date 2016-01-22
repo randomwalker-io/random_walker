@@ -134,7 +134,7 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     # )
 
     # Security settings for production
-    SESSION_COOKIE_HTTPONLY = False    
+    SESSION_COOKIE_HTTPONLY = False
     CSRF_COOKIE_HTTPONLY = False
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = False

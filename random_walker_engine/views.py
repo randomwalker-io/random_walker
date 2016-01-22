@@ -21,6 +21,8 @@ def newDestination(request):
     if request.method == 'POST':
         # initialisation
         username = request.user
+        print username
+        print "Is user anonymous: " + str(request.user.is_anonymous())
         
         # Load data and create the Grid class
         json_data = json.loads(request.body)
@@ -49,6 +51,7 @@ def newDestination(request):
             finalLayer = priorLayer * learningLayer * feasibleLayer
         else: 
             finalLayer = priorLayer * feasibleLayer
+            print "Learning layer excluded in the computation"
         print "Final layer created\n"
         newDestination = finalLayer.sample()
         print "New destination sampled"

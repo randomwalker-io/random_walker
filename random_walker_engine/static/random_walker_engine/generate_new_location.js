@@ -1,5 +1,5 @@
 $(function() {
-    $("#newLocationButton").click(function() {
+    $("#newLocationButton").on("click touchstart", function() {
         console.log(map.getBounds().getNorthEast())
         $.ajax({
             url: "{% url 'random_walker_engine:newDestination' %}",

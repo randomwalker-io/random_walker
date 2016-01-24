@@ -37,15 +37,20 @@ def newDestination(request):
         if not request.user.is_anonymous():
             learningPoints = filterLocation(getPriorDestination(username), bounds)
         newGrid = pl.Grid(center, bounds, size, zoom)
+        print newGrid
         print "Grid created\n"
+        
         
         # Create the layers
         priorLayer = pl.createPriorLayer(newGrid, 20)
+        print priorLayer.probLayer
         print "Prior layer created\n"
         if not request.user.is_anonymous():
             learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
+            print learningLayer.probLayer
         print "Learning layer created\n"
         feasibleLayer = pl.createFeasibleLayer(newGrid)
+        print feasibleLayer.probLayer
         print "Feasible layer created\n"
         if not request.user.is_anonymous():
             print "Computing complete final layer"
@@ -56,6 +61,7 @@ def newDestination(request):
 
         print "Final layer created\n"
         newDestination = finalLayer.sample()
+        print newDestination
         print "New destination sampled"
         if not request.user.is_anonymous():
             saveNewDestination(username, origin=center, new_destination=newDestination)

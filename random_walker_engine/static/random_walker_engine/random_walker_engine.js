@@ -40,6 +40,12 @@ function error(err){
 
 
 function initialise(pos){
+    // Setting the width and height of the map element. Although not
+    // the best practice it helps to make sure the size is valid
+    width = Math.min(1280, $(window).width())
+    height = Math.min(width * 9/16, $(document).height() - $('#nav_bar').outerHeight(true) - 
+		      $('.engine_control').outerHeight(true))
+    $('#map').height(height).width(width);
     map = L.map('map', {
 	center: pos,
     	zoom: 13,

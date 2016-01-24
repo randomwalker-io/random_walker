@@ -48,10 +48,12 @@ def newDestination(request):
         feasibleLayer = pl.createFeasibleLayer(newGrid)
         print "Feasible layer created\n"
         if not request.user.is_anonymous():
+            print "Computing complete final layer"
             finalLayer = priorLayer * learningLayer * feasibleLayer
         else: 
-            finalLayer = priorLayer * feasibleLayer
             print "Learning layer excluded in the computation"
+            finalLayer = priorLayer * feasibleLayer
+
         print "Final layer created\n"
         newDestination = finalLayer.sample()
         print "New destination sampled"

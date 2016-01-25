@@ -42,16 +42,26 @@ function error(err){
 function initialise(pos){
     // Setting the width and height of the map element. Although not
     // the best practice it helps to make sure the size is valid
-    width = Math.min(1280, $(window).width())
-    height = Math.min(width * 9/16, $(document).height() - $('#nav_bar').outerHeight(true) - 
-		      $('.engine_control').outerHeight(true))
+    
+    // set the width and height accodring to device
+    if(isMobile()){
+	width = Math.min(1280, $(window).width())
+	height = $(document).height() - $('#nav_bar').outerHeight(true) - 
+	    $('.engine_control').outerHeight(true)
+    } else {
+	width = Math.min(1280, $(window).width())
+	height = Math.min(width * 9/16, $(document).height() - 
+			  $('#nav_bar').outerHeight(true) - 
+			  $('.engine_control').outerHeight(true))
+    }
+
+    // initialise the map
     $('#map').height(height).width(width);
     map = L.map('map', {
 	center: pos,
     	zoom: 13,
 	minZoom: 2
-    });
-
+    });    
     // Add the tiles to the map
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',

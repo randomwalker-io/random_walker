@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'home',
     'random_walker_engine',
     'registration',
+    'django_mobile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,6 +60,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
 )
 
 ROOT_URLCONF = 'random_walker.urls'

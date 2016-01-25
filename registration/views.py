@@ -33,7 +33,7 @@ def create_user(request):
         last_name = last_name
     )
     u.save()
-    return render('home/index.html')
+    return render('random_walker/index.html')
     # NOTE (Michael): We will create the extended profile later
     #
     # u.userprofile(
@@ -63,7 +63,6 @@ def auth_view(request):
             return HttpResponseRedirect('/random_walker_engine/')
         else:
             print "User is inactive"
-            # return HttpResponseRedirect(reverse('home:index.html'))
             return HttpResponseRedirect('/registration/sign_up/')
     else:
         print "User does not exist, prompt to sign in!"
@@ -73,4 +72,4 @@ def auth_view(request):
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
-        return HttpResponseRedirect('/index/')
+        return HttpResponseRedirect('')

@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
+from . import views
 
 urlpatterns = [
-    url('index/', include('home.urls', namespace='home')),
+    url('^$', views.index, name='index'),
     url(r'random_walker_engine/', include('random_walker_engine.urls', namespace='random_walker_engine')),
     url(r'registration/', include('registration.urls', namespace='registration')),
     url(r'^admin/', admin.site.urls),

@@ -45,7 +45,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'random_walker',
-    'home',
     'random_walker_engine',
     'registration',
     'django_mobile',

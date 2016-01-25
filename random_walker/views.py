@@ -7,6 +7,6 @@ from django_mobile import get_flavour
 
 def index(request):
     if get_flavour() != 'full':
-        return render(request, 'home/m_index.html')
+        return render(request, 'random_walker/m_index.html')
     else:
-        return render(request, 'home/index.html')
+        return render(request, 'random_walker/index.html')

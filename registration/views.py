@@ -6,12 +6,15 @@ from models import UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-
+from django_mobile import get_flavour
 
 # Create your views here.
 
 def sign_up(request):
-    return render(request, 'registration/sign_up.html')
+    if get_flavour() != 'full':
+        return render(request, 'registration/m_sign_up.html')
+    else:
+        return render(request, 'registration/sign_up.html')
 
 @requires_csrf_token
 def create_user(request):
@@ -40,7 +43,10 @@ def create_user(request):
     # )
 
 def login_view(request):
-    return render(request, 'registration/login.html')
+    if get_flavour() != 'full':
+        return render(request, 'registration/m_login.html')
+    else:
+        return render(request, 'registration/login.html')
 
     
 

@@ -1,0 +1,25 @@
+{% extends "home/m_index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  {% block header %}
+  {% endblock %}
+  <body>
+    {% block additional_scripts %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
+    <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
+    {% endblock %}
+
+    {% block content%}
+    <div class="engine_control">
+      <button type="button" class="btn btn-success" id="newLocationButton">Give Me A New Location!</button>
+      <button type="button" class="btn btn-default" id="saveLocationButton">Save This  Location!</button>
+    </div>
+    <section>
+      <div id="map" class="engine"></div>
+    </section>
+    {% endblock %}
+  </body>
+</html>

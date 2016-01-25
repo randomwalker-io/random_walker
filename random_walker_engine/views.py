@@ -8,12 +8,16 @@ from models import Location
 import json
 import ProbLayer as pl
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
+from django_mobile import get_flavour
 
 # Create your views here.
 
 # @login_required
 def index(request):
-    return render(request, 'random_walker_engine/random_walker_engine.html')
+    if get_flavour() != 'full':
+        return render(request, 'random_walker_engine/m_random_walker_engine.html')
+    else:
+        return render(request, 'random_walker_engine/random_walker_engine.html')
 
 @requires_csrf_token
 def newDestination(request):

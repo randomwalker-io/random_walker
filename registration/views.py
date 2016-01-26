@@ -33,7 +33,7 @@ def create_user(request):
         last_name = last_name
     )
     u.save()
-    return render('random_walker/index.html')
+    return render(request, 'random_walker/index.html')
     # NOTE (Michael): We will create the extended profile later
     #
     # u.userprofile(

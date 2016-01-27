@@ -17,7 +17,9 @@
     {% block content%}
     <div class="engine_control">
       <button type="button" class="btn btn-success" id="newLocationButton">Give Me A New Location!</button>
+      {% if user.is_authenticated %}
       <button type="button" class="btn btn-default" id="getOldLocationButton">Get Previous Location!</button>
+      {% endif %}
     </div>
     <section>
       <div id="map" class="engine"></div>

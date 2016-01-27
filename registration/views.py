@@ -12,9 +12,9 @@ from django_mobile import get_flavour
 
 def sign_up(request):
     if get_flavour() != 'full':
-        return render(request, 'registration/m_sign_up.html')
+        return render(request, 'registration/_m_sign_up.html')
     else:
-        return render(request, 'registration/sign_up.html')
+        return render(request, 'registration/_sign_up.html')
 
 @requires_csrf_token
 def create_user(request):
@@ -44,9 +44,9 @@ def create_user(request):
 
 def login_view(request):
     if get_flavour() != 'full':
-        return render(request, 'registration/m_login.html')
+        return render(request, 'registration/_m_login.html')
     else:
-        return render(request, 'registration/login.html')
+        return render(request, 'registration/_login.html')
 
     
 

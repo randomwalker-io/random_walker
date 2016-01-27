@@ -15,9 +15,9 @@ from django_mobile import get_flavour
 # @login_required
 def index(request):
     if get_flavour() != 'full':
-        return render(request, 'random_walker_engine/m_random_walker_engine.html')
+        return render(request, 'random_walker_engine/_m_random_walker_engine.html')
     else:
-        return render(request, 'random_walker_engine/random_walker_engine.html')
+        return render(request, 'random_walker_engine/_random_walker_engine.html')
 
 @requires_csrf_token
 def newDestination(request):

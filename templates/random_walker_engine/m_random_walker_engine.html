@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   {% block header %}
-  {% endblock %}
+  {% endblock header %}
   <body>
     {% block additional_scripts %}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css">
@@ -11,7 +11,7 @@
     <script src="{% static 'random_walker/js/isMobile.js' %}"></script>
     <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
     <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
-    {% endblock %}
+    {% endblock additional_scripts%}
 
     {% block content%}
     <div class="engine_control">
@@ -21,7 +21,7 @@
     <section>
       <div id="map" class="engine"></div>
     </section>
-    {% endblock %}
+    {% endblock content%}
   </body>
   {% block footnote %}{% endblock footnote %}
 </html>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   {% block header %}
-  {% endblock %}
+  {% endblock header %}
   <body>
     {% block content %}
     <!-- {% if form.errors %} -->
@@ -48,7 +48,7 @@
         <input type='submit' class="btn btn-success" value="Sign Up">
       </div>
     </form>
-    {% endblock %}
+    {% endblock content %}
   </body>
   {% block footnote %}{% endblock footnote %}
 </html>

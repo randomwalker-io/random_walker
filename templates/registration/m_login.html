@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   {% block header %}
-  {% endblock %}
+  {% endblock header%}
   <body>
     {% block content %}
     <!-- {% if form.errors %} -->
@@ -28,7 +28,7 @@
       </div>
     </form>
 
-    {% endblock %}
+    {% endblock content%}
   </body>
   {% block footnote %}{% endblock footnote %}
 </html>

@@ -10,7 +10,7 @@ $(function() {
 		console.log("successful")
 		for (var i = 0; i < data.length; i++) {
 		    console.log(data[i]);
-		    marker = L.circleMarker(data[i],
+		    previous_marker = L.circleMarker(data[i],
 					    {
 						color: 'green',
 						fillColor: '#32CD32',

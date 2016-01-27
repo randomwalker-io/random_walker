@@ -20,41 +20,39 @@
           <a href="{% url 'index' %}#contact">Contact</a>
 	</li>
 	<li> 
-	  <!-- <a href="{% url 'index' %}">Home</a>  -->
-	</li>
-	<!-- <li> <a href="inspiration">Inspiration</a> </li> -->
-	<li> 
 	  <a href="{% url 'random_walker_engine:index' %}">Engine</a> 
 	</li>
+	<!-- <li>  -->
+	<!--   <a href="inspiration">Inspiration</a> -->
+	<!-- </li> -->
+
 	<!-- <li> <a href="social">Social</a> </li> -->
 	<!-- <li> <a href="trip_planner">Trip Planner</a></li> -->
-
-	<!-- <li> <a href="{% url 'registration:login_view' %}"> Login</a> </li> -->
-	<!-- <li> <a href="{% url 'registration:logout_view' %}"> Logout</a> </li> -->
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-	<li>
-	  <a href="{% url 'registration:sign_up' %}"> Sign up</a>
-	</li>
+
 	{% if user.is_authenticated %}
 	<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 	    {{user}}
 	    <span class="caret"></span>
 	    <ul class="dropdown-menu">
-	      <li><a href="#">Settings</a></li>
-	      {% if user.is_authenticated %} 
+	      <li>
+		<a href="{% url 'registration:profile_view' user%}"> Your Profile </a>
+	      </li>
+	      <li>
+		<a href="#">Settings</a>
+	      </li>
 	      <li>
 		<a href="{% url 'registration:logout_view' %}">Sign Out</a>
 	      </li>
-	      {% endif %}
-	      <li class="divider"></li>
-	      <li class="dropdown-header"></li>
-	      <li><a href="#">About Us</a></li>
 	    </ul>
 	</li>
 	{% else %}
+	<li>
+	  <a href="{% url 'registration:sign_up' %}"> Sign up</a>
+	</li>
 	<li>
 	  <a href="{% url 'registration:login_view' %}"> Sign in</a>
 	</li>

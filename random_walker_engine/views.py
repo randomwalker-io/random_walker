@@ -106,3 +106,10 @@ def filterLocation(location, bounds):
     bounded_location_lat = [x[0] for x in bounded_location]
     bounded_location_lng = [x[1] for x in bounded_location]
     return {'lat': bounded_location_lat, 'lng': bounded_location_lng}
+
+
+def show_previous_points(request):
+    username = request.user
+    previous_points = getPriorDestination(username)
+    points_tuple = zip(previous_points['lat'], previous_points['lng'])
+    return HttpResponse(json.dumps(points_tuple), content_type="application/json")

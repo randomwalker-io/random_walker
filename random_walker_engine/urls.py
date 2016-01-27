@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'newDestination', views.newDestination, name='newDestination'),
+    url(r'showPreviousPoints', views.show_previous_points, name='show_previous_points'),
 ]

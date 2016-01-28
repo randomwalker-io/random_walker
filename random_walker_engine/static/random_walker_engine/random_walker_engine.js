@@ -5,8 +5,8 @@ if('geolocation' in navigator){
     navigator.geolocation.getCurrentPosition(success, error, options); 
 } else {
     // Initialise location at Auckland
-    pos = [-36.85764758564406, 174.76226806640625]
-    initialise(pos);
+    home = [-36.85764758564406, 174.76226806640625]
+    initialise(home);
 }
  
 var options = {
@@ -27,14 +27,15 @@ function success(pos){
     // and presto, we have the device's location! Let's just alert it for now... 
     console.log("You appear to be at longitude: " + lng + " and latitude: " + lat);
     // Initialise the map at the user location
-    initialise([lat, lng]);
+    home = [lat, lng]
+    initialise(home);
 }
 
 // upon error, do this
 function error(err){
     // Initialise location at Auckland
-    pos = [-36.85764758564406, 174.76226806640625]
-    initialise(pos);
+    home = [-36.85764758564406, 174.76226806640625]
+    initialise(home);
 }
 
 

@@ -11,14 +11,16 @@
     <script src="{% static 'random_walker/js/isMobile.js' %}"></script>
     <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
     <script src="{% static 'random_walker_engine/get_previous_location.js' %}"></script>
+    <script src="{% static 'random_walker_engine/return_home.js' %}"></script>
     <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
     {% endblock additional_scripts%}
 
     {% block content%}
     <div class="engine_control">
       <button type="button" class="btn btn-success" id="newLocationButton">Give Me A New Location!</button>
+      <button type="button" class="btn btn-default" id="returnHomeButton"> Return Home</button>
       {% if user.is_authenticated %}
-      <button type="button" class="btn btn-default" id="getOldLocationButton">Get Previous Location!</button>
+      <button type="button" class="btn btn-default" id="getOldLocationButton">Show Previous Location</button>
       {% endif %}
     </div>
     <section>

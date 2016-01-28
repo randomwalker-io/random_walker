@@ -30,7 +30,8 @@ $(function() {
 		}
             })
 	} else {
-	    //if the data has been loaded, just toggle based on whether it is plotted.
+	    //if the data has been loaded, just toggle based on
+	    //whether it is plotted.
 	    if(previous_location_on){
 		for(var i = 0; i < previous_locations.length; i++){
 		    map.removeLayer(previous_locations[i])

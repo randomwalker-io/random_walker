@@ -4,7 +4,7 @@ $(function() {
 	if(typeof previous_locations === 'undefined'){
             $.ajax({
 		url: "{% url 'random_walker_engine:showPreviousPoints' %}",
-		type: "post",
+		type: "get",
 		dataType: "json",
 		data: JSON.stringify(
 		    {'username': $.trim($('.dropdown-toggle').text())}

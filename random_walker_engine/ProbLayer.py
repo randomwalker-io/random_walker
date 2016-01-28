@@ -64,20 +64,22 @@ def createPriorLayer(grid, bandwidth):
 def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
     '''Method for creating the learning layer
     '''
-    p = len(learningPoints['lat'])
+    p = len(learningPoints)
     n = grid.size['lat'] * grid.size['lng']
-    print n
+    learningPointsDict = {'lat': [pts['destin'].get_x() for pts in learningPoints],
+                          'lng': [pts['destin'].get_y() for pts in learningPoints]
+                    }
     if p == 0:
         reversedLayer = np.repeat(1.0/n, n).reshape(grid.size.values())
     elif p == 1:
-        den = scipy.stats.multivariate_normal([learningPoints['lng'][0], learningPoints['lat'][0]], np.diag([1.0/np.power(bandwidth, 2), 1.0/np.power(bandwidth, 2)]))
+        den = scipy.stats.multivariate_normal([learningPointsDict['lng'][0], learningPointsDict['lat'][0]], np.diag([1.0/np.power(bandwidth, 2), 1.0/np.power(bandwidth, 2)]))
         pos = [list(x) for x in zip(grid.lng, grid.lat)]
         unnormalisedVec = den.pdf(pos)
         unnormalisedLayer = unnormalisedVec.reshape(grid.size.values())
         reversedLayer = unnormalisedLayer.max() - unnormalisedLayer
     elif p > 1:
         positions = np.vstack([grid.lng, grid.lat])
-        values = np.vstack([learningPoints['lng'], learningPoints['lat']])
+        values = np.vstack([learningPointsDict['lng'], learningPointsDict['lat']])
         try:
             kernel = scipy.stats.gaussian_kde(values, bw_method = bandwidth)
             unnormalisedVec = np.reshape(kernel(positions), grid.size.values())

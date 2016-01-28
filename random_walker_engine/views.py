@@ -9,6 +9,7 @@ import json
 import ProbLayer as pl
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django_mobile import get_flavour
+from django.contrib.gis.geos import Point, fromstr, Polygon
 
 # Create your views here.
 
@@ -39,9 +40,8 @@ def newDestination(request):
                                 'lng': json_data['boundne']['lng']}}
         size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
         if not request.user.is_anonymous():
-            learningPoints = filterLocation(getPriorDestination(username), bounds)
+            learningPoints = getPriorDestination(username, bounds)
         newGrid = pl.Grid(center, bounds, size, zoom)
-        print newGrid
         print "Grid created\n"
         
         
@@ -68,12 +68,15 @@ def newDestination(request):
         print newDestination
         print "New destination sampled"
         if not request.user.is_anonymous():
-            saveNewDestination(username, origin=center, new_destination=newDestination)
+            saveNewDestination(username,
+                               origin=(center['lat'], center['lng']),
+                               destin=newDestination)
         print "New destination saved"
-        return HttpResponse(json.dumps(newDestination), content_type="application/json")
+        return HttpResponse(json.dumps(newDestination),
+                            content_type="application/json")
 
     
-def getPriorDestination(username):
+def getPriorDestination(username, bounds=None):
     if not User.objects.filter(username=username).exists():
         # NOTE (Michael): Here we assume the user is already
         #                 created. Otherwise, we should redirect them
@@ -82,34 +85,31 @@ def getPriorDestination(username):
         # createUser(username)
         print "User does not exist"
     user = User.objects.get(username=username)
-    lat = user.location_set.values_list('destination_lat', flat=True)
-    lng = user.location_set.values_list('destination_lng', flat=True)
-    return {'lat': lat, 'lng': lng}
+    if bounds is None:
+        prior_points = Location.objects.filter(user_id=user.id)
 
-def saveNewDestination(username, origin, new_destination):
+    else:
+        xmin = bounds['southWest']['lat']
+        xmax = bounds['northEast']['lat']
+        ymin = bounds['southWest']['lng']
+        ymax = bounds['northEast']['lng']
+        bbox = (xmin, ymin, xmax, ymax)
+        geom = Polygon.from_bbox(bbox)
+        prior_points = Location.objects.filter(destin__contained=geom, user_id=user.id)
+    return prior_points.values('destin')
+
+
+def saveNewDestination(username, origin, destin):
     user = User.objects.get(username=username)
     user.location_set.create(
-        origin_lat = origin['lat'],
-        origin_lng = origin['lng'],
-        destination_lat = new_destination[0],
-        destination_lng = new_destination[1],
+        origin = Point(origin[0], origin[1]),
+        destin = Point(destin[0], destin[1]),
         date_generation = timezone.now()
     )
-
-def filterLocation(location, bounds):
-    locations = zip(location['lat'], location['lng'])
-    bounded_location = [(x, y) for x,y in locations \
-                        if (x > bounds['southWest']['lat'] and \
-                            x < bounds['northEast']['lat'] and \
-                            y > bounds['southWest']['lng'] and \
-                            y > bounds['southWest']['lng'])]
-    bounded_location_lat = [x[0] for x in bounded_location]
-    bounded_location_lng = [x[1] for x in bounded_location]
-    return {'lat': bounded_location_lat, 'lng': bounded_location_lng}
 
 
 def show_previous_points(request):
     username = request.user
     previous_points = getPriorDestination(username)
-    points_tuple = zip(previous_points['lat'], previous_points['lng'])
+    points_tuple = [(pts['destin'].get_x(), pts['destin'].get_y()) for pts in previous_points]
     return HttpResponse(json.dumps(points_tuple), content_type="application/json")

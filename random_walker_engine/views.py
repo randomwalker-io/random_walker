@@ -64,12 +64,12 @@ def newDestination(request):
         # -------------------------------------------------------------------------------
 
         # Create the prior layer
-        priorLayer = pl.createPriorLayer(newGrid, 20)
+        priorLayer = pl.createPriorLayer(newGrid, 100)
         print "Prior layer created\n"
 
         # Create the learning layer
         if not request.user.is_anonymous():
-            learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
+            learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.5, learningPoints)
         print "Learning layer created\n"
 
         # Create the feasible layer
@@ -96,7 +96,8 @@ def newDestination(request):
                                origin=(center['lat'], center['lng']),
                                destin=newDestination)
         print "New destination saved"
-        saveFigure(finalLayer.probLayer)
+        saveFigure(priorLayer.probLayer, learningLayer.probLayer, 
+                   feasibleLayer.probLayer, finalLayer.probLayer)
 
         # Return the destination
         return HttpResponse(json.dumps(newDestination),
@@ -154,11 +155,15 @@ def show_previous_points(request):
     return HttpResponse(json.dumps(previous_points_geojson), content_type="application/json")
 
 
-def saveFigure(layer):
+def saveFigure(prior, learning, feasible, final):
     fig = plt.figure(frameon=False)
-    fig.set_size_inches(6.4,3.2)
-    ax = plt.Axes(fig, [0., 0., 1., 1.])
-    ax.set_axis_off()
-    fig.add_axes(ax)
-    ax.imshow(layer)
+    # fig.set_size_inches(6.4,3.2)
+    fig.add_subplot(2,2,1)
+    plt.imshow(prior)
+    fig.add_subplot(2,2,2)
+    plt.imshow(learning)
+    fig.add_subplot(2,2,3)
+    plt.imshow(feasible)
+    fig.add_subplot(2,2,4)
+    plt.imshow(final)
     fig.savefig("samplingProb.png", format="png")

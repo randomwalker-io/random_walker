@@ -27,6 +27,7 @@ $(function() {
             },
             fail: function(data){
 		console.log("failed")
+		$("#newLocationButton").addClass('btn-success').removeClass('btn-danger').text('Give Me A New Location!')
             }
         })
     })

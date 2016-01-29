@@ -1,6 +1,6 @@
 $(function() {
     $("#newLocationButton").on("click touchstart", function() {
-        console.log(map.getBounds().getNorthEast())
+	$("#newLocationButton").removeClass('btn-success').addClass('btn-danger').text('Generating Location!')
         $.ajax({
             url: "{% url 'random_walker_engine:newDestination' %}",
             type: "post",
@@ -22,6 +22,7 @@ $(function() {
 				      fillColor: '#f03',
 				      fillOpacity: 0.5
 				  }).addTo(map);
+		$("#newLocationButton").addClass('btn-success').removeClass('btn-danger').text('Give Me A New Location!')
             },
             fail: function(data){
 		console.log("failed")

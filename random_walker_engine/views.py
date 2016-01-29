@@ -12,6 +12,10 @@ from django_mobile import get_flavour
 from django.contrib.gis.geos import Point, fromstr, Polygon
 import geojson as gjs
 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 # Create your views here.
 
 # @login_required
@@ -92,6 +96,7 @@ def newDestination(request):
                                origin=(center['lat'], center['lng']),
                                destin=newDestination)
         print "New destination saved"
+        saveFigure(finalLayer.probLayer)
 
         # Return the destination
         return HttpResponse(json.dumps(newDestination),
@@ -147,3 +152,13 @@ def show_previous_points(request):
     geojson_points = [gjs.Point((pts['destin'].get_y(), pts['destin'].get_x())) for pts in previous_points]
     previous_points_geojson = gjs.FeatureCollection([gjs.Feature(geometry=pts) for pts in geojson_points])
     return HttpResponse(json.dumps(previous_points_geojson), content_type="application/json")
+
+
+def saveFigure(layer):
+    fig = plt.figure(frameon=False)
+    fig.set_size_inches(6.4,3.2)
+    ax = plt.Axes(fig, [0., 0., 1., 1.])
+    ax.set_axis_off()
+    fig.add_axes(ax)
+    ax.imshow(layer)
+    fig.savefig("samplingProb.png", format="png")

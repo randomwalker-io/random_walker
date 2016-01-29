@@ -15,6 +15,10 @@ from django.contrib.gis.geos import Point, fromstr, Polygon
 
 # @login_required
 def index(request):
+    """
+    Returns the Random Walker web page according to device
+    """
+
     if get_flavour() != 'full':
         return render(request, 'random_walker_engine/_m_random_walker_engine.html')
     else:
@@ -22,16 +26,19 @@ def index(request):
 
 @requires_csrf_token
 def newDestination(request):
-    # NOTE (Michael): Change back to POST when the database is setup
+    """
+    Generates a new random location
+    """
+
     if request.method == 'POST':
         # initialisation
+        # -------------------------------------------------------------------------------
         username = request.user
         print username
         print "Is user anonymous: " + str(request.user.is_anonymous())
         
         # Load data and create the Grid class
         json_data = json.loads(request.body)
-        print "Data loaded\n"
         zoom = json_data['zoom']
         center = {'lat': json_data['lat'], 'lng': json_data['lng']}
         bounds = {'southWest': {'lat': json_data['boundsw']['lat'],
@@ -41,50 +48,68 @@ def newDestination(request):
         size = {'lat': json_data['size']['y'], 'lng': json_data['size']['x']}
         if not request.user.is_anonymous():
             learningPoints = getPriorDestination(username, bounds)
+        print "Data loaded\n"
+
+        # Create the grid for probability evaluation
         newGrid = pl.Grid(center, bounds, size, zoom)
         print "Grid created\n"
         
         
         # Create the layers
+        # -------------------------------------------------------------------------------
+
+        # Create the prior layer
         priorLayer = pl.createPriorLayer(newGrid, 20)
-        print priorLayer.probLayer
         print "Prior layer created\n"
+
+        # Create the learning layer
         if not request.user.is_anonymous():
             learningLayer = pl.createLearningLayer(newGrid, 'normal', 0.3, learningPoints)
-            print learningLayer.probLayer
         print "Learning layer created\n"
+
+        # Create the feasible layer
         feasibleLayer = pl.createFeasibleLayer(newGrid)
         print feasibleLayer.probLayer
         print "Feasible layer created\n"
+
+        # Create the final layer
         if not request.user.is_anonymous():
             print "Computing complete final layer"
             finalLayer = priorLayer * learningLayer * feasibleLayer
         else: 
             print "Learning layer excluded in the computation"
             finalLayer = priorLayer * feasibleLayer
-
         print "Final layer created\n"
+
+        # Sample the destination from the final layer
         newDestination = finalLayer.sample()
-        print newDestination
         print "New destination sampled"
+
+        ## Save the destination
         if not request.user.is_anonymous():
             saveNewDestination(username,
                                origin=(center['lat'], center['lng']),
                                destin=newDestination)
         print "New destination saved"
+
+        # Return the destination
         return HttpResponse(json.dumps(newDestination),
                             content_type="application/json")
 
     
 def getPriorDestination(username, bounds=None):
+    """
+    Function to obtain user's previous locations
+    """
+
     if not User.objects.filter(username=username).exists():
-        # NOTE (Michael): Here we assume the user is already
-        #                 created. Otherwise, we should redirect them
-        #                 to the sign-up page
-        #
-        # createUser(username)
         print "User does not exist"
+
+    # Get user object
     user = User.objects.get(username=username)
+
+    # Check whether bounds is specified and query user previous
+    # location in the bounds
     if bounds is None:
         prior_points = Location.objects.filter(user_id=user.id)
 
@@ -100,6 +125,10 @@ def getPriorDestination(username, bounds=None):
 
 
 def saveNewDestination(username, origin, destin):
+    """
+    Save location back to the data base
+    """
+
     user = User.objects.get(username=username)
     user.location_set.create(
         origin = Point(origin[0], origin[1]),
@@ -109,6 +138,9 @@ def saveNewDestination(username, origin, destin):
 
 
 def show_previous_points(request):
+    """ 
+    Query previous points and return a list of tuples to show
+    """
     username = request.user
     previous_points = getPriorDestination(username)
     points_tuple = [(pts['destin'].get_x(), pts['destin'].get_y()) for pts in previous_points]

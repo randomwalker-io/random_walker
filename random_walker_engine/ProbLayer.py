@@ -6,6 +6,21 @@ import urllib
 
 ## Define a grid class
 class Grid(object):
+    '''
+    Define class for Grid
+
+    The class creates a grid for evaluating probability
+    
+    Args:
+        center: the center of the grid
+        bounds: a dictionary containing the north east and south west latlng bounds.
+        size: the dimension of the grid as a dictionary
+        zoom: the zoom associated with the map
+
+    Returns:
+        A Grid class
+    '''
+
     def __init__(self, center, bounds, size, zoom):
         self.center = center
         self.bounds = bounds
@@ -17,10 +32,25 @@ class Grid(object):
                                        bounds['northEast']['lng'], 
                                        size['lng']), size['lat'])
         self.zoom = zoom
+
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
         
 class ProbLayer(object):
+    """
+    Define class ProbLayer
+    
+    The class allows the comparison and computation of probability
+    layers.
+
+    Args:
+        grid: An object of Grid class which the probability was created upon.
+        probLayer: A numpy array which contains the probability associated with the grid.
+    
+    Returns:
+        A ProbLayer class
+    """
+
     def __init__(self, grid, probLayer):
         if probLayer.sum() != 1:
             probLayer = probLayer/probLayer.sum()
@@ -50,10 +80,19 @@ class ProbLayer(object):
         
 
 def createPriorLayer(grid, bandwidth):
-    '''Method for creating the prior layer
-        
-    NOTE (Michael): The probability will depends on the kernel type.
     '''
+    Method for creating the prior layer according to the Gaussian kernel.
+        
+    NOTE (Michael): The probability should depends on the kernel type.
+
+    Args:
+        grid: A Grid class object
+        bandwidth: The bandwidth of the Gaussian kernel
+    
+    Returns:
+        A ProbLayer class
+    '''
+
     distr = scipy.stats.norm(0, bandwidth)
     dist = np.sqrt((grid.lat - grid.center['lat'])**2 + 
                    (grid.lng - grid.center['lng'])**2)
@@ -62,8 +101,18 @@ def createPriorLayer(grid, bandwidth):
     return ProbLayer(grid, unnormalisedLayer)
 
 def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
-    '''Method for creating the learning layer
     '''
+    Method for creating the learning layer
+
+    Args:
+        grid: A Grid class object
+        kernelType: (Not yet implemented)
+        bandwidth: The bandwidth of the kernel
+        learningPoints: Point class of set of Points from previous locations
+    Returns:
+        A ProbLayer class
+    '''
+
     p = len(learningPoints)
     n = grid.size['lat'] * grid.size['lng']
     learningPointsDict = {'lat': [pts['destin'].get_x() for pts in learningPoints],
@@ -93,10 +142,17 @@ def createLearningLayer(grid, kernelType, bandwidth, learningPoints):
 
 
 def createFeasibleLayer(grid):
-    '''Method for creating the feasible layer
+    '''
+    Method for creating the feasible layer
     
     NOTE (Michael): Should allow inputs to be either an image of the
     same dimension or a polygon.
+
+    Args:
+        grid: A Grid class object
+    
+    Returns:
+        A ProbLayer class object
 
     '''
 
@@ -111,7 +167,8 @@ def createFeasibleLayer(grid):
     return ProbLayer(grid, unnormalisedLayer)
 
 def createBiasLayer(grid, kernelType, bandwidth, biasPoints):
-    ''' Method for creating the bias layer
+    ''' 
+    Method for creating the bias layer
     
     Essentially the method is identical to the learning layer
     '''

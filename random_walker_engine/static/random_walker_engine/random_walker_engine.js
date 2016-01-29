@@ -1,3 +1,5 @@
+// Initialisation of the Random Walker Engine
+
 // The get current location code is from: http://themarklee.com/2013/10/27/super-simple-geolocation/
 
 // call getCurrentPosition()

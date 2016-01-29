@@ -1,3 +1,4 @@
+// Function to generate a new destination
 $(function() {
     $("#newLocationButton").on("click touchstart", function() {
 	$("#newLocationButton").removeClass('btn-success').addClass('btn-danger').text('Generating Location!')

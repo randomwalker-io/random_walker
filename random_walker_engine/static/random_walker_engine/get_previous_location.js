@@ -1,3 +1,4 @@
+// Function to display and toggle previous locations
 $(function() {
     $("#getOldLocationButton").on("click touchstart", function() {
 	// if data has not been loaded, get it from the database.

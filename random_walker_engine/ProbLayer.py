@@ -3,6 +3,7 @@ import scipy.stats
 import cStringIO
 from PIL import Image
 import urllib
+from geojson import Point, Feature, FeatureCollection
 
 ## Define a grid class
 class Grid(object):
@@ -77,6 +78,13 @@ class ProbLayer(object):
             return ProbLayer(self.grid, normLayer)
         else:
             raise ValueError("Inputs does not have identical grid")
+
+    def toGeoJsonPointFeatureCollection(self):
+        prob_vec = self.probLayer.flatten()
+        grid = [Point(x) for x in zip(self.grid.lat, self.grid.lng)]
+        geojson = FeatureCollection([Feature(geometry=x[0], properties={'prob': x[1]}) for x  in zip(grid, prob_vec)])
+        return geojson
+
         
 
 def createPriorLayer(grid, bandwidth):

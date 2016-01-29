@@ -34,6 +34,15 @@ def create_user(request):
         last_name = last_name
     )
     u.save()
+    user = authenticate(username = username, password = password)
+    if user.is_active:
+        login(request, user)
+        print "User is logged in"
+        # return HttpResponse("User is logged in!")
+        return HttpResponseRedirect('/random_walker_engine/')
+    else:
+        print "User is inactive"
+        return HttpResponseRedirect('/registration/sign_up/')
     return render(request, 'random_walker/index.html')
     # NOTE (Michael): We will create the extended profile later
     #

@@ -10,6 +10,7 @@ import ProbLayer as pl
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django_mobile import get_flavour
 from django.contrib.gis.geos import Point, fromstr, Polygon
+import geojson as gjs
 
 # Create your views here.
 
@@ -139,9 +140,10 @@ def saveNewDestination(username, origin, destin):
 
 def show_previous_points(request):
     """ 
-    Query previous points and return a list of tuples to show
+    Query previous points and return the geojson for plot
     """
     username = request.user
     previous_points = getPriorDestination(username)
-    points_tuple = [(pts['destin'].get_x(), pts['destin'].get_y()) for pts in previous_points]
-    return HttpResponse(json.dumps(points_tuple), content_type="application/json")
+    geojson_points = [gjs.Point((pts['destin'].get_y(), pts['destin'].get_x())) for pts in previous_points]
+    previous_points_geojson = gjs.FeatureCollection([gjs.Feature(geometry=pts) for pts in geojson_points])
+    return HttpResponse(json.dumps(previous_points_geojson), content_type="application/json")

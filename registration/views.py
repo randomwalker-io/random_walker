@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django.template import RequestContext
 from django.contrib.auth.models import User
-from models import UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -100,10 +99,3 @@ def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
         return HttpResponseRedirect('/')
-
-def profile_view(request, username):
-    """
-    User profile page
-    """
-
-    return render(request, 'registration/_profile.html')

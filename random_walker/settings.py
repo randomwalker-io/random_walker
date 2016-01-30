@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'random_walker',
     'random_walker_engine',
     'registration',
+    'user_settings',
     'django_mobile',
 )
 

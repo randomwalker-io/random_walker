@@ -9,10 +9,13 @@ def profile_view(request, username):
     Profile home page
     """
     user = User.objects.get(username=username)
+    profile = UserProfile.objects.get(user=user.id)
     context = {'username': user.username,
                'first_name': user.first_name,
                'last_name': user.last_name,
-               'email': user.email
+               'email': user.email,
+               'address': profile.address,
+               'gender': profile.gender,
     }
     print context
     if get_flavour() != 'full':

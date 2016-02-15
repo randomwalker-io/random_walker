@@ -100,7 +100,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-## 
+##
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Taipei'
@@ -147,7 +147,7 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = 'DENY'
     # Parse database configuration from $DATABASE_URL
-    DATABASES['default'] =  dj_database_url.config()
+    DATABASES['default'] = dj_database_url.config()
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
     # Enable Persistent Connections
     DATABASES['default']['CONN_MAX_AGE'] = 500

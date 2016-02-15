@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django_mobile import get_flavour
 
+
 def index(request):
     """
     Detect device and return the home page

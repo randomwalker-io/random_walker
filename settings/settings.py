@@ -14,16 +14,29 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import socket
 import dj_database_url
+import json
+from django.core.exceptions import ImproperlyConfigured
+from unipath import Path
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).ancestor(2)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open(os.path.join(BASE_DIR, 'random_walker/settings.txt'), 'r') as f:
-    SECRET_KEY = f.read().strip()
+with open(os.path.join(BASE_DIR, "settings/settings.json")) as f:
+    secrets = json.loads(f.read())
 
+def get_secret(setting, secrets=secrets):
+    """ Get the secret variable or return explicit exception."""
+
+    try:
+        return secrets[setting]
+    except:
+        error_msg = "Set the {0} environment variable".format(settting)
+        raise ImproperlyConfigured(error_msg)
+
+
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if socket.gethostname() == 'mk-IdeaPad-U330p':

@@ -1,16 +1,16 @@
+from json import loads, dumps
+import geojson as gjs
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from models import Location
-import json
-import ProbLayer as pl
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django_mobile import get_flavour
 from django.contrib.gis.geos import Point, fromstr, Polygon
-import geojson as gjs
+import ProbLayer as pl
+from .models import Location
 
 # Create your views here.
 
@@ -39,7 +39,7 @@ def newDestination(request):
         print "Is user anonymous: " + str(request.user.is_anonymous())
         
         # Load data and create the Grid class
-        json_data = json.loads(request.body)
+        json_data = loads(request.body)
         zoom = json_data['zoom']
         center = {'lat': json_data['lat'], 'lng': json_data['lng']}
         bounds = {'southWest': {'lat': json_data['boundsw']['lat'],
@@ -94,7 +94,7 @@ def newDestination(request):
         print "New destination saved"
 
         # Return the destination
-        return HttpResponse(json.dumps(newDestination),
+        return HttpResponse(dumps(newDestination),
                             content_type="application/json")
 
     

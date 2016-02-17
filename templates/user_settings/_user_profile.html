@@ -8,10 +8,10 @@
     <div>
       Username: {{username}}<br>
       First Name: {{first_name}}<br>
-      Gender: {{gender | default:""}}<br>
+      Gender: {{profile.gender | default:""}}<br>
       Last Name: {{last_name}}<br>
       Email: {{email}}<br>
-      Address: {{address}}<br>
+      Address: {{profile.address}}<br>
     </div>
     {% endblock content %}
   </body>

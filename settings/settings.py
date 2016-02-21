@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     'registration',
     'user_settings',
     'django_mobile',
+    'django_coverage',
 )
 
 MIDDLEWARE_CLASSES = (

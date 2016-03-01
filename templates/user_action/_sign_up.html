@@ -6,7 +6,7 @@
   <body>
     {% block content %}
 
-    <form id="sign_up_form" class="form-horizontal" role="form" action="{% url 'registration:create_user' %}" method="POST">
+    <form id="sign_up_form" class="form-horizontal" role="form" action="{% url 'user_action:create_user' %}" method="POST">
       {% csrf_token %}
       {% for field in form %}
       <div>

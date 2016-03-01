@@ -12,7 +12,7 @@
       Email: {{email}}<br>
     </div>
     Enter your username if you want to delete your profile:
-    <form id="delete_user" class="form-horizontal" role="form" action="{% url 'registration:delete_user' %}" method="POST">
+    <form id="delete_user" class="form-horizontal" role="form" action="{% url 'user_action:delete_user' %}" method="POST">
       {% csrf_token %}
     <div>
       <div class="col-sm-7">

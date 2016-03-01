@@ -9,7 +9,7 @@
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
 
-    <form id="log_in_form" class="form-horizontal" role="form" action="{% url 'registration:auth_view' %}" method="POST"> 
+    <form id="log_in_form" class="form-horizontal" role="form" action="{% url 'user_action:auth_view' %}" method="POST"> 
       {% csrf_token %}
       <div >
 

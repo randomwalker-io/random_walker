@@ -60,7 +60,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'random_walker',
     'random_walker_engine',
-    'registration',
+    'user_action',
     'django_mobile',
     'django_coverage',
 )

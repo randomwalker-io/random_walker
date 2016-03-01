@@ -18,7 +18,7 @@ class profile_view(DetailView):
     View Profile
     """
     model = User
-    template_name = 'registration/_user_profile.html'
+    template_name = 'user_action/_user_profile.html'
     context_object_name = "profile"
 
     def get_object(self):
@@ -31,11 +31,11 @@ def sign_up(request):
     """
     Page for sign up
     """
-    form = RegistrationForm()
+    form = User_ActionForm()
     if get_flavour() != 'full':
-        return render(request, 'registration/_m_sign_up.html', {'form': form})
+        return render(request, 'user_action/_m_sign_up.html', {'form': form})
     else:
-        return render(request, 'registration/_sign_up.html', {'form': form})
+        return render(request, 'user_action/_sign_up.html', {'form': form})
 
 @requires_csrf_token
 def create_user(request):
@@ -44,14 +44,14 @@ def create_user(request):
     """
 
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
+        form = User_ActionForm(request.POST)
         if form.is_valid():
             info = form.cleaned_data
             new_user = User.objects.create_user(**info)
             auth_user = authenticate(username = info['username'], password = info['password'])
             login(request, auth_user)
             return HttpResponseRedirect('/random_walker_engine/')
-    return render(request, 'registration/_sign_up.html', {'form': form})
+    return render(request, 'user_action/_sign_up.html', {'form': form})
 
 def delete_user(request):
     """
@@ -74,9 +74,9 @@ def login_view(request):
     """
     form = AuthenticationForm()
     if get_flavour() != 'full':
-        return render(request, 'registration/_m_login.html', {'form': form})
+        return render(request, 'user_action/_m_login.html', {'form': form})
     else:
-        return render(request, 'registration/_login.html', {'form': form})
+        return render(request, 'user_action/_login.html', {'form': form})
 
     
 
@@ -94,12 +94,12 @@ def auth_view(request):
                 return HttpResponseRedirect('/random_walker_engine/')
             else:
                 print "User is inactive"
-                return HttpResponseRedirect('/registration/sign_up/')
+                return HttpResponseRedirect('/user_action/sign_up/')
         else:
             print "User does not exist, prompt to sign in!"
-            return HttpResponseRedirect('/registration/sign_up/')
+            return HttpResponseRedirect('/user_action/sign_up/')
     else:
-        return render(request, 'registration/_login.html', {'form': form})
+        return render(request, 'user_action/_login.html', {'form': form})
 
 def logout_view(request):
     """

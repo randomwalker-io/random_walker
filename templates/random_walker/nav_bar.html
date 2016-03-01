@@ -39,22 +39,22 @@
 	    <span class="caret"></span>
 	    <ul class="dropdown-menu">
 	      <li>
-		<a href="{% url 'registration:profile_view' user%}"> Your Profile </a>
+		<a href="{% url 'user_action:profile_view' user%}"> Your Profile </a>
 	      </li>
 	      <li>
 		<a href="#">Settings</a>
 	      </li>
 	      <li>
-		<a href="{% url 'registration:logout_view' %}">Sign Out</a>
+		<a href="{% url 'user_action:logout_view' %}">Sign Out</a>
 	      </li>
 	    </ul>
 	</li>
 	{% else %}
 	<li>
-	  <a href="{% url 'registration:sign_up' %}"> Sign up</a>
+	  <a href="{% url 'user_action:sign_up' %}"> Sign up</a>
 	</li>
 	<li>
-	  <a href="{% url 'registration:login_view' %}"> Sign in</a>
+	  <a href="{% url 'user_action:login_view' %}"> Sign in</a>
 	</li>
 	{% endif %}
       </ul>

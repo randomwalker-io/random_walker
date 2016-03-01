@@ -1,0 +1,29 @@
+{% extends "random_walker/index.html" %}
+<!DOCTYPE html>
+<html>
+  {% block header %}
+  {% endblock header %}
+  <body>
+    {% block content %}
+    <div>
+      Username: {{username}}<br>
+      First Name: {{first_name}}<br>
+      Last Name: {{last_name}}<br>
+      Email: {{email}}<br>
+    </div>
+    Enter your username if you want to delete your profile:
+    <form id="delete_user" class="form-horizontal" role="form" action="{% url 'registration:delete_user' %}" method="POST">
+      {% csrf_token %}
+    <div>
+      <div class="col-sm-7">
+	<input type="text" class="form-control" name="username" id="delete_user" placeholder="Your Username">
+      </div>
+    </div>
+
+    <input type='submit' class="btn btn-success" value="Delete Account">
+    </form>
+    {% endblock content %}
+  </body>
+  {% block footnote %}{% endblock footnote %}
+</html>
+

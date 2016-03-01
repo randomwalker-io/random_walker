@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django.template import RequestContext
 from django.contrib.auth.models import User
@@ -6,10 +6,26 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django_mobile import get_flavour
+from django.views.generic import DetailView
 from geojson import Feature, Point, FeatureCollection
 from .forms import RegistrationForm
 
+
 # Create your views here.
+class profile_view(DetailView):
+    """
+    View Profile
+    """
+    model = User
+    template_name = 'registration/_user_profile.html'
+    context_object_name = "profile"
+
+    def get_object(self):
+        self.user = get_object_or_404(User, username=self.kwargs['username'])
+        return User.objects.filter(username=self.user).get()
+
+
+
 def sign_up(request):
     """
     Page for sign up
@@ -37,6 +53,21 @@ def create_user(request):
             return HttpResponseRedirect('/random_walker_engine/')
     return render(request, 'registration/_sign_up.html', {'form': form})
 
+def delete_user(request):
+    """
+    Delete an user
+    """
+    if request.method == "POST":
+        user = request.user
+        user_input = request.POST.get("username", '')
+        if user.username == user_input:
+            if user.is_authenticated():
+                logout(request)
+                user.delete()
+                return HttpResponseRedirect("/")
+        else:
+            return HttpResponse("User not deleted, incorrect input")
+
 def login_view(request):
     """
     Page for loging
@@ -56,7 +87,6 @@ def auth_view(request):
     username = request.POST.get('Username', '')
     password = request.POST.get('Password', '')
     user = authenticate(username = username, password = password)
-    print user
     if user is not None:
         if user.is_active:
             login(request, user)
@@ -78,3 +108,4 @@ def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
         return HttpResponseRedirect('/')
+

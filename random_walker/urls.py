@@ -21,7 +21,6 @@ urlpatterns = [
     url('^$', views.index, name='index'),
     url(r'random_walker_engine/', include('random_walker_engine.urls', namespace='random_walker_engine')),
     url(r'registration/', include('registration.urls', namespace='registration')),
-    url(r'^user_settings/', include('user_settings.urls', namespace='user_settings')),
     url(r'^admin/', admin.site.urls),
 
 ]

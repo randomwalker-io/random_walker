@@ -7,18 +7,18 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django_mobile import get_flavour
 from geojson import Feature, Point, FeatureCollection
+from .forms import RegistrationForm
 
 # Create your views here.
-
 def sign_up(request):
     """
     Page for sign up
     """
-
+    form = RegistrationForm()
     if get_flavour() != 'full':
-        return render(request, 'registration/_m_sign_up.html')
+        return render(request, 'registration/_m_sign_up.html', {'form': form})
     else:
-        return render(request, 'registration/_sign_up.html')
+        return render(request, 'registration/_sign_up.html', {'form': form})
 
 @requires_csrf_token
 def create_user(request):
@@ -26,37 +26,16 @@ def create_user(request):
     Create a new user
     """
 
-    if request.method == 'POST':
-        username = request.POST.get('Username', '')
-        password = request.POST.get('Password', '')
-        first_name = request.POST.get('First_name', '')
-        last_name = request.POST.get('Last_name', '')
-        email = request.POST.get('Email', '')
-        print "New user " + username + " created!"
-    u = User.objects.create_user(
-        username = username,
-        password = password,
-        email = email,
-        first_name = first_name,
-        last_name = last_name
-    )
-    u.save()
-    user = authenticate(username = username, password = password)
-    if user.is_active:
-        login(request, user)
-        print "User is logged in"
-        return HttpResponseRedirect('/random_walker_engine/')
-    else:
-        print "User is inactive"
-        return HttpResponseRedirect('/registration/sign_up/')
-    return render(request, 'random_walker/index.html')
-    # NOTE (Michael): We will create the extended profile later
-    #
-    # u.userprofile(
-    #     address = "my home",
-    #     gender = "M",
-    #     date_registration = timezone.now()
-    # )
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            info = form.cleaned_data
+            new_user = User.objects.create_user(**info)
+            auth_user = authenticate(username = info['username'], password = info['password'])
+            login(request, auth_user)
+            # redirect, or however you want to get to the main view
+            return HttpResponseRedirect('/random_walker_engine/')
+    return render(request, 'registration/_sign_up.html', {'form': form})
 
 def login_view(request):
     """

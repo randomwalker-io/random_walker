@@ -5,48 +5,25 @@
   {% endblock header %}
   <body>
     {% block content %}
-    <!-- {% if form.errors %} -->
-    <!--     <p>Your username and password didn't match. Please try again.</p> -->
-    <!-- {% endif %} -->
 
-    <form id="sign_up_form" class="form-horizontal" role="form" action="{% url 'registration:create_user' %}" method="POST"> {% csrf_token %}
-      <div >
+    <form id="sign_up_form" class="form-horizontal" role="form" action="{% url 'registration:create_user' %}" method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+      <div>
 	<div class="form-group">
-	  <label class="control-label col-sm-2" for="username">Username:</label>
+	  <label class="control-label col-sm-2" for="{{field.html_name}}">
+	    {{field.label_tag}}
+	  </label>
+
 	  <div class="col-sm-7">
-            <input type="text" class="form-control" name="Username" id="username" placeholder="Enter Username">
+	    <input type="text" class="form-control" name="{{field.html_name}}" id="{{field.id_for_label}}" placeholder="{{field.label}}" value="{{field.value|default_if_none:""}}">
+	    {{field.errors}}
 	  </div>
 	</div>
-
-	<div class="form-group">
-	  <label class="control-label col-sm-2" for="password">Password:</label>
-	  <div class="col-sm-7">
-            <input type="password" class="form-control" name="Password" id="password" placeholder="Enter Password">
-	  </div>
-	</div>
-
-	<div class="form-group">
-	  <label class="control-label col-sm-2" for="email">Email:</label>
-	  <div class="col-sm-7">
-            <input type="email" class="form-control" name="Email" id="email" placeholder="Enter Email">
-	  </div>
-	</div>
-
-	<div class="form-group">
-	  <label class="control-label col-sm-2" for="first_name">First Name:</label>
-	  <div class="col-sm-7">
-            <input type="text" class="form-control" name="First_Name" id="first_name" placeholder="Enter First Name">
-	  </div>
-	</div>
-
-	<div class="form-group">
-	  <label class="control-label col-sm-2" for="last_name">Last Name:</label>
-	  <div class="col-sm-7">
-            <input type="text" class="form-control" name="Last_Name" id="last_name" placeholder="Enter Last Name">
-	  </div>
-	</div>
-        <input type='submit' class="btn btn-success" value="Sign Up">
       </div>
+      {% endfor %}
+
+      <input type='submit' class="btn btn-success" value="Sign Up">
     </form>
     {% endblock content %}
   </body>

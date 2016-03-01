@@ -146,4 +146,4 @@ def show_previous_points(request):
     previous_points = getPriorDestination(username)
     geojson_points = [gjs.Point((pts['destin'].get_y(), pts['destin'].get_x())) for pts in previous_points]
     previous_points_geojson = gjs.FeatureCollection([gjs.Feature(geometry=pts) for pts in geojson_points])
-    return HttpResponse(json.dumps(previous_points_geojson), content_type="application/json")
+    return HttpResponse(dumps(previous_points_geojson), content_type="application/json")

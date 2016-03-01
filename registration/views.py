@@ -49,7 +49,6 @@ def create_user(request):
             new_user = User.objects.create_user(**info)
             auth_user = authenticate(username = info['username'], password = info['password'])
             login(request, auth_user)
-            # redirect, or however you want to get to the main view
             return HttpResponseRedirect('/random_walker_engine/')
     return render(request, 'registration/_sign_up.html', {'form': form})
 

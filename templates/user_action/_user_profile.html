@@ -6,10 +6,10 @@
   <body>
     {% block content %}
     <div>
-      Username: {{username}}<br>
-      First Name: {{first_name}}<br>
-      Last Name: {{last_name}}<br>
-      Email: {{email}}<br>
+      Username: {{profile.username}}<br>
+      First Name: {{profile.first_name}}<br>
+      Last Name: {{profile.last_name}}<br>
+      Email: {{profile.email}}<br>
     </div>
     Enter your username if you want to delete your profile:
     <form id="delete_user" class="form-horizontal" role="form" action="{% url 'user_action:delete_user' %}" method="POST">

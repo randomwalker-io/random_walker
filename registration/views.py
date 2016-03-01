@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token
 from django.template import RequestContext
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -71,10 +72,11 @@ def login_view(request):
     """
     Page for loging
     """
+    form = AuthenticationForm()
     if get_flavour() != 'full':
-        return render(request, 'registration/_m_login.html')
+        return render(request, 'registration/_m_login.html', {'form': form})
     else:
-        return render(request, 'registration/_login.html')
+        return render(request, 'registration/_login.html', {'form': form})
 
     
 
@@ -82,22 +84,22 @@ def auth_view(request):
     """
     Authenticate the user
     """
-
-    username = request.POST.get('Username', '')
-    password = request.POST.get('Password', '')
-    user = authenticate(username = username, password = password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            print "User is logged in"
-            return HttpResponseRedirect('/random_walker_engine/')
+    form = AuthenticationForm(data=request.POST)
+    if form.is_valid():
+        user = form.get_user()
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                print "User is logged in"
+                return HttpResponseRedirect('/random_walker_engine/')
+            else:
+                print "User is inactive"
+                return HttpResponseRedirect('/registration/sign_up/')
         else:
-            print "User is inactive"
+            print "User does not exist, prompt to sign in!"
             return HttpResponseRedirect('/registration/sign_up/')
     else:
-        print "User does not exist, prompt to sign in!"
-        return HttpResponseRedirect('/registration/sign_up/')
-
+        return render(request, 'registration/_login.html', {'form': form})
 
 def logout_view(request):
     """

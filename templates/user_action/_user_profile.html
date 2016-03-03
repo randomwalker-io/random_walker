@@ -10,6 +10,7 @@
       First Name: {{profile.first_name}}<br>
       Last Name: {{profile.last_name}}<br>
       Email: {{profile.email}}<br>
+      Gender: {{profile.userprofile.gender}}<br>
     </div>
     Enter your username if you want to delete your profile:
     <form id="delete_user" class="form-horizontal" role="form" action="{% url 'user_action:delete_user' %}" method="POST">

@@ -4,8 +4,8 @@ $(function() {
 	// if data has not been loaded, get it from the database.
 	if(typeof geojsonLayer === 'undefined'){
             $.ajax({
-		url: "{% url 'random_walker_engine:showPreviousPoints' %}",
-		type: "get",
+		url: "{% url 'random_walker_engine:show_location_history' %}",
+		type: "POST",
 		dataType: "json",
 		data: JSON.stringify({'lat': parseFloat(map.getCenter()['lat']),
 				      'lng': parseFloat(map.getCenter()['lng']),
@@ -13,8 +13,6 @@ $(function() {
 				      'boundne': map.getBounds().getNorthEast(),
 				      'boundsw': map.getBounds().getSouthWest(),
 				      'size': map.getSize()}
-		// data: JSON.stringify(
-		//     {'username': $.trim($('.dropdown-toggle').text())}
 		),
 		success: function(data){
 		    console.log("successful")

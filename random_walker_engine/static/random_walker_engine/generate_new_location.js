@@ -3,8 +3,8 @@ $(function() {
     $("#newLocationButton").on("click touchstart", function() {
 	$("#newLocationButton").removeClass('btn-success').addClass('btn-danger').text('Generating Location!')
         $.ajax({
-            url: "{% url 'random_walker_engine:newDestination' %}",
-            type: "post",
+            url: "{% url 'random_walker_engine:generate_new_destination' %}",
+            type: "POST",
             dataType: "json",
             data: JSON.stringify({'lat': parseFloat(map.getCenter()['lat']),
 				  'lng': parseFloat(map.getCenter()['lng']),

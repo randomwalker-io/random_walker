@@ -8,7 +8,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django_mobile import get_flavour
 from django.views.generic import DetailView
-from geojson import Feature, Point, FeatureCollection
 from .forms import RegistrationForm
 
 

@@ -7,8 +7,14 @@ $(function() {
 		url: "{% url 'random_walker_engine:showPreviousPoints' %}",
 		type: "get",
 		dataType: "json",
-		data: JSON.stringify(
-		    {'username': $.trim($('.dropdown-toggle').text())}
+		data: JSON.stringify({'lat': parseFloat(map.getCenter()['lat']),
+				      'lng': parseFloat(map.getCenter()['lng']),
+				      'zoom': map.getZoom(),
+				      'boundne': map.getBounds().getNorthEast(),
+				      'boundsw': map.getBounds().getSouthWest(),
+				      'size': map.getSize()}
+		// data: JSON.stringify(
+		//     {'username': $.trim($('.dropdown-toggle').text())}
 		),
 		success: function(data){
 		    console.log("successful")

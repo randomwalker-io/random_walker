@@ -30,7 +30,7 @@ def sign_up(request):
     """
     Page for sign up
     """
-    form = User_ActionForm()
+    form = RegistrationForm()
     if get_flavour() != 'full':
         return render(request, 'user_action/_m_sign_up.html', {'form': form})
     else:

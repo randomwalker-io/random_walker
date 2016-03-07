@@ -21,6 +21,6 @@ urlpatterns = [
     url('^$', views.index, name='index'),
     url(r'random_walker_engine/', include('random_walker_engine.urls', namespace='random_walker_engine')),
     url(r'user_action/', include('user_action.urls', namespace='user_action')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^shah_jahan/', admin.site.urls),
 
 ]

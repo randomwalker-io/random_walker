@@ -86,7 +86,7 @@ TEMPLATES = [
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
-                'django.core.context_processors.csrf',
+                'django.template.context_processors.csrf',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -153,6 +153,7 @@ if socket.gethostname() != 'mk-IdeaPad-U330p':
     SESSION_COOKIE_HTTPONLY = False
     CSRF_COOKIE_HTTPONLY = False
     SECURE_SSL_REDIRECT = True
+    SECURE_SSL_HOST = True
     SECURE_HSTS_SECONDS = False
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True

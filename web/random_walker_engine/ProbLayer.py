@@ -26,11 +26,11 @@ class Grid(object):
         self.center = center
         self.bounds = bounds
         self.size = size
-        self.lat = np.repeat(np.linspace(bounds['northEast']['lat'], 
-                                         bounds['southWest']['lat'], 
+        self.lat = np.repeat(np.linspace(bounds['northEast']['lat'],
+                                         bounds['southWest']['lat'],
                                          size['lat']), size['lng'])
-        self.lng = np.tile(np.linspace(bounds['southWest']['lng'], 
-                                       bounds['northEast']['lng'], 
+        self.lng = np.tile(np.linspace(bounds['southWest']['lng'],
+                                       bounds['northEast']['lng'],
                                        size['lng']), size['lat'])
         self.zoom = zoom
 
@@ -132,7 +132,7 @@ class Grid(object):
         '''
         return createLearningLayer(self, kernelType, bandwidth, biasPoints)
 
-        
+
 class ProbLayer(object):
     """
     Define class ProbLayer
@@ -180,5 +180,3 @@ class ProbLayer(object):
         grid = [Point(x) for x in zip(self.grid.lat, self.grid.lng)]
         geojson = FeatureCollection([Feature(geometry=x[0], properties={'prob': x[1]}) for x  in zip(grid, prob_vec)])
         return geojson
-
-        

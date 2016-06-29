@@ -33,7 +33,7 @@ class MapParameter(object):
         print "Data loaded\n"
         self.grid = pl.Grid(self.center, self.bounds, self.size, self.zoom)
         print "Grid created\n"
-    
+
     def get_location_history(self, toJson = False):
         """
         Function to obtain user's previous locations
@@ -66,7 +66,7 @@ class MapParameter(object):
 
     def create_prior_layer(self, bandwidth=20):
         return self.grid.createPriorLayer(bandwidth=bandwidth)
-        
+
     def create_feasible_layer(self):
         return self.grid.createFeasibleLayer()
 

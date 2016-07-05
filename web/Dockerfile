@@ -6,7 +6,7 @@
 # Set the base image to use to Ubuntu
 FROM ubuntu:14.04
 
-# Set the file maintainer (your name - the file's author)
+# Set the file maintainer
 MAINTAINER Michal Kao
 
 # Set env variables used in this Dockerfile (add a unique prefix, such as DOCKYARD)
@@ -29,6 +29,9 @@ RUN apt-get install -y \
      libpq-dev \
      python-dev \
      python-psycopg2
+
+# Install Nginx
+RUN apt-get install -y nginx supervisor
 
 ## The following is necessary for Pillow
 RUN apt-get build-dep -y python-imaging
@@ -59,6 +62,9 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 
 # Copy application source code to SRCDIR
 COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
+
+# Install uwsgi
+run pip install uwsgi
 
 # Install Python dependencies
 RUN pip install -r $DOCKYARD_SRVPROJ/requirements.txt

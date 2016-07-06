@@ -99,6 +99,7 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'LocationDB',
     }
 }
@@ -144,11 +145,6 @@ SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
-# Parse database configuration from $DATABASE_URL
-DATABASES['default'] = dj_database_url.config()
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-# Enable Persistent Connections
-DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()

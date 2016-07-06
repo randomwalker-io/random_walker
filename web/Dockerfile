@@ -95,6 +95,9 @@ RUN apt-get install -y \
     nginx \
     uwsgi
 
+# Append "daemon off;" to the beginning of the configuration. This is so that
+#  the docker container will not exit immediately.
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ## The following is necessary for Pillow
 RUN apt-get build-dep -y python-imaging

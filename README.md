@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mkao006/random_walker.png?label=ready&title=Ready)](https://waffle.io/mkao006/random_walker)
 **Random Walker** is a web application built with an aim to inspire and
 make exploration easy.
 

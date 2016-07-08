@@ -121,6 +121,9 @@ RUN apt-get install -y \
     libatlas-base-dev \
     gfortran
 
+# For uwsgi
+RUN apt-get install -y uwsgi-plugin-python
+
 # Install Python dependencies
 ADD requirements.txt $DOCKYARD_SRC
 RUN pip install -r requirements.txt

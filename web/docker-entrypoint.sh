@@ -28,5 +28,9 @@ mv random_walker.conf /etc/nginx/sites-available/
 ln -fs /etc/nginx/sites-available/random_walker.conf /etc/nginx/sites-enabled
 
 ## Start the web and application server.
+# service uwsgi start
+# uwsgi --emperor /etc/uwsgi/sites --gid www-data --uid root&
+uwsgi --ini /etc/uwsgi/sites/random_walker.ini --gid www-data --uid root &
 service nginx start
-service uwsgi start
+
+

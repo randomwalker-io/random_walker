@@ -3,20 +3,22 @@
 # We will deploy the docker to local here.
 # -----------------------------------------------------------------------
 
+## NOTE (Michael): Add in arguement to just run and not build.
+
 # Initialisation
 rootDir=$(pwd)
 configDir="$rootDir/config/local_docker_single/"
 randomwalkerDir="$rootDir/web/"
 configFiles=$(ls $configDir)
 
+# Move into the random walker directory to build
+cd $randomwalkerDir
+
 # First copy the Nginx and uwsgi configuration
 for f in $configFiles;
 do
     cp $configDir/$f .
 done;
-
-# Move into the random walker directory to build
-cd $randomwalkerDir
 
 # Build the image
 sudo docker build -t random_walker_docker_single .

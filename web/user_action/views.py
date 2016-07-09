@@ -43,7 +43,7 @@ def create_user(request):
     """
 
     if request.method == "POST":
-        form = User_ActionForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             info = form.cleaned_data
             new_user = User.objects.create_user(**info)

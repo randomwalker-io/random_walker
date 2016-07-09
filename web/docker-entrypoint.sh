@@ -8,15 +8,8 @@ exec start-stop-daemon --start --chuid postgres:postgres \
 python manage.py migrate                  # Apply database migrations
 python manage.py collectstatic --noinput  # Collect static files
 
-## Start uwsgi
-# exec uwsgi --http :8000 \
-#      --home /home/mk/Github/random_walker/web/venv \
-#      --chdir /home/mk/Github/random_walker/web/ \
-#      -w random_walker.wsgi
-
-
-# exec uwsgi --http :8000\
-#      --ini random_walker.ini
+## Create log directory for uwsgi
+mkdir -p /var/log/uwsgi/
 
 ## Move uwsgi configuration file to appropriate location
 mkdir -p /etc/uwsgi/sites/

@@ -5,8 +5,9 @@ exec start-stop-daemon --start --chuid postgres:postgres \
      -D /var/lib/postgresql/9.3/main \
      -c config_file=/etc/postgresql/9.3/main/postgresql.conf &
 
-python manage.py migrate                  # Apply database migrations
-python manage.py collectstatic --noinput  # Collect static files
+python manage.py makemigrations --setting=settings.local_docker_single
+python manage.py migrate --setting=settings.local_docker_single # Apply database migrations
+python manage.py collectstatic --noinput --setting=settings.local_docker_single  # Collect static files
 
 ## Create log directory for uwsgi
 mkdir -p /var/log/uwsgi/

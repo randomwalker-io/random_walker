@@ -8,8 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django_mobile import get_flavour
 from django.views.generic import DetailView
-from .forms import RegistrationForm
-
+from .forms import RegistrationForm, UploadProfilePicture
+from .models import UserProfile
 
 # Create your views here.
 class profile_view(DetailView):
@@ -18,7 +18,7 @@ class profile_view(DetailView):
     """
     model = User
     template_name = 'user_action/_user_profile.html'
-    context_object_name = "profile"
+    context_object_name = 'profile'
 
     def get_object(self):
         self.user = get_object_or_404(User, username=self.kwargs['username'])
@@ -47,9 +47,10 @@ def create_user(request):
         if form.is_valid():
             info = form.cleaned_data
             new_user = User.objects.create_user(**info)
+            new_user_profile = UserProfile.objects.get_or_create(user = new_user)
             auth_user = authenticate(username = info['username'], password = info['password'])
             login(request, auth_user)
-            return HttpResponseRedirect('/random_walker_engine/')
+            return HttpResponseRedirect('/')
     return render(request, 'user_action/_sign_up.html', {'form': form})
 
 def delete_user(request):
@@ -83,6 +84,7 @@ def upload_profile_pic(request):
         else:
             form = UploadProfilePicture()
             return HttpResponse("Upload Failed")
+        
 
 def login_view(request):
     """
@@ -94,7 +96,7 @@ def login_view(request):
     else:
         return render(request, 'user_action/_login.html', {'form': form})
 
-
+    
 
 def auth_view(request):
     """
@@ -107,7 +109,7 @@ def auth_view(request):
             if user.is_active:
                 login(request, user)
                 print "User is logged in"
-                return HttpResponseRedirect('/random_walker_engine/')
+                return HttpResponseRedirect('/')
             else:
                 print "User is inactive"
                 return HttpResponseRedirect('/user_action/sign_up/')
@@ -125,4 +127,4 @@ def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
         return HttpResponseRedirect('/')
-
+    

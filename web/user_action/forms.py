@@ -11,3 +11,8 @@ class RegistrationForm(ModelForm):
 class UploadProfilePicture(forms.Form):
     """Image upload form"""
     profile_picture = forms.ImageField()
+
+# class UploadProfilePicture(ModelForm):
+#     class Meta:
+#         model = UserProfile
+#         fields = ['profile_picture']

@@ -5,9 +5,18 @@ exec start-stop-daemon --start --chuid postgres:postgres \
      -D /var/lib/postgresql/9.3/main \
      -c config_file=/etc/postgresql/9.3/main/postgresql.conf &
 
+## Remove copied migrations
+rm -r random_walker_engine/migrations/*
+touch random_walker_engine/migrations/__init__.py
+rm -r user_action/migrations/*
+touch user_action/migrations/__init__.py
+
+## Make migration
 python manage.py makemigrations --setting=settings.local_docker_single
-python manage.py migrate --setting=settings.local_docker_single # Apply database migrations
-python manage.py collectstatic --noinput --setting=settings.local_docker_single  # Collect static files
+python manage.py migrate --setting=settings.local_docker_single
+
+## Collect static files
+python manage.py collectstatic --noinput --setting=settings.local_docker_single
 
 ## Create log directory for uwsgi
 mkdir -p /var/log/uwsgi/

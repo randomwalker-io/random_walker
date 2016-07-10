@@ -67,6 +67,23 @@ def delete_user(request):
         else:
             return HttpResponse("User not deleted, incorrect input")
 
+
+def upload_profile_pic(request):
+    """
+    Upload Profile Picture
+    """
+    if request.method == "POST":
+        form = UploadProfilePicture(request.POST, request.FILES)
+        if form.is_valid():
+            up = UserProfile.objects.get(user = request.user)
+            up.profile_picture = form.cleaned_data['profile_picture']
+            up.save()
+            # handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect("/")
+        else:
+            form = UploadProfilePicture()
+            return HttpResponse("Upload Failed")
+
 def login_view(request):
     """
     Page for loging
@@ -77,7 +94,7 @@ def login_view(request):
     else:
         return render(request, 'user_action/_login.html', {'form': form})
 
-    
+
 
 def auth_view(request):
     """

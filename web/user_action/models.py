@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
+# # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender_choice = (
@@ -12,3 +12,4 @@ class UserProfile(models.Model):
         ('', 'Unspecified'),
     )
     gender = models.CharField(max_length=2, choices = gender_choice, default='')
+    profile_picture = models.ImageField(upload_to='userprofile', default='userprofile/default.jpeg')

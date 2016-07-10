@@ -20,8 +20,6 @@ from unipath import Path
 
 BASE_DIR = Path(__file__).ancestor(2)
 
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # SECURITY WARNING: keep the secret key used in production secret!
 with open(os.path.join(BASE_DIR, "settings/settings.json")) as f:
     secrets = json.loads(f.read())
@@ -39,12 +37,8 @@ def get_secret(setting, secrets=secrets):
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if socket.gethostname() == 'mk-IdeaPad-U330p':
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG = True
 
-# ALLOWED_HOSTS = ['emperorkao.com']
 ALLOWED_HOSTS = ['*']
 
 
@@ -105,7 +99,10 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'LocationDB',
+        'USER': 'root',
+        'PASSWORD': 'password',
     }
 }
 
@@ -125,6 +122,10 @@ USE_L10N = True
 USE_TZ = True
 
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = '/media/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -134,38 +135,19 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
 
-# Additional settings for production
-if socket.gethostname() != 'mk-IdeaPad-U330p':
-    # Exceptions are sent to the following
-    # ADMINS = (
-    #     ('Michael Kao', 'mkao006@emperorkao.com')
-    # )
 
-    # Sned email if 404 is hit
-    # SEND_BROKEN_LINK_EMAILS = True
-
-    # Broken link error is sent to the manager
-    # MANAGERS = (
-    #     ('Michael Kao', 'mkao006@emperorkao.com')
-    # )
-
-    # Security settings for production
-    SESSION_COOKIE_HTTPONLY = False
-    CSRF_COOKIE_HTTPONLY = False
-    SECURE_SSL_REDIRECT = True
-    SECURE_SSL_HOST = True
-    SECURE_HSTS_SECONDS = False
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    X_FRAME_OPTIONS = 'DENY'
-    # Parse database configuration from $DATABASE_URL
-    DATABASES['default'] = dj_database_url.config()
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-    # Enable Persistent Connections
-    DATABASES['default']['CONN_MAX_AGE'] = 500
+# # Security settings for production
+# SESSION_COOKIE_HTTPONLY = False
+# CSRF_COOKIE_HTTPONLY = False
+# SECURE_SSL_REDIRECT = True
+# SECURE_SSL_HOST = True
+# SECURE_HSTS_SECONDS = False
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_BROWSER_XSS_FILTER = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# X_FRAME_OPTIONS = 'DENY'
 
 
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

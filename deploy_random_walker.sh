@@ -7,9 +7,31 @@
 
 # Initialisation
 rootDir=$(pwd)
+dockerRepo="mkao006"
+appName="random_walker"
 configDir="$rootDir/config/local_docker_single/"
 randomwalkerDir="$rootDir/web/"
 configFiles=$(ls $configDir)
+
+## Get the latest Git release version
+GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
+# list doesn't work, so we will do it manually
+V_MAJOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $1}')
+V_MINOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $2}')
+V_PATCH=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $3}')
+
+## Bump the version
+echo "Current Git version : $GIT_VERSION"
+V_PATCH=$((V_PATCH + 1))
+SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
+
+## Prompt if the version should be different
+read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: " dockerVersion
+if [ "$dockerVersion" = "" ]; then
+    dockerVersion=$SUGGESTED_VERSION
+fi
+echo "Will set new Docker version to be $dockerVersion"
+
 
 # Move into the random walker directory to build
 cd $randomwalkerDir
@@ -21,9 +43,10 @@ do
 done;
 
 # Build the image
-sudo docker build -t random_walker_docker_single .
+sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion .
+# sudo docker build -t $(echo $appName":"$dockerVersion)
 
-# Then delete the configuration files.
+# then delete the configuration files.
 rm $configFiles
 
 # Move back to root
@@ -39,7 +62,7 @@ sudo docker ps | grep docker-entrypoint | awk '{print $1}' | xargs --no-run-if-e
 sudo fuser -k tcp/8080
 
 # Run the new image
-sudo docker run -d -p 8080:8000 random_walker_docker_single
+sudo docker run -d -p 8080:8000 $dockerRepo"/"$appName":"$dockerVersion
 
 
 

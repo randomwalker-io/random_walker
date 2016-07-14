@@ -37,7 +37,7 @@ then
     ## Start the server
     python manage.py runserver --settings=settings.base
 
-elif [ "$GIT_BRANCH" = 'master']
+elif [ "$GIT_BRANCH" = "master" ]
 then
     ## Get the latest Git release version
     GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
@@ -99,7 +99,7 @@ then
     # Send message
     echo "Starting staging server at local:8080/"
 
-elif [ "$GIT_BRANCH" = 'production' ]
+elif [ "$GIT_BRANCH" = "production" ]
 then
     echo "Production not yet implemented"
 else

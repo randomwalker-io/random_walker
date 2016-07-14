@@ -26,6 +26,15 @@ if [ "$GIT_BRANCH" = "dev" ]
 then
     cd $randomwalkerDir
     . venv/bin/activate
+
+    ## make migration
+    python manage.py makemigrations --setting=settings.base
+    python manage.py migrate --setting=settings.base
+
+    ## Collect static files
+    python manage.py collectstatic --noinput --setting=settings.base
+
+    ## Start the server
     python manage.py runserver --settings=settings.base
 
 elif [ "$GIT_BRANCH" = 'master']

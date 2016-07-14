@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import socket
-import dj_database_url
 import json
 from django.core.exceptions import ImproperlyConfigured
 from unipath import Path
@@ -99,10 +98,7 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'LocationDB',
-        'USER': 'root',
-        'PASSWORD': 'password',
     }
 }
 
@@ -134,20 +130,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
-
-
-# # Security settings for production
-# SESSION_COOKIE_HTTPONLY = False
-# CSRF_COOKIE_HTTPONLY = False
-# SECURE_SSL_REDIRECT = True
-# SECURE_SSL_HOST = True
-# SECURE_HSTS_SECONDS = False
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# X_FRAME_OPTIONS = 'DENY'
-
-
-# # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

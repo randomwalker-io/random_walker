@@ -5,13 +5,19 @@
 
 ## NOTE (Michael): Add in arguement to just run and not build.
 
+## NOTE (Michael): The script should depend on the Git branch and deploy in
+##                 different method.
+
 # Initialisation
 rootDir=$(pwd)
 dockerRepo="mkao006"
 appName="random_walker"
-configDir="$rootDir/config/local_docker_single/"
+awsConfigDir="$rootDir/config/aws/"
+uwsgiConfigDir="$rootDir/config/uwsgi/"
+nginxConfigDir="$rootDir/config/nginx/"
 randomwalkerDir="$rootDir/web/"
-configFiles=$(ls $configDir)
+uwsgiConfigFiles=$(ls $uwsgiConfigDir)
+nginxConfigFiles=$(ls $nginxConfigDir)
 
 ## Get the latest Git release version
 GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
@@ -37,17 +43,16 @@ echo "Will set new Docker version to be $dockerVersion"
 cd $randomwalkerDir
 
 # First copy the Nginx and uwsgi configuration
-for f in $configFiles;
-do
-    cp $configDir/$f .
-done;
+cp $uwsgiConfigDir/* .
+cp $nginxConfigDir/* .
 
 # Build the image
 sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion .
 # sudo docker build -t $(echo $appName":"$dockerVersion)
 
 # then delete the configuration files.
-rm $configFiles
+rm $uwsgiConfigFiles
+rm $nginxConfigFiles
 
 # Move back to root
 cd $rootDir

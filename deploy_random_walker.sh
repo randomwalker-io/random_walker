@@ -22,35 +22,33 @@ nginxConfigFiles=$(ls $nginxConfigDir)
 ## Get the Git branch
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-## Get the latest Git release version
-GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
-# list doesn't work, so we will do it manually
-V_MAJOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $1}')
-V_MINOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $2}')
-V_PATCH=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $3}')
-
-## Bump the version
-echo "Current Git version : $GIT_VERSION"
-V_PATCH=$((V_PATCH + 1))
-SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
-
-## Prompt if the version should be different
-read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: "\
-     dockerVersion
-if [ "$dockerVersion" = "" ]; then
-    dockerVersion=$SUGGESTED_VERSION
-fi
-echo "Will set new Docker version to be $dockerVersion"
-
-
-if [ GIT_BRANCH == 'dev' ]
+if [ "$GIT_BRANCH" = "dev" ]
 then
     cd $randomwalkerDir
-    source venv/bin/activate
+    . venv/bin/activate
     python manage.py runserver --settings=settings.base
 
-elif [ GIT_BRANCH == 'master']
+elif [ "$GIT_BRANCH" = 'master']
 then
+    ## Get the latest Git release version
+    GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
+    # list doesn't work, so we will do it manually
+    V_MAJOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $1}')
+    V_MINOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $2}')
+    V_PATCH=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $3}')
+
+    ## Bump the version
+    echo "Current Git version : $GIT_VERSION"
+    V_PATCH=$((V_PATCH + 1))
+    SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
+
+    ## Prompt if the version should be different
+    read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: "\
+         dockerVersion
+    if [ "$dockerVersion" = "" ]; then
+        dockerVersion=$SUGGESTED_VERSION
+    fi
+    echo "Will set new Docker version to be $dockerVersion"
 
     # Move into the random walker directory to build
     cd $randomwalkerDir
@@ -89,7 +87,10 @@ then
     # Run the new image
     sudo docker run -d -p 8080:8000 $dockerRepo"/"$appName":"$dockerVersion
 
-elif [ GIT_BRANCH == 'production' ]
+    # Send message
+    echo "Starting staging server at local:8080/"
+
+elif [ "$GIT_BRANCH" = 'production' ]
 then
     echo "Production not yet implemented"
 else

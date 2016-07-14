@@ -19,6 +19,9 @@ randomwalkerDir="$rootDir/web/"
 uwsgiConfigFiles=$(ls $uwsgiConfigDir)
 nginxConfigFiles=$(ls $nginxConfigDir)
 
+## Get the Git branch
+GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
 ## Get the latest Git release version
 GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
 # list doesn't work, so we will do it manually
@@ -32,43 +35,66 @@ V_PATCH=$((V_PATCH + 1))
 SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
 
 ## Prompt if the version should be different
-read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: " dockerVersion
+read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: "\
+     dockerVersion
 if [ "$dockerVersion" = "" ]; then
     dockerVersion=$SUGGESTED_VERSION
 fi
 echo "Will set new Docker version to be $dockerVersion"
 
 
-# Move into the random walker directory to build
-cd $randomwalkerDir
+if [ GIT_BRANCH == 'dev' ]
+then
+    cd $randomwalkerDir
+    source venv/bin/activate
+    python manage.py runserver --settings=settings.base
 
-# First copy the Nginx and uwsgi configuration
-cp $uwsgiConfigDir/* .
-cp $nginxConfigDir/* .
+elif [ GIT_BRANCH == 'master']
+then
 
-# Build the image
-sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion .
-# sudo docker build -t $(echo $appName":"$dockerVersion)
+    # Move into the random walker directory to build
+    cd $randomwalkerDir
 
-# then delete the configuration files.
-rm $uwsgiConfigFiles
-rm $nginxConfigFiles
+    # First copy the Nginx and uwsgi configuration
+    cp $uwsgiConfigDir/* .
+    cp $nginxConfigDir/* .
 
-# Move back to root
-cd $rootDir
+    # Build the image
+    sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion .
+    # sudo docker build -t $(echo $appName":"$dockerVersion)
 
-# remove old image
-sudo docker images | grep \<none\> | tr -s ' '| cut -d ' ' -f 3 | xargs sudo docker rmi -f
+    # then delete the configuration files.
+    rm $uwsgiConfigFiles
+    rm $nginxConfigFiles
 
-# kill any previous running images
-sudo docker ps | grep docker-entrypoint | awk '{print $1}' | xargs --no-run-if-empty sudo docker rm -f
+    # Move back to root
+    cd $rootDir
 
-# Kill everything on port 8080
-sudo fuser -k tcp/8080
+    # remove old image
+    sudo docker images | \
+        grep \<none\> | \
+        tr -s ' '| \
+        cut -d ' ' -f 3 | \
+        xargs sudo docker rmi -f
 
-# Run the new image
-sudo docker run -d -p 8080:8000 $dockerRepo"/"$appName":"$dockerVersion
+    # kill any previous running images
+    sudo docker ps | \
+        grep docker-entrypoint | \
+        awk '{print $1}' | \
+        xargs --no-run-if-empty sudo docker rm -f
 
+    # Kill everything on port 8080
+    sudo fuser -k tcp/8080
+
+    # Run the new image
+    sudo docker run -d -p 8080:8000 $dockerRepo"/"$appName":"$dockerVersion
+
+elif [ GIT_BRANCH == 'production' ]
+then
+    echo "Production not yet implemented"
+else
+    echo "You are in the wrong branch for deployment"
+fi
 
 
 

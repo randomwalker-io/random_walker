@@ -29,7 +29,7 @@ def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
     except:
-        error_msg = "Set the {0} environment variable".format(settting)
+        error_msg = "Set the {0} environment variable".format(setting)
         raise ImproperlyConfigured(error_msg)
 
 
@@ -98,7 +98,9 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'LocationDB',
+        'NAME': get_secret("LOCAL_DB_NAME"),
+        'USER': get_secret("LOCAL_DB_USERNAME"),
+        'PASSWORD': get_secret("LOCAL_DB_PASSWORD"),
     }
 }
 

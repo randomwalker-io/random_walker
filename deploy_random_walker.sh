@@ -14,10 +14,8 @@ dockerRepo="mkao006"
 appName="random_walker"
 awsConfigDir="$rootDir/config/aws/"
 uwsgiConfigDir="$rootDir/config/uwsgi/"
-nginxConfigDir="$rootDir/config/nginx/"
 randomwalkerDir="$rootDir/web/"
 uwsgiConfigFiles=$(ls $uwsgiConfigDir)
-nginxConfigFiles=$(ls $nginxConfigDir)
 
 ## Get the Git branch
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -59,45 +57,40 @@ then
     fi
     echo "Will set new Docker version to be $dockerVersion"
 
-    # Move into the random walker directory to build
-    cd $randomwalkerDir
-
     # First copy the Nginx and uwsgi configuration
-    cp $uwsgiConfigDir/* .
-    cp $nginxConfigDir/* .
+    cp $uwsgiConfigDir/* $randomwalkerDir
 
     # Build the image
-    sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion .
-    # sudo docker build -t $(echo $appName":"$dockerVersion)
+    # sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion .
+    sudo docker-compose build
 
     # then delete the configuration files.
-    rm $uwsgiConfigFiles
-    rm $nginxConfigFiles
+    for f in $uwsgiConfigFiles;
+    do
+        rm $randomwalkerDir/$f
+    done;
 
-    # Move back to root
-    cd $rootDir
+    # # remove old image
+    # sudo docker images | \
+    #     grep \<none\> | \
+    #     tr -s ' '| \
+    #     cut -d ' ' -f 3 | \
+    #     xargs sudo docker rmi -f
 
-    # remove old image
-    sudo docker images | \
-        grep \<none\> | \
-        tr -s ' '| \
-        cut -d ' ' -f 3 | \
-        xargs sudo docker rmi -f
+    # # kill any previous running images
+    # sudo docker ps | \
+    #     grep docker-entrypoint | \
+    #     awk '{print $1}' | \
+    #     xargs --no-run-if-empty sudo docker rm -f
 
-    # kill any previous running images
-    sudo docker ps | \
-        grep docker-entrypoint | \
-        awk '{print $1}' | \
-        xargs --no-run-if-empty sudo docker rm -f
+    # # Kill everything on port 8080
+    # sudo fuser -k tcp/8080
 
-    # Kill everything on port 8080
-    sudo fuser -k tcp/8080
-
-    # Run the new image
-    sudo docker run -d -p 8080:8000 $dockerRepo"/"$appName":"$dockerVersion
+    # # Run the new image
+    # sudo docker run -d -p 8080:8000 $dockerRepo"/"$appName":"$dockerVersion
 
     # Send message
-    echo "Starting staging server at local:8080/"
+    # echo "Starting staging server at local:8080/"
 
 elif [ "$GIT_BRANCH" = "production" ]
 then

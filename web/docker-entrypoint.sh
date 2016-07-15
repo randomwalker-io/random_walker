@@ -12,11 +12,11 @@ rm -r user_action/migrations/*
 touch user_action/migrations/__init__.py
 
 ## Make migration
-python manage.py makemigrations --setting=settings.local_docker_single
-python manage.py migrate --setting=settings.local_docker_single
+python manage.py makemigrations --setting=settings.staging
+python manage.py migrate --setting=settings.staging
 
 ## Collect static files
-python manage.py collectstatic --noinput --setting=settings.local_docker_single
+python manage.py collectstatic --noinput --setting=settings.staging
 
 ## Create log directory for uwsgi
 mkdir -p /var/log/uwsgi/

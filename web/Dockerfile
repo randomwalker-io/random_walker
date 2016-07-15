@@ -90,12 +90,12 @@ RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
 
-# Install Nginx and uwsgi
-RUN apt-get install -y \
-    uwsgi
+# Install uwsgi
+RUN apt-get install -y uwsgi
 
 ## The following is necessary for Pillow
-RUN apt-get build-dep -y python-imaging
+RUN apt-get update && \
+    apt-get build-dep -y python-imaging
 RUN apt-get install -y \
     libtiff4-dev \
     libjpeg8-dev \

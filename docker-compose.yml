@@ -6,12 +6,13 @@ services:
     ports:
       - "80:80"
     volumes_from:
-      - web
+      - random_walker
     links:
-      - web:web
-  web:
+      - random_walker:random_walker
+  random_walker:
     restart: always
     build: ./web
     expose:
       - "8000"
+    tty: true
   

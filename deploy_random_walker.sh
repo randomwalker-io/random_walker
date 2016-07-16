@@ -70,6 +70,9 @@ then
         rm $randomwalkerDir/$f
     done;
 
+    # Launch the composer
+    sudo docker-compose up -d
+
     # # remove old image
     # sudo docker images | \
     #     grep \<none\> | \

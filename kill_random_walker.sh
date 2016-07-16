@@ -9,7 +9,7 @@ then
     echo "The server already stopped"
 elif [ "$GIT_BRANCH" = "master" ]
 then
-    sudo docker ps | grep $appName | awk "{print $1}" | xargs docker kill
+    sudo docker-compose stop
 elif [ "$GIT_BRANCH" = "production" ]
 then
     echo "Production not yet implemented"

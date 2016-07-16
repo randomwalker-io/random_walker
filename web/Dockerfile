@@ -29,6 +29,20 @@ RUN apt-get update && \
     software-properties-common \
     python-software-properties
 
+
+## The following is necessary for python to run psycopg2 and postgresql
+RUN apt-key adv --keyserver keyserver.ubuntu.com\
+     --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" >\
+     /etc/apt/sources.list.d/pgdg.list
+RUN apt-get update && apt-get -y -q install \
+    postgresql-9.3 \
+    postgresql-client-9.3 \
+    postgresql-contrib-9.3\
+    postgresql-server-dev-9.3\
+    libpq-dev \
+    python-psycopg2
+
 ## The following is necessary for Pillow
 RUN apt-get update && \
     apt-get build-dep -y python-imaging

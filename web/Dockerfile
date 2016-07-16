@@ -30,6 +30,17 @@ RUN apt-get update && \
     python-software-properties
 
 
+## These are required for postgis
+RUN apt-get update && apt-get -y -q install \
+    build-essential \
+    libxml2-dev \
+    libproj-dev \
+    libjson0-dev \
+    xsltproc \
+    docbook-xsl \
+    docbook-mathml \
+    libgdal1-dev
+
 ## The following is necessary for python to run psycopg2 and postgresql
 RUN apt-key adv --keyserver keyserver.ubuntu.com\
      --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8

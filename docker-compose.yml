@@ -15,4 +15,8 @@ services:
     expose:
       - "8000"
     tty: true
-  
+  postgres:
+    restart: always
+    build: ./postgis
+    ports:
+      - "5432:5432"

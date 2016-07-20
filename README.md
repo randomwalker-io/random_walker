@@ -17,3 +17,8 @@ and confidence.
 
 The settings file is not on Github since it should remain as a private. A copy
 of the secrets resides with Dropbox (`~/Dropbox/random_walker/secrets`).
+
+## Docker Image
+
+The image is publicly available at
+[mkao006/random_walker](https://hub.docker.com/r/mkao006/random_walker/).

@@ -1,0 +1,8 @@
+build.sh
+game.md
+development.md
+.elasticbeanstalk/
+.gitignore
+playground/
+README.md
+venv/

@@ -19,21 +19,15 @@ from unipath import Path
 
 BASE_DIR = Path(__file__).ancestor(2)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-with open(os.path.join(BASE_DIR, "settings/settings.json")) as f:
-    secrets = json.loads(f.read())
-
-def get_secret(setting, secrets=secrets):
-    """ Get the secret variable or return explicit exception."""
-
+def get_env_variable(var_name):
+    """Get the environment variable or return exception."""
     try:
-        return secrets[setting]
-    except:
-        error_msg = "Set the {0} environment variable".format(setting)
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(var_name)
         raise ImproperlyConfigured(error_msg)
 
-
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = get_env_variable("SECRET_KEY")
 
 
 
@@ -100,9 +94,7 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': get_secret("LOCAL_DB_NAME"),
-        'USER': get_secret("LOCAL_DB_USERNAME"),
-        'PASSWORD': get_secret("LOCAL_DB_PASSWORD"),
+        'NAME': get_env_variable("LOCAL_DB_NAME"),
     }
 }
 

@@ -18,11 +18,11 @@ from .staging import *
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': get_secret('RDS_DB_NAME'),
-#         'USER': get_secret('RDS_USERNAME'),
-#         'PASSWORD': get_secret('RDS_PASSWORD'),
-#         'HOST': get_secret('RDS_HOSTNAME'),
-#         'PORT': get_secret('RDS_PORT'),
+#         'NAME': get_env_variable('RDS_DB_NAME'),
+#         'USER': get_env_variable('RDS_USERNAME'),
+#         'PASSWORD': get_env_variable('RDS_PASSWORD'),
+#         'HOST': get_env_variable('RDS_HOSTNAME'),
+#         'PORT': get_env_variable('RDS_PORT'),
 #     }
 # }
 

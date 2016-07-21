@@ -6,9 +6,9 @@ from .base import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': get_env_variable("LOCAL_DB_NAME"),
-        'USER': get_env_variable("LOCAL_DB_USERNAME"),
-        'PASSWORD': get_env_variable("LOCAL_DB_PASSWORD"),
+        'NAME': get_secret("LOCAL_DB_NAME"),
+        'USER': get_secret("LOCAL_DB_USERNAME"),
+        'PASSWORD': get_secret("LOCAL_DB_PASSWORD"),
         'HOST': "postgis",
         "PORT": 5432,
     }
@@ -16,9 +16,9 @@ DATABASES = {
 
 
 # Additional AWS setup
-AWS_STORAGE_BUCKET_NAME = get_env_variable("BUCKET_NAME")
-AWS_ACCESS_KEY_ID = get_env_variable("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = get_env_variable("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = get_secret("BUCKET_NAME")
+AWS_ACCESS_KEY_ID = get_secret("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = get_secret("AWS_SECRET_ACCESS_KEY")
 # This will tell boto that when it uploads files to S3, it should set
 # properties on them so that when S3 serves them, it'll include those
 # HTTP headers in the response. Those HTTP headers in turn will tell

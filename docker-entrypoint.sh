@@ -18,8 +18,7 @@ mkdir -p /var/log/uwsgi/
 
 ## Move uwsgi configuration file to appropriate location
 mkdir -p /etc/uwsgi/sites/
-mv random_walker.ini /etc/uwsgi/sites/
-mv uwsgi.conf /etc/init/
+cp random_walker.ini /etc/uwsgi/sites/
 
 ## Start the web and application server.
 uwsgi --ini /etc/uwsgi/sites/random_walker.ini --gid www-data --uid root

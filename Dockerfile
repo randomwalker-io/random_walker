@@ -34,8 +34,8 @@ RUN apt-get update && \
     wget
 
 ## Install postgres
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > \
-    /etc/apt/sources.list.d/pgdg.list
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ \
+    $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 RUN sudo apt-get install wget ca-certificates
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
@@ -83,11 +83,31 @@ RUN apt-get install -y uwsgi-plugin-python
 
 # Install Python dependencies
 ADD requirements.txt $DOCKYARD_SRC
-RUN pip install -r requirements.txt
+RUN sudo pip install \
+    boto==2.41.0 \
+    cycler==0.9.0 \
+    dj-database-url==0.3.0 \
+    Django==1.9.1 \
+    django-mobile==0.6.0 \
+    django-storages==1.4.1 \
+    geojson==1.3.1 \
+    nose==1.3.7 \
+    numpy==1.10.4 \
+    Pillow==3.1.0 \
+    psycopg2==2.6.2 \
+    pyparsing==2.0.7 \
+    python-dateutil==2.4.2 \
+    pytz==2015.7 \
+    six==1.10.0 \
+    Unipath==1.1 \
+    whitenoise==2.0.6
+
+# Set default python to python2
+RUN echo "alias python=python2" >> ~/.bashrc
 
 # Create application subdirectories
 WORKDIR $DOCKYARD_SRVHOME
-RUN mkdir media static logs
+RUN sudo mkdir media static logs
 VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 
 # Copy application source code to SRCDIR

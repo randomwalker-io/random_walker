@@ -4,7 +4,8 @@
 ############################################################
 
 # Set the base image to use to Ubuntu
-FROM ubuntu:14.04
+# FROM ubuntu:14.04
+FROM jupyter/scipy-notebook
 
 # Set the file maintainer
 MAINTAINER Michal Kao
@@ -17,6 +18,8 @@ ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
 ENV DOCKYARD_SRVPROJ=/srv/random_walker
 
+USER root
+
 # Update the default application repository sources list
 RUN apt-get update && \
     apt-get -y upgrade
@@ -27,11 +30,30 @@ RUN apt-get update && \
     python-pip \
     python-setuptools \
     software-properties-common \
-    python-software-properties
+    python-software-properties \
+    wget
+
+## Install postgres
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > \
+    /etc/apt/sources.list.d/pgdg.list
+
+RUN sudo apt-get install wget ca-certificates
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+RUN sudo apt-get update && \
+    apt-get upgrade &&\
+    apt-get -y -q install\
+    postgresql-9.3 \
+    pgadmin3 \
+    postgresql-client-9.3 \
+    postgresql-contrib-9.3\
+    postgresql-server-dev-9.3\
+    libpq-dev \
+    python-psycopg2
 
 
 ## These are required for postgis
-RUN apt-get update && apt-get -y -q install \
+RUN sudo apt-get update && \
+    apt-get -y -q install \
     build-essential \
     libxml2-dev \
     libproj-dev \
@@ -41,25 +63,10 @@ RUN apt-get update && apt-get -y -q install \
     docbook-mathml \
     libgdal1-dev
 
-## The following is necessary for python to run psycopg2 and postgresql
-RUN apt-key adv --keyserver keyserver.ubuntu.com\
-     --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" >\
-     /etc/apt/sources.list.d/pgdg.list
-RUN apt-get update && apt-get -y -q install \
-    postgresql-9.3 \
-    postgresql-client-9.3 \
-    postgresql-contrib-9.3\
-    postgresql-server-dev-9.3\
-    libpq-dev \
-    python-psycopg2
-
 ## The following is necessary for Pillow
-RUN apt-get update && \
-    apt-get build-dep -y python-imaging
 RUN apt-get install -y \
-    libtiff4-dev \
-    libjpeg8-dev \
+    libtiff5-dev \
+    libjpeg62-turbo-dev \
     zlib1g-dev \
     libfreetype6-dev \
     liblcms2-dev \
@@ -67,15 +74,6 @@ RUN apt-get install -y \
     tcl8.5-dev \
     tk8.5-dev \
     python-tk
-
-# Scipy + Numpy dependecies
-RUN apt-get install -y \  
-    libpng-dev \
-    freetype* \
-    libblas-dev \
-    liblapack-dev \
-    libatlas-base-dev \
-    gfortran
 
 # Install uwsgi
 RUN apt-get install -y uwsgi

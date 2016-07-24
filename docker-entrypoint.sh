@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Wait for postgres to start up first
+while ! nc -z postgis 5432; do sleep 3; done
+
 ## Remove copied migrations
 rm -r random_walker_engine/migrations/*
 touch random_walker_engine/migrations/__init__.py

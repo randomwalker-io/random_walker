@@ -1,9 +1,11 @@
 #!/bin/bash
 
 ## Wait for postgres to start up first
+echo "Waiting for Postgis to start up ..."
 while ! nc -z postgis 5432; do sleep 3; done
 
 ## Remove copied migrations
+echo "Initialising  migration ..."
 rm -r random_walker_engine/migrations/*
 touch random_walker_engine/migrations/__init__.py
 rm -r user_action/migrations/*
@@ -24,5 +26,6 @@ mkdir -p /etc/uwsgi/sites/
 cp random_walker.ini /etc/uwsgi/sites/
 
 ## Start the web and application server.
+echo "Starting uwsgi ..."
 uwsgi --ini /etc/uwsgi/sites/random_walker.ini --gid www-data --uid root
 

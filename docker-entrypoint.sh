@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## Wait for postgres to start up first
-echo "Waiting for Postgis to start up ..."
-while ! nc -z postgis 5432; do sleep 3; done
+# echo "Waiting for Postgis to start up ..."
+# while ! nc -z postgis 5432; do sleep 3; done
 
 ## Remove copied migrations
 echo "Initialising  migration ..."

@@ -1,4 +1,5 @@
-[![Stories in Ready](https://badge.waffle.io/mkao006/random_walker.png?label=ready&title=Ready)](https://waffle.io/mkao006/random_walker)
+[![Stories in
+Ready](https://badge.waffle.io/mkao006/random_walker.png?label=ready&title=Ready)](https://waffle.io/mkao006/random_walker)
 
 **Random Walker** is a web application built with an aim to inspire and
 make exploration easy.
@@ -12,11 +13,9 @@ traveller explored, for novice or normad, **Random Walker** is
 designed to provide surprises to travellers of any given experience
 and confidence.
 
+The engine can generate customised personalised travel itinerary, and recommend
+activities in order to to maximise the travelling experience.
 
-## Settings
-
-The settings file is not on Github since it should remain as a private. A copy
-of the secrets resides with Dropbox (`~/Dropbox/random_walker/secrets`).
 
 ## Docker Image
 

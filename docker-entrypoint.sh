@@ -2,21 +2,21 @@
 
 set -e
 
-## Wait for postgres to start up first
-if [ "$#" -eq 0 ]
-then
-    host="localhost"
-else
-    host="$1"
-    shift
-fi
+# ## Wait for postgres to start up first
+# if [ "$#" -eq 0 ]
+# then
+#     host="localhost"
+# else
+#     host="$1"
+#     shift
+# fi
 
-until psql -h "$host" -U "postgres" -c '\l'; do
-    >&2 echo "Postgres is unavailable - sleeping"
-    sleep 1
-done
+# until psql -h "$host" -U "postgres" -c '\l'; do
+#     >&2 echo "Postgres is unavailable - sleeping"
+#     sleep 1
+# done
 
->&2 echo "Postgres is up - Starting Random Walker."
+# >&2 echo "Postgres is up - Starting Random Walker."
 
 ## Remove copied migrations
 echo "Initialising  migration ..."

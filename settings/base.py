@@ -97,10 +97,15 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': get_secret("LOCAL_DB_NAME"),
+        'NAME': get_secret("RDS_DB_NAME"),
+        'USER': get_secret("RDS_DB_USERNAME"),
+        'PASSWORD': get_secret("RDS_DB_PASSWORD"),
+        'HOST': "localhost",
+        "PORT": 5432,
     }
 }
 

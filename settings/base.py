@@ -18,9 +18,10 @@ from django.core.exceptions import ImproperlyConfigured
 from unipath import Path
 
 BASE_DIR = Path(__file__).ancestor(2)
+SECRETS_FILE = os.path.join(BASE_DIR, "settings/credentials/settings.json")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open(os.path.join(BASE_DIR, "settings/settings.json")) as f:
+with open(SECRETS_FILE) as f:
     secrets = json.loads(f.read())
 
 def get_secret(setting, secrets=secrets):

@@ -15,9 +15,3 @@ and confidence.
 
 The engine can generate customised personalised travel itinerary, and recommend
 activities in order to to maximise the travelling experience.
-
-
-## Docker Image
-
-The image is publicly available at
-[mkao006/random_walker](https://hub.docker.com/r/mkao006/random_walker/).

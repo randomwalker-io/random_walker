@@ -1,8 +1,22 @@
 #!/bin/bash
 
-## Wait for postgres to start up first
-# echo "Waiting for Postgis to start up ..."
-# while ! nc -z postgis 5432; do sleep 3; done
+set -e
+
+# ## Wait for postgres to start up first
+# if [ "$#" -eq 0 ]
+# then
+#     host="localhost"
+# else
+#     host="$1"
+#     shift
+# fi
+
+# until psql -h "$host" -U "postgres" -c '\l'; do
+#     >&2 echo "Postgres is unavailable - sleeping"
+#     sleep 1
+# done
+
+# >&2 echo "Postgres is up - Starting Random Walker."
 
 ## Remove copied migrations
 echo "Initialising  migration ..."

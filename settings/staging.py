@@ -6,14 +6,13 @@ from .base import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': get_secret("LOCAL_DB_NAME"),
-        'USER': get_secret("LOCAL_DB_USERNAME"),
-        'PASSWORD': get_secret("LOCAL_DB_PASSWORD"),
+        'NAME': get_secret("RDS_DB_NAME"),
+        'USER': get_secret("RDS_DB_USERNAME"),
+        'PASSWORD': get_secret("RDS_DB_PASSWORD"),
         'HOST': "postgis",
         "PORT": 5432,
     }
 }
-
 
 # Additional AWS setup
 AWS_STORAGE_BUCKET_NAME = get_secret("BUCKET_NAME")

@@ -41,5 +41,5 @@ cp random_walker.ini /etc/uwsgi/sites/
 
 ## Start the web and application server.
 echo "Starting uwsgi ..."
-uwsgi --ini /etc/uwsgi/sites/random_walker.ini --gid www-data --uid root
+uwsgi --ini /etc/uwsgi/sites/random_walker.ini --gid www-data --uid www-data
 

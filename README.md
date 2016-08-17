@@ -15,3 +15,30 @@ and confidence.
 
 The engine can generate customised personalised travel itinerary, and recommend
 activities in order to to maximise the travelling experience.
+
+## Setup
+
+On how to setup the prerequisites for running the application, please see
+[setup](setup.md).
+
+
+## Testing
+
+The application can be tested with
+
+```
+sudo sh test.sh
+```
+
+and then reachable from `localhost`.
+
+## Create Docker Image
+
+To create the Docker image, simpy run
+
+```
+sudo sh build.sh
+```
+
+Note, if currently on the `master` branch, the image is also pushed to
+Dockerhub.

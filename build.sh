@@ -47,7 +47,7 @@ then
     echo "Will set new Docker version to be $dockerVersion"
 
     ## Build the production image
-    sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion $dockerRepo"/"$appName":latest" ./random_walker
+    sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion -t $dockerRepo"/"$appName":latest" ./random_walker
 
     ## Push the image to Dockerhub
     sudo docker push $dockerRepo"/"$appName":"$dockerVersion

@@ -18,10 +18,9 @@ services:
     expose:
       - "8000"
     tty: true
-    volumes:
-      - ./random_walker/settings/credentials/:/srv/random_walker/settings/credentials/
     depends_on:
       - postgis
+    env_file: .env
   postgis:
     restart: always
     image: mdillon/postgis

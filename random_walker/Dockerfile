@@ -84,7 +84,7 @@ RUN apt-get install -y uwsgi
 RUN apt-get install -y uwsgi-plugin-python
 
 # Install Python dependencies
-ADD requirements.txt $DOCKYARD_SRC
+COPY requirements.txt $DOCKYARD_SRC
 RUN pip install -r requirements.txt
 
 # Create application subdirectories

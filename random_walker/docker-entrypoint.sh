@@ -2,22 +2,6 @@
 
 set -e
 
-# ## Wait for postgres to start up first
-# if [ "$#" -eq 0 ]
-# then
-#     host="localhost"
-# else
-#     host="$1"
-#     shift
-# fi
-
-# until psql -h "$host" -U "postgres" -c '\l'; do
-#     >&2 echo "Postgres is unavailable - sleeping"
-#     sleep 1
-# done
-
-# >&2 echo "Postgres is up - Starting Random Walker."
-
 ## Remove copied migrations
 echo "Initialising  migration ..."
 rm -r random_walker_engine/migrations/*
@@ -26,11 +10,11 @@ rm -r user_action/migrations/*
 touch user_action/migrations/__init__.py
 
 ## Make migration
-python manage.py makemigrations --setting=settings.staging
-python manage.py migrate --setting=settings.staging
+python manage.py makemigrations
+python manage.py migrate
 
 ## Collect static files
-python manage.py collectstatic --noinput --setting=settings.staging
+python manage.py collectstatic --noinput
 
 ## Create log directory for uwsgi
 mkdir -p /var/log/uwsgi/

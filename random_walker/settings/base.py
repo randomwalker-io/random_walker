@@ -14,29 +14,17 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import socket
 import json
+import environ
 from django.core.exceptions import ImproperlyConfigured
 from unipath import Path
 
 BASE_DIR = Path(__file__).ancestor(2)
-SECRETS_FILE = os.path.join(BASE_DIR, "settings/credentials/settings.json")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-with open(SECRETS_FILE) as f:
-    secrets = json.loads(f.read())
+## Read the environment variables
+env = environ.Env()
 
-def get_secret(setting, secrets=secrets):
-    """ Get the secret variable or return explicit exception."""
-
-    try:
-        return secrets[setting]
-    except:
-        error_msg = "Set the {0} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
-
-
-SECRET_KEY = get_secret("SECRET_KEY")
-
-
+## Read the secret key
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -102,11 +90,10 @@ WSGI_APPLICATION = 'random_walker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': get_secret("RDS_DB_NAME"),
-        'USER': get_secret("RDS_DB_USERNAME"),
-        'PASSWORD': get_secret("RDS_DB_PASSWORD"),
-        'HOST': "localhost",
-        "PORT": 5432,
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'HOST': env("DB_HOST"),
+        "PORT": env("DB_PORT")
     }
 }
 

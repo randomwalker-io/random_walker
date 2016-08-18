@@ -1,0 +1,30 @@
+version: '2'
+services:
+  nginx:
+    restart: always
+    image: nginx
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    ports:
+      - "80:80"
+    volumes_from:
+      - random_walker
+    links:
+      - random_walker:random_walker
+  random_walker:
+    restart: always
+    image: mkao006/random_walker:dev
+    expose:
+      - "8000"
+    tty: true
+    depends_on:
+      - postgis
+    env_file: .env
+  postgis:
+    restart: always
+    image: mdillon/postgis
+    volumes:
+      - ./postgis/init:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"

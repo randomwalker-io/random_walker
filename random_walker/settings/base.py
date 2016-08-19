@@ -10,15 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-import socket
-import json
 import environ
 from django.core.exceptions import ImproperlyConfigured
 from unipath import Path
 
-BASE_DIR = Path(__file__).ancestor(2)
+
+ROOT_DIR = environ.Path(__file__) - 2
+APPS_DIR = ROOT_DIR
 
 ## Read the environment variables
 env = environ.Env()
@@ -80,9 +78,11 @@ ROOT_URLCONF = 'random_walker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/')],
-        'APP_DIRS': False,
+        'DIRS': [
+            str(ROOT_DIR.path('templates'))
+        ],
         'OPTIONS': {
+            'debug': DEBUG,
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
@@ -93,6 +93,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                ## From Django cookiecutter
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
             ],
         },
     },
@@ -111,7 +117,8 @@ DATABASES = {
         'NAME': env("DB_NAME"),
         'USER': env("DB_USER"),
         'HOST': env("DB_HOST"),
-        "PORT": env("DB_PORT")
+        "PORT": env("DB_PORT"),
+        "ATOMIC_REQUESTS": True
     }
 }
 
@@ -132,7 +139,7 @@ USE_TZ = True
 
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = str(APPS_DIR.path('media'))
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = '/media/'
 
@@ -140,7 +147,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = str(APPS_DIR.path('static'))
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
@@ -189,3 +196,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_PORT = 1025
 EMAIL_HOST = 'localhost'
+
+
+# MANAGER CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
+ADMINS = (
+    ('mk', 'mkao006@gmail.com'),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
+MANAGERS = ADMINS

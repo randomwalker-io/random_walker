@@ -57,8 +57,6 @@ CUSTOM_APPS = (
     'users.apps.UsersConfig',
     'random_walker',
     'random_walker_engine',
-    # 'user_action',
-    # 'users',
     'django_coverage',
 )
 
@@ -146,8 +144,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-# LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
-
 ADMIN_URL = r'^admin/'
 
 # See: http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
@@ -182,3 +178,14 @@ MIGRATION_MODULES = {
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
+
+# EMAIL CONFIGURATION
+# ------------------------------------------------------------------------------
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Mail settings
+# ------------------------------------------------------------------------------
+
+EMAIL_PORT = 1025
+EMAIL_HOST = 'localhost'

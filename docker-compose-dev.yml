@@ -20,7 +20,7 @@ services:
     tty: true
     depends_on:
       - postgis
-    env_file: .env
+    env_file: .env_dev
   postgis:
     restart: always
     image: mdillon/postgis

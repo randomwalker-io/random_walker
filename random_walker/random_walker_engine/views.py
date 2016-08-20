@@ -36,11 +36,11 @@ def generate_new_destination(request):
 @requires_csrf_token
 @login_required
 def show_location_history(request):
-    """ 
+    """
     Query previous points and return the geojson for plot
     """
     if request.method == 'POST':
         params = MapParameter(request)
         previous_points = params.get_location_history(toJson = True)
-        return HttpResponse(dumps(previous_points), 
+        return HttpResponse(dumps(previous_points),
                             content_type="application/json")

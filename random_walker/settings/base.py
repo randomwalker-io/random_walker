@@ -106,23 +106,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'random_walker.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'HOST': env("DB_HOST"),
-        "PORT": env("DB_PORT"),
-        "ATOMIC_REQUESTS": True
-    }
-}
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

@@ -19,7 +19,7 @@ before_install:
 
 
 before_script:
-  - docker-compose up --build -d
+  - docker-compose up -d
 
 script:
   - ./ci_test.sh

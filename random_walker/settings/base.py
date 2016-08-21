@@ -134,7 +134,7 @@ STATIC_ROOT = str(APPS_DIR.path('static'))
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-ADMIN_URL = r'^admin/'
+ADMIN_URL = r'shah_jahan/'
 
 # See: http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

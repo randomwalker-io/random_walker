@@ -9,6 +9,3 @@ services:
 
 install:
   - docker build -t random_walker ./random_walker
-
-script:
-  - docker ps | grep -q blog

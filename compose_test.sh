@@ -15,6 +15,8 @@ else
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 fi
 
+echo "Currently building for branch "$GIT_BRANCH
+
 ## Rebuild the random walker image
 sh build.sh
 

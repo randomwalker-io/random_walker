@@ -21,9 +21,9 @@ install:
 before_script:
   - docker version
   - docker-compose version
-  - ./compose_test.sh
 
 script:
+  - ./compose_test.sh
   - ./ci_test.sh
 
 after_script:

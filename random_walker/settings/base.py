@@ -10,15 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-import socket
-import json
 import environ
 from django.core.exceptions import ImproperlyConfigured
 from unipath import Path
 
-BASE_DIR = Path(__file__).ancestor(2)
+
+ROOT_DIR = environ.Path(__file__) - 2
+APPS_DIR = ROOT_DIR
 
 ## Read the environment variables
 env = environ.Env()
@@ -34,20 +32,34 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+
+)
+
+THIRD_PARTY_APPS = (
+    'crispy_forms',  # Form layouts
+    'allauth',  # registration
+    'allauth.account',  # registration
+    'allauth.socialaccount',  # registration
+)
+
+CUSTOM_APPS = (
+    'users.apps.UsersConfig',
     'random_walker',
     'random_walker_engine',
-    'user_action',
-    'django_mobile',
     'django_coverage',
 )
+
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,37 +78,33 @@ ROOT_URLCONF = 'random_walker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/')],
-        'APP_DIRS': False,
+        'DIRS': [
+            str(ROOT_DIR.path('templates'))
+        ],
         'OPTIONS': {
+            'debug': DEBUG,
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
             'context_processors': [
                 'django.template.context_processors.csrf',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                ## From Django cookiecutter
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'random_walker.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'HOST': env("DB_HOST"),
-        "PORT": env("DB_PORT")
-    }
-}
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -114,7 +122,7 @@ USE_TZ = True
 
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = str(APPS_DIR.path('media'))
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = '/media/'
 
@@ -122,8 +130,74 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = str(APPS_DIR.path('static'))
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-LOGIN_URL = os.path.join(BASE_DIR, 'registration/login_view/')
+ADMIN_URL = r'^admin/'
+
+# See: http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+
+# AUTHENTICATION CONFIGURATION
+# ------------------------------------------------------------------------------
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# Some really nice defaults
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
+ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
+
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = 'users:redirect'
+LOGIN_URL = 'account_login'
+
+MIGRATION_MODULES = {
+    'sites': 'contrib.sites.migrations'
+}
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
+
+# EMAIL CONFIGURATION
+# ------------------------------------------------------------------------------
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Mail settings
+# ------------------------------------------------------------------------------
+
+EMAIL_PORT = 1025
+EMAIL_HOST = 'localhost'
+
+
+# MANAGER CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
+ADMINS = (
+    ('mk', 'mkao006@gmail.com'),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
+MANAGERS = ADMINS
+
+
+
+# CACHING
+# ------------------------------------------------------------------------------
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': ''
+    }
+}

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> Random Walker </title>
+
+
+    {% block css %}
+    <!-- Latest compiled and minified Bootstrap 4 Alpha 3 CSS -->
+    <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY" crossorigin="anonymous">
+
+    <!-- Your stuff: Third-party CSS libraries go here -->
+
+    
+    <!-- This file stores project-specific CSS -->
+    <link rel="stylesheet" href="{% static 'random_walker/font-awesome/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
+    <link rel="stylesheet" href="{% static 'random_walker/css/project.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'random_walker/css/landing-page.css' %}"> -->
+    {% endblock css%}
+
+  </head>
+  <body>
+
+
+    {% block nav_bar %}
+    {% include 'random_walker/nav_bar.html' %}
+    {% endblock nav_bar %}
+
+
+    {% block header %}
+    {% endblock header %}
+
+    {% block content %}
+    {% include 'random_walker/header.html' %}
+    {% endblock content %}
+
+    {% block footnote %}
+    {% include 'random_walker/footer.html' %}
+    {% endblock footnote %}
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    {% block javascript %}
+    <!-- Required by Bootstrap v4 Alpha 3 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>        
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js" integrity="sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD" crossorigin="anonymous"></script> -->
+
+    <!-- Your stuff: Third-party javascript libraries go here -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    
+    <!-- place project specific Javascript in this file -->
+    <script src="{% static 'random_walker/js/project.js' %}"></script>    
+    {% endblock javascript %}
+
+    {% block additional_scripts %}
+    {% endblock additional_scripts%}
+    
+  </body>
+</html>

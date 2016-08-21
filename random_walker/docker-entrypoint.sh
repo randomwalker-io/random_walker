@@ -6,8 +6,6 @@ set -e
 echo "Initialising  migration ..."
 rm -r random_walker_engine/migrations/*
 touch random_walker_engine/migrations/__init__.py
-rm -r user_action/migrations/*
-touch user_action/migrations/__init__.py
 
 ## Make migration
 python manage.py makemigrations

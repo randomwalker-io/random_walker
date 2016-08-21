@@ -1,16 +1,15 @@
-# from django.db import models
 from __future__ import unicode_literals
 import geojson as gjs
 import ProbLayer as pl
 from json import loads, dumps
 from django.contrib.gis.db import models
-from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point, fromstr, Polygon
 from django.utils import timezone
+from django.conf import settings
 
 # Create your models here.
 class Location(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     origin = models.PointField(help_text='Represented as (longitude, latitude)')
     destin = models.PointField(help_text='Represented as (longitude, latitude)')
     date_generation = models.DateTimeField()
@@ -59,7 +58,7 @@ class MapParameter(object):
         lng = [y[0].get_y() for y in object]
         if toJson:
             geojson_points = [gjs.Point(pts) for pts in zip(lng, lat)]
-            return gjs.FeatureCollection([gjs.Feature(geometry=pts) 
+            return gjs.FeatureCollection([gjs.Feature(geometry=pts)
                                           for pts in geojson_points])
         else:
             return {'lat': lat, 'lng': lng}
@@ -72,7 +71,7 @@ class MapParameter(object):
 
     def create_learning_layer(self, kernelType='normal', bandwidth=0.3):
         location_history = self.get_location_history()
-        return self.grid.createLearningLayer(kernelType=kernelType, 
+        return self.grid.createLearningLayer(kernelType=kernelType,
                                              bandwidth=bandwidth,
                                              learningPoints = location_history)
 

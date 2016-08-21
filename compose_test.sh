@@ -17,9 +17,6 @@ fi
 
 echo "Currently building for branch "$GIT_BRANCH
 
-## Rebuild the random walker image
-sh build.sh
-
 ## Start up docker compose
 
 if [ "$GIT_BRANCH" = "dev" ];

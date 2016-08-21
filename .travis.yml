@@ -21,9 +21,12 @@ install:
 before_script:
   - docker version
   - docker-compose version
+  - pwd
+  - cd /home/travis/build/randomwalker-io/random_walker
+  - ./compose_test.sh
 
 script:
-  - ./compose_test.sh
+  - pwd
   - ./ci_test.sh
 
 after_script:

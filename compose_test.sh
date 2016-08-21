@@ -8,14 +8,14 @@ dockerRepo="mkao006"
 appName="random_walker"
 
 ## Get the Git branch
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-## Kill ports
-kill `lsof -t -i :5432`
-kill `lsof -t -i :80`
+if [ -z $TRAVIS_BRANCH ];
+then
+    GIT_BRANCH=$TRAVIS_BRANCH
+else
+    GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+fi
 
 ## Rebuild the random walker image
-# docker build ./random_walker/ -t $dockerRepo/$appName:dev
 sh build.sh
 
 ## Start up docker compose

@@ -8,8 +8,14 @@ rootDir=$(pwd)
 dockerRepo="mkao006"
 appName="random_walker"
 
+
 ## Get the Git branch
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ -z $TRAVIS_BRANCH ];
+then
+    GIT_BRANCH=$TRAVIS_BRANCH
+else
+    GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+fi
 
 ## remove redudant images
 sudo docker images | \
@@ -49,8 +55,8 @@ then
     ## Build the production image
     sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion -t $dockerRepo"/"$appName":latest" ./random_walker
 
-    ## Push the image to Dockerhub
-    sudo docker push $dockerRepo"/"$appName":"$dockerVersion
-    sudo docker push $dockerRepo"/"$appName":latest"
+    # ## Push the image to Dockerhub
+    # sudo docker push $dockerRepo"/"$appName":"$dockerVersion
+    # sudo docker push $dockerRepo"/"$appName":latest"
 fi
 

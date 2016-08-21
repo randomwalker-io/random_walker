@@ -1,0 +1,14 @@
+sudo: required
+
+language: python
+python:
+  - 2.7
+
+services:
+  - docker
+
+install:
+  - docker build -t random_walker ./random_walker
+
+script:
+  - docker ps | grep -q blog

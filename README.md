@@ -1,7 +1,7 @@
 [![Stories in
 Ready](https://badge.waffle.io/mkao006/random_walker.png?label=ready&title=Ready)](https://waffle.io/mkao006/random_walker)
 
-[![travis-ci-build-status](https://travis-ci.org/randomwalker-io/random_walker.svg?branch=master)
+[![travis-ci-build-status](https://travis-ci.org/randomwalker-io/random_walker.svg?branch=master)(https://travis-ci.org/randomwalker-io/random_walker)
 
 **Random Walker** is a web application built with an aim to inspire and
 make exploration easy.

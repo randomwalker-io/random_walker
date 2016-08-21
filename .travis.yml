@@ -19,10 +19,12 @@ before_install:
 
 
 before_script:
-  - docker-compose up -d
+  - docker version
+  - docker-compose version
+  - docker-compose -f docker-compose-dev.yml up -d
 
 script:
   - ./ci_test.sh
 
 after_script:
-  - docker-compose down
+  - docker-compose -f docker-compose-dev.yml down

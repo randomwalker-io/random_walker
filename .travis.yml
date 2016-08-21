@@ -19,7 +19,7 @@ install:
 before_script:
   - docker version
   - docker-compose version
-  - ./compost_test.sh
+  - ./compose_test.sh
 
 script:
   - ./ci_test.sh

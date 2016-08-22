@@ -7,14 +7,12 @@
 dockerRepo="mkao006"
 appName="random_walker"
 
-echo $TRAVIS_BRANCH
-
 ## Get the Git branch
 if [ -z $TRAVIS_BRANCH ];
 then
-    GIT_BRANCH=$TRAVIS_BRANCH
-else
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+else
+    GIT_BRANCH=$TRAVIS_BRANCH
 fi
 
 echo "Currently building for branch "$GIT_BRANCH

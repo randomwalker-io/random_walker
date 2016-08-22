@@ -17,8 +17,11 @@ fi
 
 echo "Currently building for branch "$GIT_BRANCH
 
-## Start up docker compose
+## Kill ports
+kill `lsof -t -i :5432`
+kill `lsof -t -i :80`
 
+## Start up docker compose
 if [ "$GIT_BRANCH" = "dev" ];
 then
     docker-compose -f docker-compose-dev.yml stop

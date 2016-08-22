@@ -50,9 +50,9 @@ then
 
         ## Build the production image
         sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion ./random_walker
-        sudo docker built -t $dockerRepo"/"$appName":latest" ./random_walker
+        sudo docker build -t $dockerRepo"/"$appName":latest" ./random_walker
     else
-        sudo docker built -t $dockerRepo"/"$appName":latest" ./random_walker
+        sudo docker build -t $dockerRepo"/"$appName":latest" ./random_walker
     fi
 
     # ## Push the image to Dockerhub

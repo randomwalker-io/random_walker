@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # This is a script to build the Random Walker Docker image
 # -----------------------------------------------------------------------

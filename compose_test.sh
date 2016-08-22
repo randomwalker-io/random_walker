@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # We will deploy the docker to local here.
 # -----------------------------------------------------------------------

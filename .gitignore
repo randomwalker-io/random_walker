@@ -4,3 +4,4 @@
 !.elasticbeanstalk/*.global.yml
 *.json
 venv/
+.env

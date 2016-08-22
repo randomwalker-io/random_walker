@@ -21,9 +21,9 @@ before_script:
   - docker-compose version
 
 script:
-  - ./build.sh
-  - ./compose_test.sh
-  - ./ci_test.sh
+  - sudo sh ./build.sh
+  - sudo sh ./compose_test.sh
+  - sudo sh ./ci_test.sh
 
 after_script:
   - docker-compose -f docker-compose-dev.yml down

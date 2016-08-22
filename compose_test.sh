@@ -18,8 +18,8 @@ fi
 echo "Currently building for branch "$GIT_BRANCH
 
 ## Kill ports
-sudo kill `lsof -t -i :5432`
-sudo kill `lsof -t -i :80`
+kill `lsof -t -i :5432`
+kill `lsof -t -i :80`
 
 ## Start up docker compose
 if [ "$GIT_BRANCH" = "dev" ];

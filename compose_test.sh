@@ -7,12 +7,19 @@
 dockerRepo="mkao006"
 appName="random_walker"
 
+
 ## Get the Git branch
 if [ -z $TRAVIS_BRANCH ];
 then
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 else
-    GIT_BRANCH=$TRAVIS_BRANCH
+    if [ $TRAVIS_BRANCH != "master" ] || [ $TRAVIS_BRANCH != "dev" ];
+    then
+        ## Assuming it is a release build
+        GIT_BRANCH="master"
+    else
+        GIT_BRANCH=$TRAVIS_BRANCH
+    fi
 fi
 
 echo "Currently building for branch "$GIT_BRANCH

@@ -14,7 +14,7 @@ if [ -z $TRAVIS_BRANCH ];
 then
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 else
-    if [ $TRAVIS_BRANCH -ne "master" ] || [ $TRAVIS_BRANCH -ne "dev" ];
+    if [ $TRAVIS_BRANCH != "master" ] || [ $TRAVIS_BRANCH != "dev" ];
     then
         ## Assuming it is a release build
         GIT_BRANCH="master"

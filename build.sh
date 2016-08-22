@@ -14,7 +14,9 @@ if [ -z $TRAVIS_BRANCH ];
 then
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 else
-    GIT_BRANCH=$TRAVIS_BRANCH
+    # GIT_BRANCH=$TRAVIS_BRANCH
+    # Build dev version on CI
+    GIT_BRANCH="dev"
 fi
 
 ## Start the build, the tag will depend on the branch
@@ -24,6 +26,7 @@ then
        sudo docker build -t $dockerRepo"/"$appName":dev" ./random_walker
 elif [ "$GIT_BRANCH" = "master" ];
 then
+    if [ -z $TRAVIS_BRANCH ];
     ## Get the latest Git release version
     GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
     # list doesn't work, so we will do it manually

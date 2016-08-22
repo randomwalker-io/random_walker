@@ -14,42 +14,46 @@ if [ -z $TRAVIS_BRANCH ];
 then
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 else
-    # GIT_BRANCH=$TRAVIS_BRANCH
-    # Build dev version on CI
-    GIT_BRANCH="dev"
+    GIT_BRANCH=$TRAVIS_BRANCH
 fi
 
 ## Start the build, the tag will depend on the branch
 if [ "$GIT_BRANCH" = "dev" ];
 then
-       ## Build the development image
-       sudo docker build -t $dockerRepo"/"$appName":dev" ./random_walker
+    ## Build the development image
+    sudo docker build -t $dockerRepo"/"$appName":dev" ./random_walker
 elif [ "$GIT_BRANCH" = "master" ];
 then
-    if [ -z $TRAVIS_BRANCH ];
-    ## Get the latest Git release version
-    GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
-    # list doesn't work, so we will do it manually
-    V_MAJOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $1}')
-    V_MINOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $2}')
-    V_PATCH=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $3}')
-
-    ## Bump the version
-    echo "Current Git version : $GIT_VERSION"
-    V_PATCH=$((V_PATCH + 1))
-    SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
-
-    ## Prompt if the version should be different
-    read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: "\
-         dockerVersion
-    if [ "$dockerVersion" = "" ];
+    ## If not doing Continuous integration
+    if [ -z $CI ];
     then
-        dockerVersion=$SUGGESTED_VERSION
-    fi
-    echo "Will set new Docker version to be $dockerVersion"
+        ## Get the latest Git release version
+        GIT_VERSION=$(git describe --abbrev=0| awk '{gsub("[a-zA-Z]", "")}1')
+        # list doesn't work, so we will do it manually
+        V_MAJOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $1}')
+        V_MINOR=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $2}')
+        V_PATCH=$(echo $GIT_VERSION | tr '.' ' ' | awk '{print $3}')
 
-    ## Build the production image
-    sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion -t $dockerRepo"/"$appName":latest" ./random_walker
+        ## Bump the version
+        echo "Current Git version : $GIT_VERSION"
+        V_PATCH=$((V_PATCH + 1))
+        SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
+
+        ## Prompt if the version should be different
+        read -p "Enter a version number to build Docker [$SUGGESTED_VERSION]: "\
+             dockerVersion
+        if [ "$dockerVersion" = "" ];
+        then
+            dockerVersion=$SUGGESTED_VERSION
+        fi
+        echo "Will set new Docker version to be $dockerVersion"
+
+        ## Build the production image
+        sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion ./random_walker
+        sudo docker built -t $dockerRepo"/"$appName":latest" ./random_walker
+    else
+        sudo docker built -t $dockerRepo"/"$appName":latest" ./random_walker
+    fi
 
     # ## Push the image to Dockerhub
     # sudo docker push $dockerRepo"/"$appName":"$dockerVersion

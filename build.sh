@@ -17,13 +17,6 @@ else
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 fi
 
-## remove redudant images
-sudo docker images | \
-    grep \<none\> | \
-    tr -s ' '| \
-    cut -d ' ' -f 3 | \
-    xargs sudo docker rmi -f
-
 ## Start the build, the tag will depend on the branch
 if [ "$GIT_BRANCH" = "dev" ];
 then
@@ -58,5 +51,8 @@ then
     # ## Push the image to Dockerhub
     # sudo docker push $dockerRepo"/"$appName":"$dockerVersion
     # sudo docker push $dockerRepo"/"$appName":latest"
+else
+    echo "Incorrect branch specified"
+    exit 1
 fi
 

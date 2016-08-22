@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # This is a script to build the Random Walker Docker image
 # -----------------------------------------------------------------------
@@ -8,15 +8,14 @@ rootDir=$(pwd)
 dockerRepo="mkao006"
 appName="random_walker"
 
-## Get the Git branch
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-## remove redudant images
-sudo docker images | \
-    grep \<none\> | \
-    tr -s ' '| \
-    cut -d ' ' -f 3 | \
-    xargs sudo docker rmi -f
+## Get the Git branch
+if [ -z $TRAVIS_BRANCH ];
+then
+    GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+else
+    GIT_BRANCH=$TRAVIS_BRANCH
+fi
 
 ## Start the build, the tag will depend on the branch
 if [ "$GIT_BRANCH" = "dev" ];
@@ -49,8 +48,11 @@ then
     ## Build the production image
     sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion -t $dockerRepo"/"$appName":latest" ./random_walker
 
-    ## Push the image to Dockerhub
-    sudo docker push $dockerRepo"/"$appName":"$dockerVersion
-    sudo docker push $dockerRepo"/"$appName":latest"
+    # ## Push the image to Dockerhub
+    # sudo docker push $dockerRepo"/"$appName":"$dockerVersion
+    # sudo docker push $dockerRepo"/"$appName":latest"
+else
+    echo "Incorrect branch specified"
+    exit 1
 fi
 

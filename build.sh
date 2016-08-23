@@ -57,13 +57,15 @@ then
         ## Build the production image
         sudo docker build -t $dockerRepo"/"$appName":"$dockerVersion ./random_walker
         sudo docker build -t $dockerRepo"/"$appName":latest" ./random_walker
+
+        ## Push the image to Dockerhub
+        sudo docker push $dockerRepo"/"$appName":"$dockerVersion
+        sudo docker push $dockerRepo"/"$appName":latest"
     else
         sudo docker build -t $dockerRepo"/"$appName":latest" ./random_walker
     fi
 
-    # ## Push the image to Dockerhub
-    # sudo docker push $dockerRepo"/"$appName":"$dockerVersion
-    # sudo docker push $dockerRepo"/"$appName":latest"
+
 else
     echo "Incorrect branch specified"
     exit 1

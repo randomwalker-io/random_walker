@@ -20,6 +20,7 @@ $(function() {
 		            console.log("successful")
 		            if(typeof circle !== 'undefined')
 		                map.removeLayer(circle)
+                // Add circle to the destination
 		            circle = L.circle(data,
 				                          500 * Math.pow(2, 13 - map.getZoom()),
 				                          {
@@ -27,6 +28,21 @@ $(function() {
 				                              fillColor: '#f03',
 				                              fillOpacity: 0.5
 				                          }).addTo(map);
+
+                // Add routing from home to the destination.
+                console.log(data)
+                console.log(marker.getLatLng())
+                current = marker.getLatLng();
+                var plan = new L.Routing.Plan([
+                    L.latLng(home),
+                    L.latLng(data),
+                    // Just testing
+                    L.latLng(home[0] + Math.random(0.01), home[1] + Math.random(0.01))
+                ])
+                L.Routing.control({
+                    plan: plan,
+                    useZoomParameter: true
+                }).addTo(map);
 		            $("#newLocationButton")
                     .addClass('btn-success')
                     .removeClass('btn-danger')

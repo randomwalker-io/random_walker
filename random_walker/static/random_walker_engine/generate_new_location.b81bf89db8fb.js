@@ -32,6 +32,10 @@ $(function() {
 				                          }).addTo(map);
 
                 // Add routing from home to the destination.
+                console.log(data)
+                console.log(marker.getLatLng())
+                current = marker.getLatLng();
+
                 var plan = new L.Routing.Plan([
                     L.latLng(home),
                     L.latLng(data),
@@ -42,7 +46,11 @@ $(function() {
                     plan: plan,
                     useZoomParameter: true,
                     show: false
-                }).addTo(map);
+                    // }).addTo(map);
+                })
+                routingControl.show()
+                routingControl.hide()
+
 
 		            $("#newLocationButton")
                     .addClass('btn-success')

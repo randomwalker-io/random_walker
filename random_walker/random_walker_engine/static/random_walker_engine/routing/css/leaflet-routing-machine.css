@@ -5,10 +5,10 @@
     transition: all 0.2s ease;
     box-sizing: border-box;
 }
-
+/* This is to hider the direction panel, as per suggestion at
+https://github.com/perliedman/leaflet-routing-machine/issues/20 */
 .leaflet-control-container .leaflet-routing-container-hide {
-    width: 32px;
-    height: 32px;
+    display: none;
 }
 
 .leaflet-routing-container h2 {
@@ -256,3 +256,4 @@
         height: 100%;
     }
 }
+

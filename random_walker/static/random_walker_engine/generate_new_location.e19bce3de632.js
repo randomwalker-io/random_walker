@@ -22,6 +22,7 @@ $(function() {
 		                map.removeLayer(circle)
                 if(typeof routingControl !== 'undefined')
                     map.removeControl(routingControl);
+                console.log(routingControl);
                 // Add circle to the destination
 		            circle = L.circle(data,
 				                          500 * Math.pow(2, 13 - map.getZoom()),
@@ -32,18 +33,21 @@ $(function() {
 				                          }).addTo(map);
 
                 // Add routing from home to the destination.
+                console.log(data)
+                console.log(marker.getLatLng())
+                current = marker.getLatLng();
+
                 var plan = new L.Routing.Plan([
                     L.latLng(home),
                     L.latLng(data),
                     // Just testing
                     L.latLng(home[0] + Math.random(0.01), home[1] + Math.random(0.01))
                 ])
-                routingControl = L.Routing.control({
+                var routingControl = L.Routing.control({
                     plan: plan,
                     useZoomParameter: true,
                     show: false
                 }).addTo(map);
-
 		            $("#newLocationButton")
                     .addClass('btn-success')
                     .removeClass('btn-danger')

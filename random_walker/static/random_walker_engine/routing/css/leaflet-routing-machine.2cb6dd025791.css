@@ -1,3 +1,4 @@
+
 .leaflet-routing-container, .leaflet-routing-error {
     width: 320px;
     background-color: white;
@@ -10,6 +11,11 @@ https://github.com/perliedman/leaflet-routing-machine/issues/20 */
 .leaflet-control-container .leaflet-routing-container-hide {
     display: none;
 }
+
+/* .leaflet-control-container .leaflet-routing-container-hide { */
+/*     width: 32px; */
+/*     height: 32px; */
+/* } */
 
 .leaflet-routing-container h2 {
     font-size: 14px;
@@ -74,7 +80,7 @@ https://github.com/perliedman/leaflet-routing-machine/issues/20 */
 }
 
 .leaflet-routing-icon {
-    background-image: url('leaflet.routing.icons.png');
+    background-image: url("leaflet.routing.icons.142d1f83d497.png");
     -webkit-background-size: 240px 20px;
     background-size: 240px 20px;
     background-repeat: no-repeat;
@@ -221,32 +227,32 @@ https://github.com/perliedman/leaflet-routing-machine/issues/20 */
     content: '\00d7';
 }
 
-.leaflet-routing-container-hide .leaflet-routing-collapse-btn {
-    position: relative;
-    left: 4px;
-    top: 4px;
-    display: block;
-    width: 26px;
-    height: 23px;
-    background-image: url('routing-icon.png');
-}
+/* .leaflet-routing-container-hide .leaflet-routing-collapse-btn { */
+/*     position: relative; */
+/*     left: 4px; */
+/*     top: 4px; */
+/*     display: block; */
+/*     width: 26px; */
+/*     height: 23px; */
+/*     background-image: url("routing-icon.29cd81d4b564.png"); */
+/* } */
 
 .leaflet-routing-container-hide .leaflet-routing-collapse-btn:after {
     content: none;
 }
 
-.leaflet-top .leaflet-routing-container.leaflet-routing-container-hide {
-    margin-top: 10px !important;
-}
-.leaflet-right .leaflet-routing-container.leaflet-routing-container-hide {
-    margin-right: 10px !important;
-}
-.leaflet-bottom .leaflet-routing-container.leaflet-routing-container-hide {
-    margin-bottom: 10px !important;
-}
-.leaflet-left .leaflet-routing-container.leaflet-routing-container-hide {
-    margin-left: 10px !important;
-}
+/* .leaflet-top .leaflet-routing-container.leaflet-routing-container-hide { */
+/*     margin-top: 10px !important; */
+/* } */
+/* .leaflet-right .leaflet-routing-container.leaflet-routing-container-hide { */
+/*     margin-right: 10px !important; */
+/* } */
+/* .leaflet-bottom .leaflet-routing-container.leaflet-routing-container-hide { */
+/*     margin-bottom: 10px !important; */
+/* } */
+/* .leaflet-left .leaflet-routing-container.leaflet-routing-container-hide { */
+/*     margin-left: 10px !important; */
+/* } */
 
 @media only screen and (max-width: 640px) {
     .leaflet-routing-container {

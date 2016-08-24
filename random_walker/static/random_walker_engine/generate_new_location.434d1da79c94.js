@@ -43,6 +43,9 @@ $(function() {
                     useZoomParameter: true,
                     show: false
                 }).addTo(map);
+                // routingControl.show()
+                routingControl.hide();
+
 
 		            $("#newLocationButton")
                     .addClass('btn-success')

@@ -94,4 +94,5 @@ function initialise(pos){
 	      .on('dragend', function(e) {console.log('location changed');
 				                            map.setView(marker.getLatLng());
 				                           });
+    var routingControl
 }

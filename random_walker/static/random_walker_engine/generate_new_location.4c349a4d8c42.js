@@ -42,7 +42,7 @@ $(function() {
                     plan: plan,
                     useZoomParameter: true,
                     show: false,
-                    collapsible: false
+                    collapsable: false
                 }).addTo(map);
 
 		            $("#newLocationButton")

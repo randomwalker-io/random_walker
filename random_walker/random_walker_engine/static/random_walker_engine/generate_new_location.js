@@ -41,7 +41,8 @@ $(function() {
                 routingControl = L.Routing.control({
                     plan: plan,
                     useZoomParameter: true,
-                    show: false
+                    show: false,
+                    collapsible: false
                 }).addTo(map);
 
 		            $("#newLocationButton")

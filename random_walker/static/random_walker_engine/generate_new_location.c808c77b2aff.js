@@ -36,30 +36,32 @@ $(function() {
 		            });
 		            map.addLayer(circle);
 
+                console.log(data)
+                console.log(data.features[0].geometry.coordinates)
+                // Add routing from home to the destination.
+                var plan = new L.Routing.Plan(data, {
+                    pointToRoute: function(feature){
+                        console.log(feature)
+                        plan = []
+                        destinations = feature.features
+                        for (i = 0; i < feature.features.length; i++){
+                            var next_point =
+                                new L.latlng(destination[i].geometry.coordinates)
+                            plan.push(next_point)
+                        }
+                        console.log(plan)
+                        return plan
+                    }
+                })
 
-                var new_waypoints = []
-                new_waypoints.push(L.latLng(home))
-                for (i = 0; i < data.features.length; i ++){
-                    var next_point =
-                        new L.latLng(data.features[i].geometry.coordinates[1],
-                                     data.features[i].geometry.coordinates[0])
-                    new_waypoints.push(next_point)
-                    // new_waypoints.push(data.features[i].geometry.coordinates)
-                }
-                var plan = new L.Routing.Plan(new_waypoints)
-
-                var old_waypoints = [
+                var plan2 = new L.Routing.Plan([
                     L.latLng(home),
-                    // L.latLng(data.features[0].geometry.coordinates),
-                    // just testing
+                    L.latLng(data),
+                    // Just testing
                     L.latLng(home[0] + Math.random(0.01), home[1] + Math.random(0.01))
-                ]
-
-                var plan2 = new L.Routing.Plan(old_waypoints)
-                console.log(new_waypoints)
-                console.log(old_waypoints)
-                console.log(plan)
-                console.log(plan2)
+                ])
+                // console.log(plan)
+                // console.log(plan2)
 
                 routingControl = L.Routing.control({
                     plan: plan,

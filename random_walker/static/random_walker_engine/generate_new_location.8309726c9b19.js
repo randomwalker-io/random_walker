@@ -38,13 +38,11 @@ $(function() {
 
 
                 var new_waypoints = []
-                new_waypoints.push(L.latLng(home))
                 for (i = 0; i < data.features.length; i ++){
-                    var next_point =
-                        new L.latLng(data.features[i].geometry.coordinates[1],
-                                     data.features[i].geometry.coordinates[0])
-                    new_waypoints.push(next_point)
-                    // new_waypoints.push(data.features[i].geometry.coordinates)
+                    // var next_point =
+                    //     new L.latLng(data.features[i].geometry.coordinates)
+                    // new_waypoints.push(next_point)
+                    new_waypoints.push(data.features[i].geometry.coordinates)
                 }
                 var plan = new L.Routing.Plan(new_waypoints)
 

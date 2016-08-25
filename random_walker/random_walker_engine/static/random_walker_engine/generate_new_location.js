@@ -35,19 +35,24 @@ $(function() {
 			              }
 		            });
 		            map.addLayer(circle);
-                // Add routing from home to the destination.
-                // var plan = new L.Routing.Plan([
-                //     L.latLng(home),
-                //     L.latLng(data),
-                //     // Just testing
-                //     L.latLng(home[0] + Math.random(0.01), home[1] + Math.random(0.01))
-                // ])
-                // routingControl = L.Routing.control({
-                //     plan: plan,
-                //     useZoomParameter: true,
-                //     show: false,
-                //     collapsible: false
-                // }).addTo(map);
+
+                // Add the routing
+                var new_waypoints = []
+                new_waypoints.push(L.latLng(home))
+                for (i = 0; i < data.features.length; i ++){
+                    var next_point =
+                        new L.latLng(data.features[i].geometry.coordinates[1],
+                                     data.features[i].geometry.coordinates[0])
+                    new_waypoints.push(next_point)
+                }
+                var plan = new L.Routing.Plan(new_waypoints)
+
+                routingControl = L.Routing.control({
+                    plan: plan,
+                    useZoomParameter: true,
+                    show: false,
+                    collapsible: false
+                }).addTo(map);
 
 		            $("#newLocationButton")
                     .addClass('btn-success')

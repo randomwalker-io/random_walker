@@ -38,28 +38,22 @@ $(function() {
 
 
                 var new_waypoints = []
-                new_waypoints.push(L.latLng(home))
                 for (i = 0; i < data.features.length; i ++){
+                    console.log(new_waypoints)
                     var next_point =
-                        new L.latLng(data.features[i].geometry.coordinates[1],
-                                     data.features[i].geometry.coordinates[0])
+                        new L.latLng(data.features[i].geometry.coordinates)
                     new_waypoints.push(next_point)
-                    // new_waypoints.push(data.features[i].geometry.coordinates)
                 }
                 var plan = new L.Routing.Plan(new_waypoints)
 
-                var old_waypoints = [
+                var plan2 = new L.Routing.Plan([
                     L.latLng(home),
-                    // L.latLng(data.features[0].geometry.coordinates),
-                    // just testing
+                    L.latLng(data),
+                    // Just testing
                     L.latLng(home[0] + Math.random(0.01), home[1] + Math.random(0.01))
-                ]
-
-                var plan2 = new L.Routing.Plan(old_waypoints)
-                console.log(new_waypoints)
-                console.log(old_waypoints)
-                console.log(plan)
-                console.log(plan2)
+                ])
+                // console.log(plan)
+                // console.log(plan2)
 
                 routingControl = L.Routing.control({
                     plan: plan,

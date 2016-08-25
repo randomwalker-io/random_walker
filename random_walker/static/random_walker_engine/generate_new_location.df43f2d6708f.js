@@ -38,11 +38,10 @@ $(function() {
 
 
                 var new_waypoints = []
-                new_waypoints.push(L.latLng(home))
                 for (i = 0; i < data.features.length; i ++){
                     var next_point =
-                        new L.latLng(data.features[i].geometry.coordinates[1],
-                                     data.features[i].geometry.coordinates[0])
+                        new L.latLng(data.features[i].geometry.coordinates)
+                    console.log(next_point)
                     new_waypoints.push(next_point)
                     // new_waypoints.push(data.features[i].geometry.coordinates)
                 }

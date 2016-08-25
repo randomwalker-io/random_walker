@@ -38,20 +38,17 @@ $(function() {
 
 
                 var new_waypoints = []
-                new_waypoints.push(L.latLng(home))
                 for (i = 0; i < data.features.length; i ++){
                     var next_point =
-                        new L.latLng(data.features[i].geometry.coordinates[1],
-                                     data.features[i].geometry.coordinates[0])
+                        new L.latLng(data.features[i].geometry.coordinates)
                     new_waypoints.push(next_point)
-                    // new_waypoints.push(data.features[i].geometry.coordinates)
                 }
                 var plan = new L.Routing.Plan(new_waypoints)
 
                 var old_waypoints = [
                     L.latLng(home),
-                    // L.latLng(data.features[0].geometry.coordinates),
-                    // just testing
+                    L.latLng(data.features[0].geometry.coordinates),
+                    // Just testing
                     L.latLng(home[0] + Math.random(0.01), home[1] + Math.random(0.01))
                 ]
 
@@ -62,7 +59,7 @@ $(function() {
                 console.log(plan2)
 
                 routingControl = L.Routing.control({
-                    plan: plan,
+                    plan: plan2,
                     useZoomParameter: true,
                     show: false,
                     collapsible: false

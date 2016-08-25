@@ -24,7 +24,7 @@ $(function() {
                 if(typeof routingControl !== 'undefined')
                     map.removeControl(routingControl);
                 // Add circle to the destination
-                // var circle_radius = 20 * Math.pow(2, 13 - map.getZoom())
+                var circle_radius = 20 * Math.pow(2, 13 - map.getZoom())
 		            // circle = L.geoJson(data, {
 			          //     pointToLayer: function(feature, latlng) {
 			          //         return new L.CircleMarker(latlng, {
@@ -35,7 +35,6 @@ $(function() {
 			          //     }
 		            // });
 		            // map.addLayer(circle);
-                var circle_radius = 300 * Math.pow(2, 13 - map.getZoom())
 		            circle = L.geoJson(data, {
 			              pointToLayer: function(feature, latlng) {
 			                  return new L.circle(latlng, circle_radius, {

@@ -24,17 +24,16 @@ $(function() {
                 if(typeof routingControl !== 'undefined')
                     map.removeControl(routingControl);
                 // Add circle to the destination
-                circle_radius = 20 * Math.pow(2, 13 - map.getZoom())
-		            circle = L.geoJson(data, {
+		            geojsonLayer = L.geoJson(data, {
 			              pointToLayer: function(feature, latlng) {
 			                  return new L.CircleMarker(latlng, {
-                            color: 'red',
-                            fillColor: '#f03',
+				                    color: 'green',
+                            fillColor: '#32CD32',
                             fillOpacity: 0.5
-                        }).setRadius(circle_radius)
+                        })
 			              }
 		            });
-		            map.addLayer(circle);
+		            map.addLayer(geojsonLayer);
                 // circle = L.geoJson(data, {
                 //     pointToLayer: function(feature, latlng) {
                 //         return new L.circle(latlng, {

@@ -88,25 +88,32 @@ class MapParameter(object):
             learning_layer = self.create_learning_layer()
             print "Learning layer created\n"
             final_layer = prior_layer * learning_layer * feasible_layer
-        else: 
+        else:
             final_layer = prior_layer * feasible_layer
         print "Final layer created\n"
         return final_layer
 
-    def sample_destination(self, save_new_destination = True):
+    def sample_destination(self, n, save_new_destination = True):
         """
         Sample a new location based on the grid constructed
         """
 
         final_layer = self.create_final_layer()
-        sample = final_layer.sample()
+        samples = final_layer.sample(n)
         print "New destination sampled"
+        lat, lng = zip(*samples)
         if save_new_destination and not self.user.is_anonymous():
-            self.location.create(
-                user = self.user,
-                origin = Point(self.center['lat'], self.center['lng']),
-                destin = Point(sample[0], sample[1]),
-                date_generation = timezone.now()
-            )
+            now = timezone.now()
+            for item in samples:
+                self.location.create(
+                    user = self.user,
+                    origin = Point(self.center['lat'], self.center['lng']),
+                    destin = Point(item[0], item[1]),
+                    date_generation = now
+                )
             print "New destination saved"
-        return sample
+        # return samples
+        geojson_points = [gjs.Point(pts) for pts in zip(lng, lat)]
+        return gjs.FeatureCollection([gjs.Feature(geometry=pts)
+                                      for pts in geojson_points])
+

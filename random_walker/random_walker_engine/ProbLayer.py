@@ -154,10 +154,11 @@ class ProbLayer(object):
         self.grid = grid
         self.probLayer = probLayer
 
-    def sample(self):
+    def sample(self, n):
         probs = self.probLayer.flatten().tolist()
-        ind = int(np.random.choice(len(probs), 1, p=probs))
-        return (self.grid.lat[ind], self.grid.lng[ind])
+        ind = np.random.choice(len(probs), n, p=probs).astype(int)
+        return zip([self.grid.lat[index] for index in ind],
+                   [self.grid.lng[index] for index in ind])
 
     def __mul__(self, other):
         if(self.grid == other.grid):

@@ -92,6 +92,7 @@ function initialise(pos){
 	      .bindPopup('Drag the marker to your current location!')
 	      .openPopup()
 	      .on('dragend', function(e) {console.log('location changed');
-				                            map.setView(marker.getLatLng());
+                                    home = marker.getLatLng();
+				                            map.setView(home);
 				                           });
 }

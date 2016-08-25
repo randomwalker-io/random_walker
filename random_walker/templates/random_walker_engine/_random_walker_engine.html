@@ -5,14 +5,17 @@
   {% block header %}
   {% endblock header %}
   <body>
+
     {% block additional_scripts %}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css">
+    <link rel="stylesheet" href="{% static 'random_walker_engine/routing/dist/leaflet-routing-machine.css' %}" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
     <script src="{% static 'random_walker/js/isMobile.js' %}"></script>
     <script src="{% static 'random_walker_engine/generate_new_location.js' %}"></script>
     <script src="{% static 'random_walker_engine/get_previous_location.js' %}"></script>
     <script src="{% static 'random_walker_engine/return_home.js' %}"></script>
     <script src="{% static 'random_walker_engine/random_walker_engine.js' %}"></script>
+    <script src="{% static 'random_walker_engine/routing/dist/leaflet-routing-machine.js' %}"></script>
     {% endblock additional_scripts%}
 
     {% block content%}

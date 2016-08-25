@@ -27,7 +27,8 @@ def generate_new_destination(request):
 
     if request.method == 'POST':
         params = MapParameter(request)
-        new_destination = params.sample_destination()
+        request_data = loads(request.body)
+        new_destination = params.sample_destination(request_data['n_sample'])
 
         # Return the destination
         return HttpResponse(dumps(new_destination),

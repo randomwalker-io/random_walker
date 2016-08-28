@@ -2,13 +2,13 @@ from json import loads, dumps
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import requires_csrf_token
+from django.views.decorators.csrf import requires_csrf_token, ensure_csrf_cookie
 from django_mobile import get_flavour
 from .models import Location, MapParameter
 
 # Create your views here.
 
-
+@ensure_csrf_cookie
 def index(request):
     """
     Returns the Random Walker web page according to device

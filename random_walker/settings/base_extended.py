@@ -5,8 +5,6 @@ from .base import *
 
 # Additional AWS setup
 AWS_STORAGE_BUCKET_NAME = env("BUCKET_NAME")
-AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 # This will tell boto that when it uploads files to S3, it should set
 # properties on them so that when S3 serves them, it'll include those
 # HTTP headers in the response. Those HTTP headers in turn will tell

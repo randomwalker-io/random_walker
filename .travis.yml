@@ -12,3 +12,4 @@ env:
 
 script:
   - sudo sh ./build.sh
+  - sudo sh ./unit_test.sh

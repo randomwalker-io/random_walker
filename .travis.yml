@@ -10,23 +10,6 @@ services:
 env:
   DOCKER_COMPOSE_VERSION: 1.6.2
 
-before_install:
-  - openssl aes-256-cbc -K $encrypted_b1304ac4dafe_key -iv $encrypted_b1304ac4dafe_iv -in .env.enc -out .env -d
-
-install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-
-before_script:
-  - docker version
-  - docker-compose version
-
 script:
   - sudo sh ./build.sh
-  - sudo sh ./compose.sh
-  - sudo sh ./ci.sh
-
-after_script:
-  - docker-compose -f docker-compose-dev.yml down
+  - sudo sh ./unit_test.sh

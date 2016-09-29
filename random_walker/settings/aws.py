@@ -14,15 +14,3 @@ from .staging import *
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': get_secret('RDS_DB_NAME'),
-#         'USER': get_secret('RDS_USERNAME'),
-#         'PASSWORD': get_secret('RDS_PASSWORD'),
-#         'HOST': get_secret('RDS_HOSTNAME'),
-#         'PORT': get_secret('RDS_PORT'),
-#     }
-# }
-

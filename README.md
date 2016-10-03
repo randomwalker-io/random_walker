@@ -23,16 +23,6 @@ On how to setup the prerequisites for running the application, please see
 [setup](setup.md).
 
 
-## Testing
-
-The application can be tested with
-
-```
-sudo sh test.sh
-```
-
-and then reachable from `localhost`.
-
 ## Create Docker Image
 
 To create the Docker image, simpy run

@@ -1,16 +1,7 @@
 # Random Walker Setup
 
-Follow the setup guide for the [`Random Walker Webapp`](https://github.com/randomwalker-io/random_walker_webapp/blob/master/setup.md)
-
-A initialisation script is provided, simply run the following to complete the
-setup.
-
-```
-sudo sh init.sh
-```
-
-Details of the execution is provided below
-
+Install Docker following the section in [`Random Walker Webapp
+Setup`](https://github.com/randomwalker-io/random_walker_webapp/blob/master/setup.md)
 
 ## Virtual Environment
 
@@ -25,6 +16,14 @@ pip install virtualenv
 
 ```
 
+Create the environment folder and install the required packages.
+
+```
+cd random_walker
+virtualenv venv/
+pip install -r requirements.txt
+```
+
 To activate the virtual environment
 ```
 source venv/bin/activate
@@ -37,21 +36,7 @@ current packages should be updated and saved to a requirement file.
 pip freeze > requirements.txt
 ```
 
-If a requirement file which lists all the package required, they can
-be installed via
-
-```
-pip install -r requirements.txt
-```
-
 To deactivate the virtual environment just simply type
 ```
 deactivate
 ```
-
-
-## Configuration
-
-The `random walker` app requires additional credentials to be executed. The
-credential is stored on AWS S3 for security reason.
-

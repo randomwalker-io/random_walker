@@ -4,7 +4,7 @@
 from .base_extended import *
 
 DEBUG = False
-ALLOWED_HOST = ["localhost", ".random-walker.com", "randomwalker.io"]
+ALLOWED_HOST = ["localhost", ".random-walker.com", ".randomwalker.io"]
 
 
 ## Security setttings

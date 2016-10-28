@@ -5,3 +5,4 @@
 *.json
 venv/
 .env
+*.pyc
